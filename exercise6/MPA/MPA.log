@@ -1,0 +1,193 @@
+
+--- Job MPA.gms Start 05/29/24 17:11:06 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\46\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA.gms
+    PageSize 0
+    ScrDir C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\225a\
+    SysDir C:\GAMS\46\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+          CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+          C:\Users\citcea\Documents\GAMS\gamslice.txt
+          F.-Javier Heredia, f.javier.heredia@upc.edu                      
+          Other time limited license
+          The evaluation period of the license will expire on Apr 11, 2025
+Processor information: 1 socket(s), 12 core(s), and 16 thread(s) available
+GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- MPA.gms(151) 3 Mb
+--- . MPA_disp.gms(52) 3 Mb
+--- MPA.gms(155) 3 Mb
+--- . MPA2M.gms(39) 3 Mb
+--- MPA.gms(155) 3 Mb
+--- Starting execution: elapsed 0:00:00.010
+--- MPA.gms(137) 4 Mb
+--- Generating MIP model MPA
+--- MPA.gms(140) 4 Mb
+---   37 rows  25 columns  81 non-zeroes
+---   4 discrete-columns
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 5.000E+00, 3.000E+01] - Zero values observed as well
+--- Bound     [min, max] : [ 1.000E+00, 1.500E+01] - Zero values observed as well
+--- Matrix    [min, max] : [ 1.000E+00, 3.000E+01]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.147
+
+IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
+
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 0
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+Generic callback                                 0x50
+Tried aggregator 2 times.
+MIP Presolve eliminated 23 rows and 11 columns.
+Aggregator did 3 substitutions.
+Reduced MIP has 10 rows, 11 columns, and 33 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.04 ticks)
+Found incumbent of value 70.000000 after 0.00 sec. (0.06 ticks)
+Probing time = 0.00 sec. (0.00 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 10 rows, 11 columns, and 33 nonzeros.
+Reduced MIP has 2 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.02 ticks)
+Probing time = 0.00 sec. (0.00 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 16 threads.
+Parallel mode: deterministic, using up to 3 threads for parallel tasks at root LP.
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 0 columns.
+Aggregator did 2 substitutions.
+Reduced LP has 6 rows, 9 columns, and 21 nonzeros.
+Presolve time = 0.00 sec. (0.01 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =           370.000000
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Dual objective     =           225.000000
+Root relaxation solution time = 0.00 sec. (0.02 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           70.0000      990.0000              --- 
+Found incumbent of value 70.000000 after 0.00 sec. (0.11 ticks)
+*     0+    0                          225.0000      990.0000           340.00%
+Found incumbent of value 225.000000 after 0.02 sec. (0.11 ticks)
+      0     0        cutoff            225.0000      225.0000        4    0.00%
+      0     0        cutoff            225.0000      225.0000        4    0.00%
+Elapsed time = 0.02 sec. (0.12 ticks, tree = 0.01 MB)
+
+Root node processing (before b&c):
+  Real time             =    0.02 sec. (0.12 ticks)
+Parallel b&c, 16 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.02 sec. (0.12 ticks)
+
+--- MIP status (101): integer optimal solution.
+--- Cplex Time: 0.03sec (det. 0.12 ticks)
+
+--- Returning a primal only solution to GAMS (marginals all set to NA).
+--- Fixing integer variables and solving final LP...
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+Tried aggregator 1 time.
+LP Presolve eliminated 28 rows and 16 columns.
+Aggregator did 2 substitutions.
+Reduced LP has 6 rows, 7 columns, and 15 nonzeros.
+Presolve time = 0.00 sec. (0.02 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =           360.000000
+
+--- Fixed MIP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.04 ticks)
+
+
+Proven optimal solution
+MIP Solution:          225.000000    (4 iterations, 0 nodes)
+Final Solve:           225.000000    (3 iterations)
+
+Best possible:         225.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- Reading solution for model MPA
+--- Executing after solve: elapsed 0:00:00.529
+--- MPA.gms(144) 4 Mb
+--- Generating RMIP model MPA
+--- MPA.gms(146) 4 Mb
+---   37 rows  25 columns  81 non-zeroes
+---   4 discrete-columns
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 5.000E+00, 3.000E+01] - Zero values observed as well
+--- Bound     [min, max] : [ 1.000E+00, 1.500E+01] - Zero values observed as well
+--- Matrix    [min, max] : [ 1.000E+00, 3.000E+01]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.533
+
+IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
+
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+Tried aggregator 1 time.
+LP Presolve eliminated 28 rows and 16 columns.
+Aggregator did 2 substitutions.
+Reduced LP has 6 rows, 7 columns, and 15 nonzeros.
+Presolve time = 0.00 sec. (0.02 ticks)
+Using devex.
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.01sec (det. 0.06 ticks)
+
+
+Optimal solution found
+Objective:          225.000000
+
+--- Reading solution for model MPA
+--- Executing after solve: elapsed 0:00:00.595
+--- MPA.gms(240) 5 Mb
+--- Putfile MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_eq.dat
+--- Putfile MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_lbg.dat
+--- Putfile MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_pbg.dat
+--- Putfile MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_PG.dat
+--- Putfile MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_lbd.dat
+--- Putfile MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_pbd.dat
+--- Putfile MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_PD.dat
+--- Putfile MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise6\MPA\MPA_PGT.dat
+*** Status: Normal completion
+--- Job MPA.gms Stop 05/29/24 17:11:07 elapsed 0:00:00.599

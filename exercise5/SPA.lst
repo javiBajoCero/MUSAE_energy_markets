@@ -1,0 +1,506 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  ********************************************************************************
+   2  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+   3  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+   4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+   5  ********************************************************************************
+   6   
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 2
+OEMO_SPA
+C o m p i l a t i o n
+
+
+   8   
+   9  *********************************************************************
+  10  * DATA
+  11  *********************************************************************
+  12   
+  13  * Generation units:
+  14   
+  15  SETS
+  16  g Generation units / G1/
+  17  bg Blocks           /1*2/;
+  18   
+  19  PARAMETERS
+  20  pg_max(g) Max. active power generation [MW] /G1 30/
+  21  pg_min(g) Min. active power generation [MW] /G1  15/
+  22  ru(g)     Ramp-up limit [MW:h]              /G1  5/
+  23  rd(g)     Ramp-down limit [MW]              /G1  5/
+  24  p0(g)     Initial power output [MW]         /G1 30/;
+  25   
+  26  TABLE pbg(g,bg) Power [MW] of the generation bid function
+  27       1  2
+  28  G1   5  5 ;
+  29   
+  30  TABLE lbg(g,bg) Prices [eur:MWh] of the generation bid function
+  31       1  2
+  32  G1   1  3 ;
+  33   
+  34  * Demand units:
+  35   
+  36  SETS
+  37  d Generation units / D1/
+  38  bd Blocks          / 1*2 /;
+  39   
+  40  TABLE pbd(d,bd) Power [MW] of the demand bid function
+  41      1 2
+  42  D1  3 6;
+  43   
+  44  TABLE lbd(d,bd) Prices [�:MWh] of the generation bid function
+  45      1  2
+  46  D1  5  2;
+  47   
+  48  display pbg, lbg, pbd, lbd;
+  49   
+  50  *********************************************************************
+  51  * VARIABLES
+  52  *********************************************************************
+  53   
+  54  FREE VARIABLE     SW       Social welfare (objective function)
+  55  POSITIVE VARIABLE PG(g,bg) Matched generation of each block [MW]
+  56                    PD(d,bd) Matched demand of each block [MW];
+  57  BINARY VARIABLE   U(g)    on-off state of the unit;
+  58   
+  59  *********************************************************************
+  60  * OBJECTIVE FUNCTION AND CONSTRAINTS
+  61  *********************************************************************
+  62   
+  63  EQUATIONS
+  64  OF         Objective function
+  65  MATCHED_G  Matched generation to generation block coupling
+  66  MATCHED_D  Matched demand to demand block coupling
+  67  MARKET     Market equilibrium
+  68  RAMP_D     Ramp down limit constraints
+  69  RAMP_U     Ramp up limit constraints
+  70  PGMIN      Minimum generation
+  71  PGMAX      Maximum generation;
+  72   
+  73  * Social Welfare:
+  74  OF.. SW =e=  sum(d, sum(bd, lbd(d,bd)*PD(d,bd)))
+  75             - sum(g, sum(bg,lbg(g,bg)*PG(g,bg)));
+  76   
+  77  * Matched generation to generation block coupling:
+  78  MATCHED_G(g,bg).. PG(g,bg) =l= pbg(g,bg);
+  79   
+  80  * Matched demand to demand block coupling:
+  81  MATCHED_D(d,bd).. PD(d,bd) =l= pbd(d,bd);
+  82   
+  83  * Market Equilibrium:
+  84  MARKET.. sum(d, sum(bd, PD(d,bd) )) =e=
+  85           sum(g, sum(bg, PG(g,bg) ));
+  86   
+  87  * Ramp down limit:
+  88  *RAMP_D(g).. sum(bg, PG(g,bg)) - p0(g) =g= - rd(g);
+  89   
+  90  * Ramp up limit:
+  91  *RAMP_U(g).. sum(bg, PG(g,bg)) - p0(g) =l=   ru(g);
+  92   
+  93  * Generation limits:
+  94  *PGMIN(g)..  sum(bg, PG(g,bg)) =g= pg_min(g)*U(g);
+  95  *PGMAX(g)..  sum(bg, PG(g,bg)) =l= pg_max(g)*U(g);
+  96   
+  97  *********************************************************************
+  98  * OPTIMIZATION
+  99  *********************************************************************
+ 100   
+ 101  SET sc Columns for tables "_s" /bid_price, bid_power, SPA0 , SPA/;
+ 102  SET req Rows for market clearing tables / SocWel , price, energy/;
+ 103  SET mod Columns for market clearing tables / SPA0 , SPA/;
+ 104  PARAMETER
+ 105  matched_generation(g,bg,sc), total_matched_generation(g,sc),
+ 106  matched_demand(d,bd,sc), total_matched_demand(d,sc),
+ 107  market_equilibrium(req,mod);
+ 108  * Lagrange multipliers mu;
+ 109  SET mucolG / 'la^*=', 'la^b', '-mu^0', '-mu^b' /;
+ 110  SET mucolD / 'la^*=', 'la^b', '+mu^0', '+mu^b' /;
+ 111  PARAMETERS muG_0(g,bg,mucolG),muD_0(d,bd,mucolD);
+ 112   
+ 113  matched_generation(g,bg,'bid_price') = lbg(g,bg);
+ 114  matched_generation(g,bg,'bid_power') = pbg(g,bg);
+ 115  matched_demand(d,bd,'bid_price')     = lbd(d,bd);
+ 116  matched_demand(d,bd,'bid_power')     = pbd(d,bd);
+ 117   
+ 118  muG_0(g,bg,'la^b') = lbg(g,bg);
+ 119  muD_0(d,bd,'la^b') = lbd(d,bd);
+ 120   
+ 121  * Simplified model (LP):
+ 122   
+ 123  MODEL SPA0  / OF, MATCHED_G, MATCHED_D, MARKET/;
+ 124  SOLVE SPA0 USING lp MAXIMIZING SW;
+ 125   
+ 126  matched_generation(g,bg,'SPA0')     = PG.l(g,bg);
+ 127  total_matched_generation(g,'SPA0')  = sum(bg,PG.l(g,bg));
+ 128  matched_demand(d,bd,'SPA0')         = PD.l(d,bd);
+ 129  total_matched_demand(d,'SPA0')      = sum(bd,PD.l(d,bd));
+ 130  market_equilibrium('SocWel','SPA0') = SW.l;
+ 131  market_equilibrium('price', 'SPA0') = MARKET.m;
+ 132  market_equilibrium('energy', 'SPA0')= sum(d, sum( bd,PD.l(d,bd)));
+ 133   
+ 134  muG_0(g,bg,'la^*=')    = MARKET.m;
+ 135  muD_0(d,bd,'la^*=')    = MARKET.m;
+ 136  * The signs of the lag. mult. in GAMS are the opposite of those defined in classroom;
+ 137  muG_0(g,bg,'-mu^0') = PG.m(g,bg);
+ 138  muG_0(g,bg,'-mu^b') = MATCHED_G.m(g,bg);
+ 139  muD_0(d,bd,'+mu^0') = -PD.m(d,bd);
+ 140  muD_0(d,bd,'+mu^b') = -MATCHED_D.m(d,bd);
+ 141   
+ 142  * Full model (MIP):
+ 143   
+ 144  *MODEL SPA    / ALL /;
+ 145  *SOLVE SPA USING mip MAXIMIZING SW;
+ 146   
+ 147  *matched_generation(g,bg,'SPA')   = PG.l(g,bg);
+ 148  *total_matched_generation(g,'SPA')= sum(bg,PG.l(g,bg));
+ 149  *matched_demand(d,bd,'SPA')       = PD.l(d,bd);
+ 150  *total_matched_demand(d,'SPA')    = sum(bd,PD.l(d,bd));
+ 151  *market_equilibrium('SocWel','SPA') = SW.l;
+ 152  *market_equilibrium('energy', 'SPA')= sum(d, sum( bd,PD.l(d,bd)));
+ 153   
+ 154  * Continuous problem associated to SPA (CSPA):
+ 155   
+ 156  * We first set the optimal value of the binary variables;
+ 157  *U.fx(g) = U.l(g);
+ 158  * And then solve the linear relaxation of SPA;
+ 159  *SOLVE SPA USING rmip MAXIMIZING SW;
+ 160  *market_equilibrium('price', 'SPA') = MARKET.m;
+ 161   
+ 162  * Output:
+ 163   
+ 164  display
+ 165  matched_generation, total_matched_generation,
+ 166  matched_demand    , total_matched_demand,
+ 167  market_equilibrium,
+ 168  muG_0, muD_0;
+ 169   
+ 170  *********************************************************************
+ 171  * Matlab FILES FOR MARKET CLEARING PLOTS
+ 172  *********************************************************************
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA2M.gms
+ 174  *
+ 175  * File for the Matlab function SPA_AccBidFunc.m to represent the aggregated
+ 176  * bid functions and the matched energy for each time period.
+ 177  *
+ 178  file SPA_eq  /SPA_eq.dat/; put SPA_eq;
+ 179  put market_equilibrium('energy','SPA');
+ 180  put market_equilibrium('price','SPA');
+ 181  put market_equilibrium('SocWel','SPA');
+ 182   
+ 183  file SPA_lbg /SPA_lbg.dat/; put SPA_lbg; loop(g, loop(bg, put lbg(g,bg)));  put /;
+ 184  file SPA_pbg /SPA_pbg.dat/; put SPA_pbg; loop(g, loop(bg, put pbg(g,bg)));  put /;
+ 185  file SPA_PG  /SPA_PG.dat/;  put SPA_PG;  loop(g, loop(bg, put PG.l(g,bg))); put /;
+ 186  file SPA_lbd /SPA_lbd.dat/; put SPA_lbd; loop(d, loop(bd, put lbd(d,bd)));  put /;
+ 187  file SPA_pbd /SPA_pbd.dat/; put SPA_pbd; loop(d, loop(bd, put pbd(d,bd)));  put /;
+ 188  file SPA_PD  /SPA_PD.dat/;  put SPA_PD;  loop(d, loop(bd, put PD.l(d,bd))); put /;
+ 189   
+ 190  file SPA_PGT  /SPA_PGT.dat/;
+ 191  file SPA_PGmin /SPA_PGmin.dat/;
+ 192  file SPA_PGmax /SPA_PGmax.dat/;
+ 193  file SPA_PGRU /SPA_PGRU.dat/;
+ 194  file SPA_PGRD /SPA_PGRD.dat/;
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 3
+OEMO_SPA
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA.gms
+     2      173 INCLUDE        1     173  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA2M.gms
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 4
+OEMO_SPA
+E x e c u t i o n
+
+
+----     48 PARAMETER pbg  Power [MW] of the generation bid function
+
+             1           2
+
+G1       5.000       5.000
+
+
+----     48 PARAMETER lbg  Prices [eur:MWh] of the generation bid function
+
+             1           2
+
+G1       1.000       3.000
+
+
+----     48 PARAMETER pbd  Power [MW] of the demand bid function
+
+             1           2
+
+D1       3.000       6.000
+
+
+----     48 PARAMETER lbd  Prices [�:MWh] of the generation bid function
+
+             1           2
+
+D1       5.000       2.000
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 5
+OEMO_SPA
+Equation Listing    SOLVE SPA0 Using LP From line 124
+
+
+---- OF  =E=  Objective function
+
+OF..  SW + PG(G1,1) + 3*PG(G1,2) - 5*PD(D1,1) - 2*PD(D1,2) =E= 0 ; (LHS = 0)
+     
+
+---- MATCHED_G  =L=  Matched generation to generation block coupling
+
+MATCHED_G(G1,1)..  PG(G1,1) =L= 5 ; (LHS = 0)
+     
+MATCHED_G(G1,2)..  PG(G1,2) =L= 5 ; (LHS = 0)
+     
+
+---- MATCHED_D  =L=  Matched demand to demand block coupling
+
+MATCHED_D(D1,1)..  PD(D1,1) =L= 3 ; (LHS = 0)
+     
+MATCHED_D(D1,2)..  PD(D1,2) =L= 6 ; (LHS = 0)
+     
+
+---- MARKET  =E=  Market equilibrium
+
+MARKET..  - PG(G1,1) - PG(G1,2) + PD(D1,1) + PD(D1,2) =E= 0 ; (LHS = 0)
+     
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 6
+OEMO_SPA
+Column Listing      SOLVE SPA0 Using LP From line 124
+
+
+---- SW  Social welfare (objective function)
+
+SW
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       OF
+
+
+---- PG  Matched generation of each block [MW]
+
+PG(G1,1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       OF
+        1       MATCHED_G(G1,1)
+       -1       MARKET
+
+PG(G1,2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        3       OF
+        1       MATCHED_G(G1,2)
+       -1       MARKET
+
+
+---- PD  Matched demand of each block [MW]
+
+PD(D1,1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -5       OF
+        1       MATCHED_D(D1,1)
+        1       MARKET
+
+PD(D1,2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2       OF
+        1       MATCHED_D(D1,2)
+        1       MARKET
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 7
+OEMO_SPA
+Range Statistics    SOLVE SPA0 Using LP From line 124
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 3.000E+00, 6.000E+00] - Zero values observed as well
+Bound     [min, max] : [        NA,        NA] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 5.000E+00]
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 8
+OEMO_SPA
+Model Statistics    SOLVE SPA0 Using LP From line 124
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS            6
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            5
+NON ZERO ELEMENTS            13
+
+
+GENERATION TIME      =        0.078 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 9
+OEMO_SPA
+Solution Report     SOLVE SPA0 Using LP From line 124
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   SPA0                OBJECTIVE  SW
+     TYPE    LP                  DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  124
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE               14.0000
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         1    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.01 ticks)
+
+
+Optimal solution found
+Objective:           14.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU OF                  .              .              .             1.0000      
+
+  OF  Objective function
+
+---- EQU MATCHED_G  Matched generation to generation block coupling
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+G1.1        -INF            5.0000         5.0000         1.0000      
+G1.2        -INF             .             5.0000          .          
+
+---- EQU MATCHED_D  Matched demand to demand block coupling
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+D1.1        -INF            3.0000         3.0000         3.0000      
+D1.2        -INF            2.0000         6.0000          .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU MARKET              .              .              .             2.0000      
+
+  MARKET  Market equilibrium
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR SW                -INF           14.0000        +INF             .          
+
+  SW  Social welfare (objective function)
+
+---- VAR PG  Matched generation of each block [MW]
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+G1.1          .             5.0000        +INF             .          
+G1.2          .              .            +INF           -1.0000      
+
+---- VAR PD  Matched demand of each block [MW]
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+D1.1          .             3.0000        +INF             .          
+D1.2          .             2.0000        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 05/17/24 15:19:15 Page 10
+OEMO_SPA
+E x e c u t i o n
+
+
+----    165 PARAMETER matched_generation  
+
+       bid_price   bid_power        SPA0
+
+G1.1       1.000       5.000       5.000
+G1.2       3.000       5.000
+
+
+----    165 PARAMETER total_matched_generation  
+
+          SPA0
+
+G1       5.000
+
+
+----    165 PARAMETER matched_demand  
+
+       bid_price   bid_power        SPA0
+
+D1.1       5.000       3.000       3.000
+D1.2       2.000       6.000       2.000
+
+
+----    165 PARAMETER total_matched_demand  
+
+          SPA0
+
+D1       5.000
+
+
+----    165 PARAMETER market_equilibrium  
+
+              SPA0
+
+SocWel      14.000
+price        2.000
+energy       5.000
+
+
+----    165 PARAMETER muG_0  
+
+           la^*=        la^b       -mu^0       -mu^b
+
+G1.1       2.000       1.000                   1.000
+G1.2       2.000       3.000      -1.000
+
+
+----    165 PARAMETER muD_0  
+
+           la^*=        la^b       +mu^b
+
+D1.1       2.000       5.000      -3.000
+D1.2       2.000       2.000
+
+
+**** REPORT FILE SUMMARY
+
+SPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_eq.dat
+SPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_lbg.dat
+SPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_pbg.dat
+SPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_PG.dat
+SPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_lbd.dat
+SPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_pbd.dat
+SPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA_PD.dat
+
+
+EXECUTION TIME       =        0.250 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA.gms
+Output     C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise5\SPA.lst

@@ -1,0 +1,111 @@
+--- Job TCMPA2M.gms Start 05/31/24 23:54:07 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\46\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    PageSize 0
+    ScrDir C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\225a\
+    SysDir C:\GAMS\46\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+          CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+          C:\Users\citcea\Documents\GAMS\gamslice.txt
+          F.-Javier Heredia, f.javier.heredia@upc.edu                      
+          Other time limited license
+          The evaluation period of the license will expire on Apr 11, 2025
+Processor information: 1 socket(s), 12 core(s), and 16 thread(s) available
+GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- TCMPA2M.gms(16) 3 Mb 1 Error
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+--- TCMPA2M.gms(19) 3 Mb 2 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+--- TCMPA2M.gms(20) 3 Mb 3 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+--- TCMPA2M.gms(21) 3 Mb 5 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+*** Error 116 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Label is unknown
+--- TCMPA2M.gms(22) 3 Mb 6 Errors
+*** Error 116 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Label is unknown
+--- TCMPA2M.gms(23) 3 Mb 7 Errors
+*** Error 116 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Label is unknown
+--- TCMPA2M.gms(31) 3 Mb 13 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(33) 3 Mb 18 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(35) 3 Mb 20 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+--- TCMPA2M.gms(39) 3 Mb 21 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(47) 3 Mb 22 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(55) 3 Mb 28 Errors
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+*** Error 120 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown identifier entered as set
+*** Error 340 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(63) 3 Mb 29 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(71) 3 Mb 30 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+    Unknown symbol
+--- TCMPA2M.gms(92) 3 Mb 30 Errors
+*** Status: Compilation error(s)
+--- Job TCMPA2M.gms Stop 05/31/24 23:54:07 elapsed 0:00:00.006

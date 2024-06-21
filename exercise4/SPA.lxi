@@ -1,0 +1,92 @@
+B 3 C o m p i l a t i o n
+B 208 Include File Summary
+B 220 E x e c u t i o n
+I 220 pbg
+I 228 lbg
+I 235 pbd
+I 243 lbd
+B 254 Equation Listing    SOLVE SPA0 Using LP From line 126
+D 257 OF
+D 262 MATCHED_G
+D 269 MATCHED_D
+D 280 MARKET
+B 286 Column Listing      SOLVE SPA0 Using LP From line 126
+E 289 SW
+E 296 PG
+E 311 PD
+B 334 Range Statistics    SOLVE SPA0 Using LP From line 126
+B 345 Model Statistics    SOLVE SPA0 Using LP From line 126
+B 358 Solution Report     SOLVE SPA0 Using LP From line 126
+F 391 OF
+F 395 MATCHED_G
+F 402 MATCHED_D
+F 413 MARKET
+G 419 SW
+G 423 PG
+G 430 PD
+B 445 Equation Listing    SOLVE SPA Using MIP From line 147
+D 448 OF
+D 453 MATCHED_G
+D 460 MATCHED_D
+D 471 MARKET
+D 476 RAMP_D
+D 481 RAMP_U
+D 486 PGMIN
+D 491 PGMAX
+B 497 Column Listing      SOLVE SPA Using MIP From line 147
+E 500 SW
+E 507 PG
+E 530 PD
+E 552 U
+B 561 Range Statistics    SOLVE SPA Using MIP From line 147
+B 572 Model Statistics    SOLVE SPA Using MIP From line 147
+B 585 Solution Report     SOLVE SPA Using MIP From line 147
+F 630 OF
+F 634 MATCHED_G
+F 641 MATCHED_D
+F 652 MARKET
+F 656 RAMP_D
+F 662 RAMP_U
+F 668 PGMIN
+F 674 PGMAX
+G 682 SW
+G 686 PG
+G 693 PD
+G 702 U
+B 714 Equation Listing    SOLVE SPA Using RMIP From line 161
+D 717 OF
+D 722 MATCHED_G
+D 729 MATCHED_D
+D 740 MARKET
+D 745 RAMP_D
+D 750 RAMP_U
+D 755 PGMIN
+D 760 PGMAX
+B 766 Column Listing      SOLVE SPA Using RMIP From line 161
+E 769 SW
+E 776 PG
+E 799 PD
+E 821 U
+B 830 Range Statistics    SOLVE SPA Using RMIP From line 161
+B 841 Model Statistics    SOLVE SPA Using RMIP From line 161
+B 854 Solution Report     SOLVE SPA Using RMIP From line 161
+F 887 OF
+F 891 MATCHED_G
+F 898 MATCHED_D
+F 909 MARKET
+F 913 RAMP_D
+F 919 RAMP_U
+F 925 PGMIN
+F 931 PGMAX
+G 939 SW
+G 943 PG
+G 950 PD
+G 959 U
+B 971 E x e c u t i o n
+I 971 matched_generation
+I 980 total_matched_generation
+I 987 matched_demand
+I 997 total_matched_demand
+I 1005 market_equilibrium
+I 1014 muG_0
+I 1022 muD_0

@@ -1,0 +1,1377 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  ********************************************************************************
+   2  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+   3  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+   4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+   5  ********************************************************************************
+   6   
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 2
+OEMO_TCMPA
+C o m p i l a t i o n
+
+
+   8   
+   9  *********************************************************************
+  10  * DATA
+  11  *********************************************************************
+  12   
+  13  * Time periods;
+  14   
+  15  SETS t0    Extended time periods / t0*t1 /
+  16  SETS t(t0) Time periods / t1 /
+  17   
+  18  * Units:
+  19   
+  20  * Generation units:
+  21   
+  22  SETS
+  23  g  Generation units / G1/
+  24  bg Blocks           /b1*b2/;
+  25   
+  26  PARAMETERS
+  27  pg_max(g) Max. active power generation [MW] /G1 10/
+  28  pg_min(g) Min. active power generation [MW] /G1  0/
+  29  ru(g)     Ramp-up limit [MW:h]              /G1  10/
+  30  rd(g)     Ramp-down limit [MW]              /G1  10/
+  31  p0(g)     Initial power output [MW]         /G1 0/;
+  32   
+  33  TABLE pbg(t,g,bg) Power [MW] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_pbg.gms
+  35         b1  b2
+  36  t1.G1   5  5 ;
+  37   
+  38  TABLE lbg(t,g,bg) Prices [eur:MWh] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_lbg.gms
+  40        b1   b2
+  41  t1.G1  1   3;
+  42   
+  43  * Demand units:
+  44   
+  45  SETS
+  46  d  Demand units / D1 /
+  47  bd Blocks       / b1*b2 /;
+  48   
+  49  TABLE pbd(t,d,bd) Power [MW] of the demand bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_pbd.gms
+  51        b1  b2
+  52  t1.D1  3  6;
+  53   
+  54  TABLE lbd(t,d,bd) Prices [�:MWh] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_lbd.gms
+  56        b1 b2
+  57  t1.D1 5  2;
+  58   
+  59  * Buses:
+  60   
+  61  SET  b      Buses            / bus1*bus2 /;
+  62  SET refb(b) Reference bus    / bus1 /;
+  63  alias(b,b_o,b_d);
+  64   
+  65  SET gb(g,b) Generation buses / G1.bus1 /;
+  66  SET db(d,b) Demand buses     / D1.bus2 /;
+  67   
+  68  * Lines;
+  69   
+  70  SET l(b_o,b_d) lines / bus1.bus2 /;
+  71   
+  72  display gb, db, refb, l;
+  73   
+  74  PARAMETERS pbase basepower [MVAr] / 100 /;
+  75  TABLE x(b,b) Line reactance [p.u.]
+  76        bus1 bus2
+  77  bus1   0.0  0.1
+  78  bus2   0.0  0.0  ;
+  79   
+  80  TABLE s_max(b,b) Line capacity [MVA]
+  81        bus1  bus2
+  82  bus1     0    2
+  83  bus2     0    0    ;
+  84   
+  85  *********************************************************************
+  86  * VARIABLES
+  87  *********************************************************************
+  88   
+  89  FREE VARIABLE     SW         Social welfare (objective function);
+  90  * Generation;
+  91  POSITIVE VARIABLE PG(t,g,bg) Matched generation of each block [MW]
+  92                    PGT(t0,g)  Total matched generation [MW]
+  93  BINARY VARIABLE   U(t,g)     on-off state of the unit;
+  94  * Total generation at t=0:
+  95  PGT.fx('t0',g) = p0(g);
+  96   
+  97  * Demand;
+  98  POSITIVE VARIABLE PD(t,d,bd) Matched demand of each block [MW]
+  99                    PDT(t,d)   Total matched demand [MW];
+ 100  * Grid;
+ 101  VARIABLE P(t,b,b)   Line power [MW]
+ 102           Th(t,b)    Voltage phase;
+ 103   
+ 104  P.fx(t,b_o,b_d)$(not l(b_o,b_d)) = 0.0;
+ 105  P.lo(t,b_o,b_d)   = -s_max(b_o,b_d);
+ 106  P.up(t,b_o,b_d)   = s_max(b_o,b_d);
+ 107   
+ 108  Th.fx(t,refb) = 0.0;
+ 109   
+ 110  *********************************************************************
+ 111  * OBJECTIVE FUNCTION AND CONSTRAINTS
+ 112  *********************************************************************
+ 113   
+ 114  EQUATIONS
+ 115  OF            Objective function
+ 116  MATCHED_G     Matched generation to generation block coupling
+ 117  MATCHED_D     Matched demand to demand block coupling
+ 118  TOT_MATCHED_G Total matched generation
+ 119  TOT_MATCHED_D Total matched demand
+ 120  NODAL_MARKET  Market equilibrium at bus
+ 121  LPFE          Line power flow equations
+ 122  RAMP_D        Ramp down limit constraints
+ 123  RAMP_U        Ramp up limit constraints
+ 124  PGMIN         Minimum generation
+ 125  PGMAX         Maximum generation;
+ 126   
+ 127  * Social Welfare:
+ 128  OF.. SW =e=
+ 129  sum(t,
+ 130        sum(d, sum(bd, lbd(t,d,bd)*PD(t,d,bd)))
+ 131      - sum(g, sum(bg, lbg(t,g,bg)*PG(t,g,bg)))
+ 132     );
+ 133   
+ 134  * Matched generation to generation block coupling:
+ 135  MATCHED_G(t,g,bg).. PG(t,g,bg) =l= pbg(t,g,bg);
+ 136   
+ 137  * Matched demand to demand block coupling:
+ 138  MATCHED_D(t,d,bd).. PD(t,d,bd) =l= pbd(t,d,bd);
+ 139   
+ 140  * Total matched generation:
+ 141  TOT_MATCHED_G(t,g).. PGT(t,g) =e= sum(bg, PG(t,g,bg));
+ 142   
+ 143  * Total matched demand:
+ 144  TOT_MATCHED_D(t,d).. PDT(t,d) =e= sum(bd, PD(t,d,bd));
+ 145   
+ 146  * Market Equilibrium:
+ 147  NODAL_MARKET(t,b)..
+ 148  * Total power outflow to the grid:
+ 149    sum(b_d$l(b,b_d), P(t,b,b_d))
+ 150  * Total power inflow  from the grid:
+ 151  - sum(b_o$l(b_o,b), P(t,b_o,b))
+ 152  * Net power balance of bus "b":
+ 153  =e= sum(g$gb(g,b),PGT(t,g))- sum(d$db(d,b),PDT(t,d)) ;
+ 154   
+ 155  * Line power flow equations:
+ 156  LPFE(t,b_o,b_d)$l(b_o,b_d).. P(t,b_o,b_d) =e= pbase*(Th(t,b_o)-Th(t,b_d))/x(b_o,b_d);
+ 157   
+ 158  * Ramp down limit:
+ 159  RAMP_D(t0,g)$(ord(t0) gt 1).. PGT(t0,g) - PGT(t0-1,g) =g= -rd(g);
+ 160   
+ 161  * Ramp up limit:
+ 162  RAMP_U(t0,g)$(ord(t0) gt 1).. PGT(t0,g) - PGT(t0-1,g) =l= ru(g);
+ 163   
+ 164  * Generation limits:
+ 165  PGMIN(t,g)..  PGT(t,g) =g= pg_min(g)*U(t,g);
+ 166  PGMAX(t,g)..  PGT(t,g) =l= pg_max(g)*U(t,g);
+ 167   
+ 168  *********************************************************************
+ 169  * OPTIMIZATION
+ 170  *********************************************************************
+ 171   
+ 172  MODEL TCMPA    / ALL /;
+ 173  option optCR = 0.0;
+ 174  SOLVE TCMPA USING mip MAXIMIZING SW;
+ 175  U.fx(t,g) = U.l(t,g);
+ 176  SOLVE TCMPA USING rmip MAXIMIZING SW;
+ 177   
+ 178  *********************************************************************
+ 179  * MARKET CLEARING LOG
+ 180  *********************************************************************
+ 181   
+ 182  display NODAL_MARKET.m;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_equilibrium.gms
+ 184  ********************************************************************************
+ 185  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 186  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 187  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 188  ********************************************************************************
+ 189   
+ 190  SET cmat         Columns for tables "matched"      /bid_price, bid_power, matched_P/;
+ 191  SET ceq          Columns for "equilibrium" table   / 'price', 'energy', 'gen.', 'dem.', 'inflow', 'outflow',  'surp. gen.','surp. dem.', SW, 'surp. inf.', 'surp. out.', 'nodal SW'/;
+ 192  SET ceqt(ceq)    Columns for "equilibrium_T" table / 'energy', 'gen.', 'dem.', 'inflow', 'outflow',  'surp. gen.','surp. dem.', SW/;
+ 193  SET cmer         Columns for "merchandizing" table / 'price sell','price buy', 'energy', 'mer. surp.'/;
+ 194   
+ 195  PARAMETER
+ 196  matched_generation(t,g,bg,cmat), matched_demand(t,d,bd,cmat),
+ 197  market_equilibrium(t,b,ceq),
+ 198  market_equilibrium_T(t,ceqt),
+ 199  market_merchandizing(t,b,b,cmer);
+ 200   
+ 201  matched_generation(t,g,bg,'bid_price') = lbg(t,g,bg);
+ 202  matched_generation(t,g,bg,'bid_power') = pbg(t,g,bg);
+ 203  matched_demand(t,d,bd,'bid_price')     = lbd(t,d,bd);
+ 204  matched_demand(t,d,bd,'bid_power')     = pbd(t,d,bd);
+ 205   
+ 206  matched_generation(t,g,bg,'matched_P') = PG.l(t,g,bg);
+ 207  matched_demand(t,d,bd,'matched_P')     = PD.l(t,d,bd);
+ 208   
+ 209  *
+ 210  * Market equilibrium
+ 211  *
+ 212  loop(t,
+ 213   loop(b,
+ 214  *
+ 215  * Social Welfare
+ 216  *
+ 217    market_equilibrium(t,b,'surp. dem.') =
+ 218  * Demand and generation surplus:
+ 219    sum(d$db(d,b), sum(bd, (lbd(t, d, bd)-NODAL_MARKET.M(t,b))*PD.l(t,d,bd)));
+ 220    market_equilibrium(t,b,'surp. gen.') =
+ 221  * Demand and generation surplus:
+ 222   + sum(g$gb(g,b), sum(bg, (NODAL_MARKET.M(t,b)-lbg(t, g, bg))*PG.l(t,g,bg)));
+ 223    market_equilibrium(t,b,'SW') =
+ 224           market_equilibrium(t,b,'surp. dem.')
+ 225         + market_equilibrium(t,b,'surp. gen.');
+ 226  *
+ 227  * Nodal Equilibrium
+ 228  *
+ 229    market_equilibrium(t,b,'gen.')    = sum(g$gb(g,b), PGT.l(t,g));
+ 230    market_equilibrium(t,b,'dem.')    = sum(d$db(d,b), PDT.l(t,d));
+ 231    market_equilibrium(t,b,'inflow')  =
+ 232            sum(b_o$(l(b_o,b) and P.l(t,b_o,b)>0),P.l(t,b_o,b))
+ 233          - sum(b_d$(l(b,b_d) and P.l(t,b,b_d)<0),P.l(t,b,b_d));
+ 234    market_equilibrium(t,b,'surp. inf.')  =
+ 235            sum(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), (NODAL_MARKET.M(t,b)-NODAL_MARKET.M(t,b_o))*P.l(t,b_o,b))
+ 236          - sum(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), (NODAL_MARKET.M(t,b)-NODAL_MARKET.M(t,b_d))*P.l(t,b,b_d));
+ 237    market_equilibrium(t,b,'outflow') =
+ 238            sum(b_d$(l(b,b_d) and P.l(t,b,b_d)>0),P.l(t,b,b_d))
+ 239          - sum(b_o$(l(b_o,b) and P.l(t,b_o,b)<0),P.l(t,b_o,b));
+ 240    market_equilibrium(t,b,'surp. out.') =
+ 241            sum(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), (NODAL_MARKET.M(t,b_d)-NODAL_MARKET.M(t,b))*P.l(t,b,b_d))
+ 242          - sum(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), (NODAL_MARKET.M(t,b_o)-NODAL_MARKET.M(t,b))*P.l(t,b_o,b));
+ 243    market_equilibrium(t,b,'nodal SW') =   market_equilibrium(t,b,'SW')
+ 244                                         + market_equilibrium(t,b,'surp. inf.')
+ 245                                         + market_equilibrium(t,b,'surp. out.');
+ 246   
+ 247    market_equilibrium(t,b,'energy') =
+ 248           market_equilibrium(t,b,'gen.')
+ 249        +  market_equilibrium(t,b,'inflow');
+ 250    market_equilibrium(t,b,'price')  = NODAL_MARKET.m(t,b);
+ 251   );
+ 252  loop(ceqt, market_equilibrium_T(t,ceqt) = sum(b, market_equilibrium(t,b,ceqt)));
+ 253  );
+ 254  *
+ 255  * Merchandising surplus:
+ 256  *
+ 257  loop(t,
+ 258     loop(b_o,
+ 259        loop(b_d$(l(b_o,b_d) and P.l(t,b_o,b_d)>0),
+ 260  *     Positive outflow:
+ 261        market_merchandizing(t,b_o,b_d,'price buy') = NODAL_MARKET.m(t,b_o);
+ 262        market_merchandizing(t,b_o,b_d,'price sell')  = NODAL_MARKET.m(t,b_d);
+ 263        market_merchandizing(t,b_o,b_d,'energy')       = P.l(t,b_o,b_d);
+ 264        market_merchandizing(t,b_o,b_d,'mer. surp.') = (NODAL_MARKET.m(t,b_d)-NODAL_MARKET.m(t,b_o))*P.l(t,b_o,b_d);
+ 265        );
+ 266        loop(b_d$(l(b_o,b_d) and P.l(t,b_o,b_d)<0),
+ 267  *     Negative outflow (inflow):
+ 268        market_merchandizing(t,b_o,b_d,'price buy')  = NODAL_MARKET.m(t,b_d);
+ 269        market_merchandizing(t,b_o,b_d,'price sell') = NODAL_MARKET.m(t,b_o);
+ 270        market_merchandizing(t,b_o,b_d,'energy')     = -P.l(t,b_o,b_d);
+ 271        market_merchandizing(t,b_o,b_d,'mer. surp.') = (NODAL_MARKET.m(t,b_d)-NODAL_MARKET.m(t,b_o))*P.l(t,b_o,b_d);
+ 272        );
+ 273     );
+ 274  );
+ 275  display
+ 276  matched_generation, PGT.l,
+ 277  matched_demand    , PDT.l,
+ 278  market_equilibrium,
+ 279  market_equilibrium_T,
+ 280  market_merchandizing;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_equilibrium_bus.gms
+ 282  ********************************************************************************
+ 283  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 284  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 285  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 286  ********************************************************************************
+ 287   
+ 288  SET cmat_bus Columns for tables "matched"      /bid_price, bid_power, matched_P/;
+ 289  SET in /in/;
+ 290  SET ou /out/;
+ 291   
+ 292  PARAMETER
+ 293  matched_generation_bus(b,t,g,bg,cmat_bus)
+ 294  matched_demand_bus(b,t,d,bd,cmat_bus)
+ 295  matched_inflow_bus(b,t,b_o,in,cmat_bus)
+ 296  matched_outflow_bus(b,t,b_o,ou,cmat_bus);
+ 297  *
+ 298  * Generation units
+ 299  *
+ 300  matched_generation_bus(b,t,g,bg,'bid_price')$gb(g,b) = lbg(t,g,bg);
+ 301  matched_generation_bus(b,t,g,bg,'bid_power')$gb(g,b) = pbg(t,g,bg);
+ 302  matched_generation_bus(b,t,g,bg,'matched_P')$gb(g,b) = PG.l(t,g,bg);
+ 303  * Positive inflow (= generation unit):
+ 304  matched_inflow_bus(b,t,b_o,in,'bid_price')$(l(b_o,b) and P.l(t,b_o,b)>0) = NODAL_MARKET.m(t,b_o);
+ 305  matched_inflow_bus(b,t,b_o,in,'bid_power')$(l(b_o,b) and P.l(t,b_o,b)>0) = P.up(t,b_o,b);
+ 306  matched_inflow_bus(b,t,b_o,in,'matched_P')$(l(b_o,b) and P.l(t,b_o,b)>0) = P.l(t,b_o,b);
+ 307  * Negative outflow (= positive inflow = generation unit):
+ 308  matched_inflow_bus(b,t,b_d,in,'bid_price')$(l(b,b_d) and P.l(t,b,b_d)<0) = NODAL_MARKET.m(t,b_d);
+ 309  matched_inflow_bus(b,t,b_d,in,'bid_power')$(l(b,b_d) and P.l(t,b,b_d)<0) = P.up(t,b,b_d);
+ 310  matched_inflow_bus(b,t,b_d,in,'matched_P')$(l(b,b_d) and P.l(t,b,b_d)<0) = -P.l(t,b,b_d);
+ 311  *
+ 312  * Demand units
+ 313  *
+ 314  matched_demand_bus(b,t,d,bd,'bid_price')$db(d,b)     = lbd(t,d,bd);
+ 315  matched_demand_bus(b,t,d,bd,'bid_power')$db(d,b)     = pbd(t,d,bd);
+ 316  matched_demand_bus(b,t,d,bd,'matched_P')$db(d,b)     = PD.l(t,d,bd);
+ 317  * Positive outflow (= demand unit):
+ 318  matched_outflow_bus(b,t,b_d,ou,'bid_price')$(l(b,b_d) and P.l(t,b,b_d)>0) = NODAL_MARKET.m(t,b_d);
+ 319  matched_outflow_bus(b,t,b_d,ou,'bid_power')$(l(b,b_d) and P.l(t,b,b_d)>0) = P.up(t,b,b_d);
+ 320  matched_outflow_bus(b,t,b_d,ou,'matched_P')$(l(b,b_d) and P.l(t,b,b_d)>0) = P.l(t,b,b_d);
+ 321  * Negative inflow ( = positive outflow = demand unit):
+ 322  matched_outflow_bus(b,t,b_o,ou,'bid_price')$(l(b_o,b) and P.l(t,b_o,b)<0) = NODAL_MARKET.m(t,b_o);
+ 323  matched_outflow_bus(b,t,b_o,ou,'bid_power')$(l(b_o,b) and P.l(t,b_o,b)<0) = P.up(t,b_o,b);
+ 324  matched_outflow_bus(b,t,b_o,ou,'matched_P')$(l(b_o,b) and P.l(t,b_o,b)<0) = -P.l(t,b_o,b);
+ 325   
+ 326  display
+ 327  matched_generation_bus, matched_inflow_bus,
+ 328  matched_demand_bus,     matched_outflow_bus;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_settlement.gms
+ 330  ********************************************************************************
+ 331  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 332  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 333  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 334  ********************************************************************************
+ 335   
+ 336  *
+ 337  * Settlement
+ 338  *
+ 339  SET rsg  Rows for generation settlement  / Revenue, 'Total rev.', Surplus, 'Total sur.'/;
+ 340  SET rsd  Rows for demand settlement      / Payment, 'Total pay.', Surplus, 'Total sur.'/;
+ 341  PARAMETER
+ 342  settlementG(rsg, g, t),
+ 343  settlementD(rsd, d, t),
+ 344  settlementGT(rsg, t),
+ 345  settlementDT(rsd, t);
+ 346  loop(t,
+ 347           loop(g,
+ 348                   settlementG('Revenue',g,t) =
+ 349                           sum(b$gb(g,b),NODAL_MARKET.m(t,b)*PGT.l(t,g));
+ 350                   settlementG('Surplus',g,t) =
+ 351                           settlementG('Revenue',g,t) - sum(bg,lbg(t,g,bg)*PG.l(t,g,bg))
+ 352           );
+ 353           settlementGT('Total rev.',t) = sum(g,settlementG('Revenue',g,t));
+ 354           settlementGT('Total sur.',t) = sum(g,settlementG('Surplus',g,t));
+ 355           loop(d,
+ 356                   settlementD('Payment',d,t) =
+ 357                           sum(b$db(d,b),NODAL_MARKET.m(t,b)*PDT.l(t,d));
+ 358                   settlementD('Surplus',d,t) =
+ 359                           sum(bd,lbd(t,d,bd)*PD.l(t,d,bd))- settlementD('Payment',d,t)
+ 360           );
+ 361           settlementDT('Total pay.',t) = sum(d,settlementD('Payment',d,t));
+ 362           settlementDT('Total sur.',t) = sum(d,settlementD('Surplus',d,t));
+ 363  );
+ 364   
+ 365  display settlementG, settlementD, settlementGT, settlementDT;
+ 366   
+ 367  *********************************************************************
+ 368  * Matlab INPUT FILES FOR MARKET CLEARING PLOTS...
+ 369  *********************************************************************
+ 370  * ... for TCMPA_BF.m
+ 371  *$ include TCMPA2M_T
+ 372  * ... for TCMPA_BFNodal.m
+ 373  SET bout(b) /'bus1'/
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+ 375  ********************************************************************************
+ 376  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 377  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 378  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 379  ********************************************************************************
+ 380   
+ 381  file TCMPA_bus /TCMPA_bus.dat/;
+ 382  file TCMPA_eq  /TCMPA_eq.dat/;
+ 383  file TCMPA_lbg /TCMPA_lbg.dat/;
+ 384  file TCMPA_pbg /TCMPA_pbg.dat/;
+ 385  file TCMPA_PG  /TCMPA_PG.dat/;
+ 386  file TCMPA_lbd /TCMPA_lbd.dat/;
+ 387  file TCMPA_pbd /TCMPA_pbd.dat/;
+ 388  file TCMPA_PD  /TCMPA_PD.dat/;
+ 389   
+ 390  put TCMPA_bus; loop(bout, put bout.tl);
+ 391  put TCMPA_eq;
+ 392  scalar aux;
+ 393  loop(b$bout(b),
+ 394           loop(t,
+ 395                   put market_equilibrium(t,b,'energy');
+ 396                   put market_equilibrium(t,b,'price');
+ 397                   put market_equilibrium(t,b,'nodal SW');
+ 398                   put /
+ 399           );
+ 400  );
+ 401   
+ 402  loop(b$bout(b),
+ 403  put TCMPA_lbg;
+ 404  loop(t,
+ 405           loop(g$gb(g,b), loop(bg, put  lbg(t,g,bg)));
+ 406  *        Positive Inflow => generation unit
+ 407           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put NODAL_MARKET.m(t,b_o));
+ 408  *        Negative Outflow => generation unit
+ 409           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), put NODAL_MARKET.m(t,b_d));
+ 410           put /);
+ 411  put TCMPA_pbg;
+ 412  loop(t,
+ 413           loop(g$gb(g,b), loop(bg, put  pbg(t,g,bg)));
+ 414  *        Positive Inflow => generation unit
+ 415           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.up(t,b_o,b));
+ 416  *        Negative Outflow => generation unit
+ 417           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.lo(t,b,b_d); put aux);
+ 418           put /);
+ 419  put TCMPA_PG;
+ 420  loop(t,
+ 421           loop(g$gb(g,b), loop(bg, put PG.l(t,g,bg)));
+ 422  *        Positive Inflow => generation unit
+ 423           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.l(t,b_o,b));
+ 424  *        Negative Outflow => generation unit
+ 425           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.l(t,b,b_d); put aux);
+ 426           put /);
+ 427  put TCMPA_lbd;
+ 428  loop(t,
+ 429           loop(d$db(d,b), loop(bd, put  lbd(t,d,bd)));
+ 430  *        Negative Inflow => demand unit
+ 431           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), put NODAL_MARKET.m(t,b_o));
+ 432  *        Positive Outflow => demand unit
+ 433           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put NODAL_MARKET.m(t,b_d));
+ 434           put /);
+ 435  put TCMPA_pbd;
+ 436  loop(t,
+ 437           loop(d$db(d,b), loop(bd, put  pbd(t,d,bd)));
+ 438  *        Negative Inflow => demand unit
+ 439           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.lo(t,b_o,b); put aux);
+ 440  *        Positive Outflow => demand unit
+ 441           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.up(t,b,b_d));
+ 442           put /);
+ 443  put TCMPA_PD;
+ 444  loop(t,
+ 445           loop(d$db(d,b), loop(bd, put PD.l(t,d,bd)));
+ 446  *        Negative Inflow => demand unit
+ 447           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.l(t,b_o,b); put aux);
+ 448  *        Positive Outflow => demand unit
+ 449           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.l(t,b,b_d));
+ 450           put /);
+ 451  );
+ 452   
+ 453  *file TCMPA_PGT   /TCMPA_PGT.dat/;
+ 454  *file TCMPA_PGmin /TCMPA_PGmin.dat/;
+ 455  *file TCMPA_PGmax /TCMPA_PGmax.dat/;
+ 456  *file TCMPA_PGRU  /TCMPA_PGRU.dat/;
+ 457  *file TCMPA_PGRD  /TCMPA_PGRD.dat/;
+ 458   
+ 459  *put TCMPA_PGT;
+ 460  *loop(g,
+ 461  *loop(t0, put PGT.l(t0,g)); put/;
+ 462  *loop(t0, put pg_min(g)) ; put/;
+ 463  *loop(t0, put pg_max(g)) ; put/;
+ 464  *loop(t0, put rd(g))     ; put/;
+ 465  *loop(t0, put ru(g))     ; put/;
+ 466  *);
+ 467   
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 3
+OEMO_TCMPA
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA.gms
+     2       34 INCLUDE        1      34  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_pbg.gms
+     3       39 INCLUDE        1      37  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_lbg.gms
+     4       50 INCLUDE        1      46  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_pbd.gms
+     5       55 INCLUDE        1      49  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\t2_lbd.gms
+     6      183 INCLUDE        1     175  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_equilibrium.gms
+     7      281 INCLUDE        1     176  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_equilibrium_bus.gms
+     8      329 INCLUDE        1     177  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_disp_settlement.gms
+     9      374 INCLUDE        1     186  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA2M.gms
+
+
+COMPILATION TIME     =        0.094 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 4
+OEMO_TCMPA
+E x e c u t i o n
+
+
+----     72 SET gb  Generation buses
+
+          bus1
+
+G1         YES
+
+
+----     72 SET db  Demand buses
+
+          bus2
+
+D1         YES
+
+
+----     72 SET refb  Reference bus
+
+bus1
+
+
+----     72 SET l  lines
+
+            bus2
+
+bus1         YES
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 5
+OEMO_TCMPA
+Equation Listing    SOLVE TCMPA Using MIP From line 174
+
+
+---- OF  =E=  Objective function
+
+OF..  SW + PG(t1,G1,b1) + 3*PG(t1,G1,b2) - 5*PD(t1,D1,b1) - 2*PD(t1,D1,b2) =E= 0 ; (LHS = 0)
+     
+
+---- MATCHED_G  =L=  Matched generation to generation block coupling
+
+MATCHED_G(t1,G1,b1)..  PG(t1,G1,b1) =L= 5 ; (LHS = 0)
+     
+MATCHED_G(t1,G1,b2)..  PG(t1,G1,b2) =L= 5 ; (LHS = 0)
+     
+
+---- MATCHED_D  =L=  Matched demand to demand block coupling
+
+MATCHED_D(t1,D1,b1)..  PD(t1,D1,b1) =L= 3 ; (LHS = 0)
+     
+MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 6 ; (LHS = 0)
+     
+
+---- TOT_MATCHED_G  =E=  Total matched generation
+
+TOT_MATCHED_G(t1,G1)..  - PG(t1,G1,b1) - PG(t1,G1,b2) + PGT(t1,G1) =E= 0 ; (LHS = 0)
+     
+
+---- TOT_MATCHED_D  =E=  Total matched demand
+
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+     
+
+---- NODAL_MARKET  =E=  Market equilibrium at bus
+
+NODAL_MARKET(t1,bus1)..  - PGT(t1,G1) + P(t1,bus1,bus2) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus2)..  PDT(t1,D1) - P(t1,bus1,bus2) =E= 0 ; (LHS = 0)
+     
+
+---- LPFE  =E=  Line power flow equations
+
+LPFE(t1,bus1,bus2)..  P(t1,bus1,bus2) - 1000*Th(t1,bus1) + 1000*Th(t1,bus2) =E= 0 ; (LHS = 0)
+     
+
+---- RAMP_D  =G=  Ramp down limit constraints
+
+RAMP_D(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =G= -10 ; (LHS = 0)
+     
+
+---- RAMP_U  =L=  Ramp up limit constraints
+
+RAMP_U(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =L= 10 ; (LHS = 0)
+     
+
+---- PGMIN  =G=  Minimum generation
+
+PGMIN(t1,G1)..  PGT(t1,G1) =G= 0 ; (LHS = 0)
+     
+
+---- PGMAX  =L=  Maximum generation
+
+PGMAX(t1,G1)..  PGT(t1,G1) - 10*U(t1,G1) =L= 0 ; (LHS = 0)
+     
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 6
+OEMO_TCMPA
+Column Listing      SOLVE TCMPA Using MIP From line 174
+
+
+---- SW  Social welfare (objective function)
+
+SW
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       OF
+
+
+---- PG  Matched generation of each block [MW]
+
+PG(t1,G1,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       OF
+        1       MATCHED_G(t1,G1,b1)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        3       OF
+        1       MATCHED_G(t1,G1,b2)
+       -1       TOT_MATCHED_G(t1,G1)
+
+
+---- PGT  Total matched generation [MW]
+
+PGT(t0,G1)
+                (.LO, .L, .UP, .M = 0, 0, 0, 0)
+       -1       RAMP_D(t1,G1)
+       -1       RAMP_U(t1,G1)
+
+PGT(t1,G1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       TOT_MATCHED_G(t1,G1)
+       -1       NODAL_MARKET(t1,bus1)
+        1       RAMP_D(t1,G1)
+        1       RAMP_U(t1,G1)
+        1       PGMIN(t1,G1)
+        1       PGMAX(t1,G1)
+
+
+---- U  on-off state of the unit
+
+U(t1,G1)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+      -10       PGMAX(t1,G1)
+
+
+---- PD  Matched demand of each block [MW]
+
+PD(t1,D1,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -5       OF
+        1       MATCHED_D(t1,D1,b1)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2       OF
+        1       MATCHED_D(t1,D1,b2)
+       -1       TOT_MATCHED_D(t1,D1)
+
+
+---- PDT  Total matched demand [MW]
+
+PDT(t1,D1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       TOT_MATCHED_D(t1,D1)
+        1       NODAL_MARKET(t1,bus2)
+
+
+---- P  Line power [MW]
+
+P(t1,bus1,bus2)
+                (.LO, .L, .UP, .M = -2, 0, 2, 0)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus2)
+        1       LPFE(t1,bus1,bus2)
+
+
+---- Th  Voltage phase
+
+Th(t1,bus1)
+                (.LO, .L, .UP, .M = 0, 0, 0, 0)
+    -1000       LPFE(t1,bus1,bus2)
+
+Th(t1,bus2)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+     1000       LPFE(t1,bus1,bus2)
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 7
+OEMO_TCMPA
+Range Statistics    SOLVE TCMPA Using MIP From line 174
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 3.000E+00, 1.000E+01] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 2.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 1.000E+03]
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 8
+OEMO_TCMPA
+Model Statistics    SOLVE TCMPA Using MIP From line 174
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS           14
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES           12
+NON ZERO ELEMENTS            29     DISCRETE VARIABLES          1
+
+
+GENERATION TIME      =        0.172 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 9
+OEMO_TCMPA
+Solution Report     SOLVE TCMPA Using MIP From line 174
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   TCMPA               OBJECTIVE  SW
+     TYPE    MIP                 DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  174
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE                8.0000
+
+ RESOURCE USAGE, LIMIT          0.078 10000000000.000
+ ITERATION COUNT, LIMIT         0    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- MIP status (101): integer optimal solution.
+--- Cplex Time: 0.05sec (det. 0.01 ticks)
+
+--- Returning a primal only solution to GAMS (marginals all set to NA).
+--- Fixing integer variables and solving final LP...
+
+
+--- Fixed MIP status (1): optimal.
+--- Cplex Time: 0.02sec (det. 0.01 ticks)
+
+
+Proven optimal solution
+MIP Solution:            8.000000    (0 iterations, 0 nodes)
+Final Solve:             8.000000    (0 iterations)
+
+Best possible:           8.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU OF                  .              .              .             1.0000      
+
+  OF  Objective function
+
+---- EQU MATCHED_G  Matched generation to generation block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1        -INF            2.0000         5.0000          .          
+t1.G1.b2        -INF             .             5.0000          .          
+
+---- EQU MATCHED_D  Matched demand to demand block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1        -INF            2.0000         3.0000          .          
+t1.D1.b2        -INF             .             6.0000          .          
+
+---- EQU TOT_MATCHED_G  Total matched generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .              .              .             1.0000      
+
+---- EQU TOT_MATCHED_D  Total matched demand
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .              .              .            -5.0000      
+
+---- EQU NODAL_MARKET  Market equilibrium at bus
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             1.0000      
+t1.bus2          .              .              .             5.0000      
+
+---- EQU LPFE  Line power flow equations
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2          .              .              .             EPS         
+
+---- EQU RAMP_D  Ramp down limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1       -10.0000         2.0000        +INF             .          
+
+---- EQU RAMP_U  Ramp up limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF            2.0000        10.0000          .          
+
+---- EQU PGMIN  Minimum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .             2.0000        +INF             .          
+
+---- EQU PGMAX  Maximum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF           -8.0000          .              .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR SW                -INF            8.0000        +INF             .          
+
+  SW  Social welfare (objective function)
+
+---- VAR PG  Matched generation of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1          .             2.0000        +INF             .          
+t1.G1.b2          .              .            +INF           -2.0000      
+
+---- VAR PGT  Total matched generation [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t0.G1          .              .              .             EPS         
+t1.G1          .             2.0000        +INF             .          
+
+---- VAR U  on-off state of the unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .             1.0000         1.0000         EPS         
+
+---- VAR PD  Matched demand of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1          .             2.0000        +INF             .          
+t1.D1.b2          .              .            +INF           -3.0000      
+
+---- VAR PDT  Total matched demand [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .             2.0000        +INF             .          
+
+---- VAR P  Line power [MW]
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2        -2.0000         2.0000         2.0000         4.0000      
+
+---- VAR Th  Voltage phase
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             EPS         
+t1.bus2        -INF           -0.0020        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 10
+OEMO_TCMPA
+Equation Listing    SOLVE TCMPA Using RMIP From line 176
+
+
+---- OF  =E=  Objective function
+
+OF..  SW + PG(t1,G1,b1) + 3*PG(t1,G1,b2) - 5*PD(t1,D1,b1) - 2*PD(t1,D1,b2) =E= 0 ; (LHS = 0)
+     
+
+---- MATCHED_G  =L=  Matched generation to generation block coupling
+
+MATCHED_G(t1,G1,b1)..  PG(t1,G1,b1) =L= 5 ; (LHS = 2)
+     
+MATCHED_G(t1,G1,b2)..  PG(t1,G1,b2) =L= 5 ; (LHS = 0)
+     
+
+---- MATCHED_D  =L=  Matched demand to demand block coupling
+
+MATCHED_D(t1,D1,b1)..  PD(t1,D1,b1) =L= 3 ; (LHS = 2)
+     
+MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 6 ; (LHS = 0)
+     
+
+---- TOT_MATCHED_G  =E=  Total matched generation
+
+TOT_MATCHED_G(t1,G1)..  - PG(t1,G1,b1) - PG(t1,G1,b2) + PGT(t1,G1) =E= 0 ; (LHS = 0)
+     
+
+---- TOT_MATCHED_D  =E=  Total matched demand
+
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+     
+
+---- NODAL_MARKET  =E=  Market equilibrium at bus
+
+NODAL_MARKET(t1,bus1)..  - PGT(t1,G1) + P(t1,bus1,bus2) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus2)..  PDT(t1,D1) - P(t1,bus1,bus2) =E= 0 ; (LHS = 0)
+     
+
+---- LPFE  =E=  Line power flow equations
+
+LPFE(t1,bus1,bus2)..  P(t1,bus1,bus2) - 1000*Th(t1,bus1) + 1000*Th(t1,bus2) =E= 0 ; (LHS = 0)
+     
+
+---- RAMP_D  =G=  Ramp down limit constraints
+
+RAMP_D(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =G= -10 ; (LHS = 2)
+     
+
+---- RAMP_U  =L=  Ramp up limit constraints
+
+RAMP_U(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =L= 10 ; (LHS = 2)
+     
+
+---- PGMIN  =G=  Minimum generation
+
+PGMIN(t1,G1)..  PGT(t1,G1) =G= 0 ; (LHS = 2)
+     
+
+---- PGMAX  =L=  Maximum generation
+
+PGMAX(t1,G1)..  PGT(t1,G1) - 10*U(t1,G1) =L= 0 ; (LHS = -8)
+     
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 11
+OEMO_TCMPA
+Column Listing      SOLVE TCMPA Using RMIP From line 176
+
+
+---- SW  Social welfare (objective function)
+
+SW
+                (.LO, .L, .UP, .M = -INF, 8, +INF, 0)
+        1       OF
+
+
+---- PG  Matched generation of each block [MW]
+
+PG(t1,G1,b1)
+                (.LO, .L, .UP, .M = 0, 2, +INF, 0)
+        1       OF
+        1       MATCHED_G(t1,G1,b1)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, -2)
+        3       OF
+        1       MATCHED_G(t1,G1,b2)
+       -1       TOT_MATCHED_G(t1,G1)
+
+
+---- PGT  Total matched generation [MW]
+
+PGT(t0,G1)
+                (.LO, .L, .UP, .M = 0, 0, 0, EPS)
+       -1       RAMP_D(t1,G1)
+       -1       RAMP_U(t1,G1)
+
+PGT(t1,G1)
+                (.LO, .L, .UP, .M = 0, 2, +INF, 0)
+        1       TOT_MATCHED_G(t1,G1)
+       -1       NODAL_MARKET(t1,bus1)
+        1       RAMP_D(t1,G1)
+        1       RAMP_U(t1,G1)
+        1       PGMIN(t1,G1)
+        1       PGMAX(t1,G1)
+
+
+---- U  on-off state of the unit
+
+U(t1,G1)
+                (.LO, .L, .UP, .M = 1, 1, 1, EPS)
+      -10       PGMAX(t1,G1)
+
+
+---- PD  Matched demand of each block [MW]
+
+PD(t1,D1,b1)
+                (.LO, .L, .UP, .M = 0, 2, +INF, 0)
+       -5       OF
+        1       MATCHED_D(t1,D1,b1)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, -3)
+       -2       OF
+        1       MATCHED_D(t1,D1,b2)
+       -1       TOT_MATCHED_D(t1,D1)
+
+
+---- PDT  Total matched demand [MW]
+
+PDT(t1,D1)
+                (.LO, .L, .UP, .M = 0, 2, +INF, 0)
+        1       TOT_MATCHED_D(t1,D1)
+        1       NODAL_MARKET(t1,bus2)
+
+
+---- P  Line power [MW]
+
+P(t1,bus1,bus2)
+                (.LO, .L, .UP, .M = -2, 2, 2, 4)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus2)
+        1       LPFE(t1,bus1,bus2)
+
+
+---- Th  Voltage phase
+
+Th(t1,bus1)
+                (.LO, .L, .UP, .M = 0, 0, 0, EPS)
+    -1000       LPFE(t1,bus1,bus2)
+
+Th(t1,bus2)
+                (.LO, .L, .UP, .M = -INF, -0.002, +INF, 0)
+     1000       LPFE(t1,bus1,bus2)
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 12
+OEMO_TCMPA
+Range Statistics    SOLVE TCMPA Using RMIP From line 176
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 3.000E+00, 1.000E+01] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 2.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 1.000E+03]
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 13
+OEMO_TCMPA
+Model Statistics    SOLVE TCMPA Using RMIP From line 176
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS           14
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES           12
+NON ZERO ELEMENTS            29     DISCRETE VARIABLES          1
+
+
+GENERATION TIME      =        0.016 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 14
+OEMO_TCMPA
+Solution Report     SOLVE TCMPA Using RMIP From line 176
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   TCMPA               OBJECTIVE  SW
+     TYPE    RMIP                DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  176
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE                8.0000
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         0    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.02 ticks)
+
+
+Optimal solution found
+Objective:            8.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU OF                  .              .              .             1.0000      
+
+  OF  Objective function
+
+---- EQU MATCHED_G  Matched generation to generation block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1        -INF            2.0000         5.0000          .          
+t1.G1.b2        -INF             .             5.0000          .          
+
+---- EQU MATCHED_D  Matched demand to demand block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1        -INF            2.0000         3.0000          .          
+t1.D1.b2        -INF             .             6.0000          .          
+
+---- EQU TOT_MATCHED_G  Total matched generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .              .              .             1.0000      
+
+---- EQU TOT_MATCHED_D  Total matched demand
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .              .              .            -5.0000      
+
+---- EQU NODAL_MARKET  Market equilibrium at bus
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             1.0000      
+t1.bus2          .              .              .             5.0000      
+
+---- EQU LPFE  Line power flow equations
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2          .              .              .             EPS         
+
+---- EQU RAMP_D  Ramp down limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1       -10.0000         2.0000        +INF             .          
+
+---- EQU RAMP_U  Ramp up limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF            2.0000        10.0000          .          
+
+---- EQU PGMIN  Minimum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .             2.0000        +INF             .          
+
+---- EQU PGMAX  Maximum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF           -8.0000          .              .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR SW                -INF            8.0000        +INF             .          
+
+  SW  Social welfare (objective function)
+
+---- VAR PG  Matched generation of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1          .             2.0000        +INF             .          
+t1.G1.b2          .              .            +INF           -2.0000      
+
+---- VAR PGT  Total matched generation [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t0.G1          .              .              .             EPS         
+t1.G1          .             2.0000        +INF             .          
+
+---- VAR U  on-off state of the unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1         1.0000         1.0000         1.0000         EPS         
+
+---- VAR PD  Matched demand of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1          .             2.0000        +INF             .          
+t1.D1.b2          .              .            +INF           -3.0000      
+
+---- VAR PDT  Total matched demand [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .             2.0000        +INF             .          
+
+---- VAR P  Line power [MW]
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2        -2.0000         2.0000         2.0000         4.0000      
+
+---- VAR Th  Voltage phase
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             EPS         
+t1.bus2        -INF           -0.0020        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 19:31:32 Page 15
+OEMO_TCMPA
+E x e c u t i o n
+
+
+----    182 EQUATION NODAL_MARKET.M  Market equilibrium at bus
+
+          bus1        bus2
+
+t1       1.000       5.000
+
+
+----    276 PARAMETER matched_generation  
+
+INDEX 1 = t1
+
+        bid_price   bid_power   matched_P
+
+G1.b1       1.000       5.000       2.000
+G1.b2       3.000       5.000
+
+
+----    276 VARIABLE PGT.L  Total matched generation [MW]
+
+            G1
+
+t1       2.000
+
+
+----    276 PARAMETER matched_demand  
+
+INDEX 1 = t1
+
+        bid_price   bid_power   matched_P
+
+D1.b1       5.000       3.000       2.000
+D1.b2       2.000       6.000
+
+
+----    276 VARIABLE PDT.L  Total matched demand [MW]
+
+            D1
+
+t1       2.000
+
+
+----    276 PARAMETER market_equilibrium  
+
+              price      energy        gen.        dem.      inflow     outflow  surp. inf.  surp. out.    nodal SW
+
+t1.bus1       1.000       2.000       2.000                               2.000                   8.000       8.000
+t1.bus2       5.000       2.000                   2.000       2.000                   8.000                   8.000
+
+
+----    276 PARAMETER market_equilibrium_T  
+
+        energy        gen.        dem.      inflow     outflow
+
+t1       4.000       2.000       2.000       2.000       2.000
+
+
+----    276 PARAMETER market_merchandizing  
+
+INDEX 1 = t1
+
+               energy  price sell   price buy  mer. surp.
+
+bus1.bus2       2.000       5.000       1.000       8.000
+
+
+----    327 PARAMETER matched_generation_bus  
+
+INDEX 1 = bus1  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+G1.b1       1.000       5.000       2.000
+G1.b2       3.000       5.000
+
+
+----    327 PARAMETER matched_inflow_bus  
+
+INDEX 1 = bus2  INDEX 2 = t1
+
+          bid_price   bid_power   matched_P
+
+bus1.in       1.000       2.000       2.000
+
+
+----    327 PARAMETER matched_demand_bus  
+
+INDEX 1 = bus2  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+D1.b1       5.000       3.000       2.000
+D1.b2       2.000       6.000
+
+
+----    327 PARAMETER matched_outflow_bus  
+
+INDEX 1 = bus1  INDEX 2 = t1
+
+           bid_price   bid_power   matched_P
+
+bus2.out       5.000       2.000       2.000
+
+
+----    365 PARAMETER settlementG  
+
+                    t1
+
+Revenue.G1       2.000
+
+
+----    365 PARAMETER settlementD  
+
+                    t1
+
+Payment.D1      10.000
+
+
+----    365 PARAMETER settlementGT  
+
+                    t1
+
+Total rev.       2.000
+
+
+----    365 PARAMETER settlementDT  
+
+                    t1
+
+Total pay.      10.000
+
+
+**** REPORT FILE SUMMARY
+
+TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_bus.dat
+TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_eq.dat
+TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_lbg.dat
+TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_pbg.dat
+TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_PG.dat
+TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_lbd.dat
+TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_pbd.dat
+TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA_PD.dat
+
+
+EXECUTION TIME       =        0.656 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA.gms
+Output     C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\exercise7\TCMPA\TCMPA.lst

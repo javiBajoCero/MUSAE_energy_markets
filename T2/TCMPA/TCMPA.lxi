@@ -1,0 +1,110 @@
+B 3 C o m p i l a t i o n
+B 559 Include File Summary
+B 578 E x e c u t i o n
+I 578 gb
+I 590 db
+I 599 refb
+I 604 l
+B 616 Equation Listing    SOLVE TCMPA Using MIP From line 254
+D 619 OF
+D 624 MATCHED_G
+D 635 MATCHED_D
+D 646 TOT_MATCHED_G
+D 657 TOT_MATCHED_D
+D 668 NODAL_MARKET
+D 679 LPFE
+D 690 RAMP_D
+D 701 RAMP_U
+D 712 PGMIN
+D 723 PGMAX
+B 735 Column Listing      SOLVE TCMPA Using MIP From line 254
+E 738 SW
+E 745 PG
+E 767 PGT
+E 786 U
+E 805 PD
+E 825 PDT
+E 844 P
+E 866 Th
+B 888 Range Statistics    SOLVE TCMPA Using MIP From line 254
+B 899 Model Statistics    SOLVE TCMPA Using MIP From line 254
+B 912 Solution Report     SOLVE TCMPA Using MIP From line 254
+F 959 OF
+F 963 MATCHED_G
+F 1018 MATCHED_D
+F 1083 TOT_MATCHED_G
+F 1113 TOT_MATCHED_D
+F 1133 NODAL_MARKET
+F 1158 LPFE
+F 1188 RAMP_D
+F 1218 RAMP_U
+F 1248 PGMIN
+F 1278 PGMAX
+G 1310 SW
+G 1314 PG
+G 1369 PGT
+G 1404 U
+G 1434 PD
+G 1499 PDT
+G 1519 P
+G 1549 Th
+B 1580 Equation Listing    SOLVE TCMPA Using RMIP From line 256
+D 1583 OF
+D 1588 MATCHED_G
+D 1599 MATCHED_D
+D 1610 TOT_MATCHED_G
+D 1621 TOT_MATCHED_D
+D 1632 NODAL_MARKET
+D 1643 LPFE
+D 1654 RAMP_D
+D 1665 RAMP_U
+D 1676 PGMIN
+D 1687 PGMAX
+B 1699 Column Listing      SOLVE TCMPA Using RMIP From line 256
+E 1702 SW
+E 1709 PG
+E 1731 PGT
+E 1750 U
+E 1769 PD
+E 1789 PDT
+E 1808 P
+E 1830 Th
+B 1852 Range Statistics    SOLVE TCMPA Using RMIP From line 256
+B 1863 Model Statistics    SOLVE TCMPA Using RMIP From line 256
+B 1876 Solution Report     SOLVE TCMPA Using RMIP From line 256
+F 1911 OF
+F 1915 MATCHED_G
+F 1970 MATCHED_D
+F 2035 TOT_MATCHED_G
+F 2065 TOT_MATCHED_D
+F 2085 NODAL_MARKET
+F 2110 LPFE
+F 2140 RAMP_D
+F 2170 RAMP_U
+F 2200 PGMIN
+F 2230 PGMAX
+G 2262 SW
+G 2266 PG
+G 2321 PGT
+G 2356 U
+G 2386 PD
+G 2451 PDT
+G 2471 P
+G 2501 Th
+B 2532 E x e c u t i o n
+I 2532 NODAL_MARKET
+I 2544 matched_generation
+I 2621 PGT
+I 2633 matched_demand
+I 2696 PDT
+I 2707 market_equilibrium
+I 2733 market_equilibrium_T
+I 2744 market_merchandizing
+I 2797 matched_generation_bus
+I 2924 matched_inflow_bus
+I 3002 matched_demand_bus
+I 3115 matched_outflow_bus
+I 3218 settlementG
+I 3232 settlementD
+I 3244 settlementGT
+I 3252 settlementDT
