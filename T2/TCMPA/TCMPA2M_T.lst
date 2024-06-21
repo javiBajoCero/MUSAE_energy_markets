@@ -1,0 +1,88 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:13:25 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  ********************************************************************************
+   2  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+   3  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+   4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+   5  *********************************************************************************
+   6  * File for the Matlab function TCMPA_BF.m to represent the aggregated
+   7  * bid functions and the matched energy for each time period.
+   8  *
+   9  file MPA_eq  /TCMPA_eq_T.dat/; put MPA_eq;
+  10  scalar aux;
+  11  loop(t,
+****       $120
+**** 120  Unknown identifier entered as set
+  12  aux = sum(d, sum(bd, lbd(t,d,bd)*PD.l(t,d,bd))) - sum(g, sum(bg, lbg(t,g,bg)*PG.l(t,g,bg)));
+****            $120    $120 $140         $140              $120    $120 $140         $140
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+  13  put sum(g, sum(bg, PG.l(t,g,bg)));
+  14  put sum(b, market_equilibrium(t,b,'price'));
+****          $120                $140        $116
+**** 116  Label is unknown
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+  15  put aux;
+  16  put /);
+  17   
+  18  file MPA_lbg /TCMPA_lbg_T.dat/; put MPA_lbg; loop(t, loop(g, loop(bg, put lbg(t,g,bg)));  put /);
+  19  file MPA_pbg /TCMPA_pbg_T.dat/; put MPA_pbg; loop(t, loop(g, loop(bg, put pbg(t,g,bg)));  put /);
+****                                                                              $140
+**** 140  Unknown symbol
+  20  file MPA_PG  /TCMPA_PG_T.dat/;  put MPA_PG;  loop(t, loop(g, loop(bg, put PG.l(t,g,bg))); put /);
+  21  file MPA_lbd /TCMPA_lbd_T.dat/; put MPA_lbd; loop(t, loop(d, loop(bd, put lbd(t,d,bd)));  put /);
+  22  file MPA_pbd /TCMPA_pbd_T.dat/; put MPA_pbd; loop(t, loop(d, loop(bd, put pbd(t,d,bd)));  put /);
+****                                                                              $140
+**** 140  Unknown symbol
+  23  file MPA_PD  /TCMPA_PD_T.dat/;  put MPA_PD;  loop(t, loop(d, loop(bd, put PD.l(t,d,bd))); put /);
+  24   
+  25  file MPA_PGT  /TCMPA_PGT.dat/;
+  26  *file MPA_PGmin /TCMPA_PGmin.dat/;
+  27  *file MPA_PGmax /TCMPA_PGmax.dat/;
+  28  *file MPA_PGRU /TCMPA_PGRU.dat/;
+  29  *file MPA_PGRD /TCMPA_PGRD.dat/;
+  30   
+  31  put MPA_PGT;
+  32  loop(g,
+  33  loop(t0, put PGT.l(t0,g)); put/;
+****        $120,340   $140
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+**** 340  A label/element with the same name exist. You may have forgotten
+****         to quote a label/element reference. For example,
+****         set i / a,b,c /; parameter x(i); x('a') = 10;
+  34  loop(t0, put pg_min(g)) ; put/;
+****                    $140
+**** 140  Unknown symbol
+  35  loop(t0, put pg_max(g)) ; put/;
+****                    $140
+**** 140  Unknown symbol
+  36  loop(t0, put rd(g))     ; put/;
+****                $140
+**** 140  Unknown symbol
+  37  loop(t0, put ru(g))     ; put/;
+****                $140
+**** 140  Unknown symbol
+  38  );
+
+**** 21 ERROR(S)   0 WARNING(S)
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M_T.gms
+Output     C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M_T.lst
+
+**** USER ERROR(S) ENCOUNTERED

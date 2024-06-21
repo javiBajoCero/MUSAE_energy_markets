@@ -26,10 +26,10 @@ bg Blocks           /b1*b2/;
 
 PARAMETERS
 pg_max(g) Max. active power generation [MW] /G1 300, G2 275, G3 100, G4 50, G5 200/
-pg_min(g) Min. active power generation [MW] /G1 30, G2  28, G3 10, G4 5, G5 20/
-ru(g)     Ramp-up limit [MW:h]              /G1 100, G2 30, G3 25, G4 10, G5 50/
-rd(g)     Ramp-down limit [MW]              /G1 100, G2 30, G3 20, G4 10, G5 50/
-p0(g)     Initial power output [MW]         /G1 150, G2 28, G3 50, G4 25, G5 100/;
+pg_min(g) Min. active power generation [MW] /G1 30,  G2 28,  G3 10, G4 5, G5 20/
+ru(g)     Ramp-up limit [MW:h]              /G1 100, G2 30,  G3 25, G4 10, G5 50/
+rd(g)     Ramp-down limit [MW]              /G1 100, G2 30,  G3 20, G4 10, G5 50/
+p0(g)     Initial power output [MW]         /G1 150, G2 28,  G3 50, G4 25, G5 100/;
 
 TABLE pbg(t,g,bg) Power [MW] of the generation bid function
 $ include t2_pbg
@@ -188,8 +188,8 @@ $ include TCMPA_disp_settlement
 * Matlab INPUT FILES FOR MARKET CLEARING PLOTS...
 *********************************************************************
 * ... for TCMPA_BF.m
-*$ include TCMPA2M_T
+$ include TCMPA2M_T
 * ... for TCMPA_BFNodal.m
-SET bout(b) /'bus1','bus2','bus3','bus4'/
+SET bout(b) /'bus1'/
 $ include TCMPA2M
 

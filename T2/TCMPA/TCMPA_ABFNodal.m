@@ -8,7 +8,7 @@
 
 clear;
 
-ncol = 4;
+ncol = 2;
 
 lbgAcc = importdata('TCMPA_lbg.dat');
 pbgAcc = importdata('TCMPA_pbg.dat');

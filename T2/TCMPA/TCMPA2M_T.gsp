@@ -1,17 +1,17 @@
 {
-    "file": "TCMPA2M.gms",
-    "name": "TCMPA2M",
+    "file": "TCMPA2M_T.gms",
+    "name": "TCMPA2M_T",
     "nodes": [
         {
             "codecMib": 106,
-            "file": "TCMPA2M.gms",
-            "name": "TCMPA2M.gms",
+            "file": "TCMPA2M_T.gms",
+            "name": "TCMPA2M_T.gms",
             "type": "gms"
         },
         {
             "codecMib": 106,
-            "file": "TCMPA2M.lst",
-            "name": "TCMPA2M.lst",
+            "file": "TCMPA2M_T.lst",
+            "name": "TCMPA2M_T.lst",
             "type": "lst"
         }
     ],

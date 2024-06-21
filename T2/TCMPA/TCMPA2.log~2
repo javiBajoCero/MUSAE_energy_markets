@@ -1,0 +1,86 @@
+
+--- Job TCMPA.gms Start 06/21/24 20:08:55 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\46\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms"
+    PageSize 0
+    ScrDir "C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\225a\"
+    SysDir C:\GAMS\46\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+          CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+          C:\Users\PC\Documents\GAMS\gamslice.txt
+          F.-Javier Heredia, f.javier.heredia@upc.edu                      
+          Other time limited license
+          The evaluation period of the license will expire on Apr 11, 2025
+Processor information: 1 socket(s), 4 core(s), and 8 thread(s) available
+GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- TCMPA.gms(35) 3 Mb
+--- . t2_pbg.gms(26) 3 Mb
+--- TCMPA.gms(38) 3 Mb
+--- . t2_lbg.gms(23) 3 Mb 1 Error
+*** Error 176 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lbg.gms
+    A row with the same name has been defined before in this table.
+--- . t2_lbg.gms(27) 3 Mb
+--- TCMPA.gms(50) 3 Mb
+--- . t2_pbd.gms(16) 3 Mb
+--- TCMPA.gms(53) 3 Mb
+--- . t2_lbd.gms(16) 3 Mb
+--- TCMPA.gms(174) 3 Mb 2 Errors
+*** Error 257 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
+    Solve statement not checked because of previous errors
+--- TCMPA.gms(175) 3 Mb 3 Errors
+*** Error 141 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- TCMPA.gms(176) 3 Mb 4 Errors
+*** Error 257 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
+    Solve statement not checked because of previous errors
+--- TCMPA.gms(182) 3 Mb 5 Errors
+*** Error 141 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- TCMPA.gms(183) 3 Mb
+--- . TCMPA_disp_equilibrium.gms(23) 3 Mb 6 Errors
+*** Error 141 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- . TCMPA_disp_equilibrium.gms(24) 3 Mb 7 Errors
+*** Error 141 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- . TCMPA_disp_equilibrium.gms(47) 3 Mb 8 Errors
+*** Error 141 in C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- . TCMPA_disp_equilibrium.gms(97) 3 Mb
+--- TCMPA.gms(184) 3 Mb
+--- . TCMPA_disp_equilibrium_bus.gms(47) 3 Mb
+--- TCMPA.gms(185) 3 Mb
+--- . TCMPA_disp_settlement.gms(36) 3 Mb
+--- TCMPA.gms(194) 3 Mb
+--- . TCMPA2M.gms(92) 3 Mb
+--- TCMPA.gms(195) 3 Mb 8 Errors
+*** Status: Compilation error(s)
+--- Job TCMPA.gms Stop 06/21/24 20:08:55 elapsed 0:00:00.015
