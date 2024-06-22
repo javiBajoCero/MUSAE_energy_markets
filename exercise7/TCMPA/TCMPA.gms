@@ -182,6 +182,6 @@ $ include TCMPA_disp_settlement
 * ... for TCMPA_BF.m
 *$ include TCMPA2M_T
 * ... for TCMPA_BFNodal.m
-SET bout(b) /'bus1'/
+SET bout(b) /'bus2'/
 $ include TCMPA2M
 

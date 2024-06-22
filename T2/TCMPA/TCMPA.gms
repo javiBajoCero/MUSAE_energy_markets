@@ -44,7 +44,7 @@ $ include t2_lbg
 
 SETS
 d  Demand units / D1*D3/
-bd Blocks       / b1*b4 /;
+bd Blocks       / b1*b3 /;
 
 TABLE pbd(t,d,bd) Power [MW] of the demand bid function
 $ include t2_pbd
@@ -190,6 +190,6 @@ $ include TCMPA_disp_settlement
 * ... for TCMPA_BF.m
 $ include TCMPA2M_T
 * ... for TCMPA_BFNodal.m
-SET bout(b) /'bus1'/
+SET bout(b) /'bus4'/
 $ include TCMPA2M
 

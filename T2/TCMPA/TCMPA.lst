@@ -1,4 +1,4 @@
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 1
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -9,7 +9,7 @@ C o m p i l a t i o n
    4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
    5  ********************************************************************************
    6   
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 2
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 2
 OEMO_TCMPA
 C o m p i l a t i o n
 
@@ -41,7 +41,7 @@ C o m p i l a t i o n
   32  p0(g)     Initial power output [MW]         /G1 150, G2 28,  G3 50, G4 25, G5 100/;
   33   
   34  TABLE pbg(t,g,bg) Power [MW] of the generation bid function
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pbg.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_pbg.gms
   36         b1  b2
   37  t1.G1  100 200
   38  t1.G2  50  25
@@ -70,7 +70,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pb
   61  t5.G5  100 0;
   62   
   63  TABLE lbg(t,g,bg) Prices [eur:MWh] of the generation bid function
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lbg.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_lbg.gms
   65        b1   b2
   66  t1.G1 10   30
   67  t1.G2 40   65
@@ -106,10 +106,10 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lb
   97   
   98  SETS
   99  d  Demand units / D1*D3/
- 100  bd Blocks       / b1*b4 /;
+ 100  bd Blocks       / b1*b3 /;
  101   
  102  TABLE pbd(t,d,bd) Power [MW] of the demand bid function
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pbd.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_pbd.gms
  104        b1  b2  b3
  105  t1.D1  1   0   0
  106  t1.D2 100 100 40
@@ -128,7 +128,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pb
  119  t5.D3 112 70  42;
  120   
  121  TABLE lbd(t,d,bd) Prices [�:MWh] of the generation bid function
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lbd.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_lbd.gms
  123        b1  b2  b3
  124  t1.D1 100  0   0
  125  t1.D2 100 80  75
@@ -274,7 +274,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lb
  265  *********************************************************************
  266   
  267  display NODAL_MARKET.m;
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_equilibrium.gms
  269  ********************************************************************************
  270  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
  271  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
@@ -372,7 +372,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA
  363  market_equilibrium,
  364  market_equilibrium_T,
  365  market_merchandizing;
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium_bus.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_equilibrium_bus.gms
  367  ********************************************************************************
  368  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
  369  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
@@ -420,7 +420,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA
  411  display
  412  matched_generation_bus, matched_inflow_bus,
  413  matched_demand_bus,     matched_outflow_bus;
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_settlement.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_settlement.gms
  415  ********************************************************************************
  416  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
  417  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
@@ -462,7 +462,7 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA
  453  * Matlab INPUT FILES FOR MARKET CLEARING PLOTS...
  454  *********************************************************************
  455  * ... for TCMPA_BF.m
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M_T.gms
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA2M_T.gms
  457  ********************************************************************************
  458  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
  459  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
@@ -502,8 +502,8 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA
  493  loop(t0, put ru(g))     ; put/;
  494  );
  495  * ... for TCMPA_BFNodal.m
- 496  SET bout(b) /'bus1'/
-INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M.gms
+ 496  SET bout(b) /'bus4'/
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA2M.gms
  498  ********************************************************************************
  499  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
  500  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
@@ -597,27 +597,27 @@ INCLUDE    C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA
  588  *loop(t0, put ru(g))     ; put/;
  589  *);
  590   
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 3
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 3
 OEMO_TCMPA
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
-     2       35 INCLUDE        1      35  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pbg.gms
-     3       64 INCLUDE        1      38  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lbg.gms
-     4      103 INCLUDE        1      50  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_pbd.gms
-     5      122 INCLUDE        1      53  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\t2_lbd.gms
-     6      268 INCLUDE        1     183  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium.gms
-     7      366 INCLUDE        1     184  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_equilibrium_bus.gms
-     8      414 INCLUDE        1     185  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_disp_settlement.gms
-     9      456 INCLUDE        1     191  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M_T.gms
-    10      497 INCLUDE        1     194  .C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M.gms
+     1        1 INPUT          0       0  C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA.gms
+     2       35 INCLUDE        1      35  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_pbg.gms
+     3       64 INCLUDE        1      38  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_lbg.gms
+     4      103 INCLUDE        1      50  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_pbd.gms
+     5      122 INCLUDE        1      53  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\t2_lbd.gms
+     6      268 INCLUDE        1     183  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_equilibrium.gms
+     7      366 INCLUDE        1     184  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_equilibrium_bus.gms
+     8      414 INCLUDE        1     185  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_disp_settlement.gms
+     9      456 INCLUDE        1     191  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA2M_T.gms
+    10      497 INCLUDE        1     194  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA2M.gms
 
 
-COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 4
+COMPILATION TIME     =        0.047 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 4
 OEMO_TCMPA
 E x e c u t i o n
 
@@ -655,7 +655,7 @@ bus1         YES         YES
 bus2                     YES         YES
 bus3                                 YES
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 5
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 5
 OEMO_TCMPA
 Equation Listing    SOLVE TCMPA Using MIP From line 259
 
@@ -684,7 +684,7 @@ MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 0 ; (LHS = 0)
      
 MATCHED_D(t1,D1,b3)..  PD(t1,D1,b3) =L= 0 ; (LHS = 0)
      
-REMAINING 57 ENTRIES SKIPPED
+REMAINING 42 ENTRIES SKIPPED
 
 
 ---- TOT_MATCHED_G  =E=  Total matched generation
@@ -700,11 +700,11 @@ REMAINING 22 ENTRIES SKIPPED
 
 ---- TOT_MATCHED_D  =E=  Total matched demand
 
-TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) - PD(t1,D1,b4) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) + PDT(t1,D1) =E= 0 ; (LHS = 0)
      
-TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) - PD(t1,D2,b4) + PDT(t1,D2) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) + PDT(t1,D2) =E= 0 ; (LHS = 0)
      
-TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) - PD(t1,D3,b4) + PDT(t1,D3) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) + PDT(t1,D3) =E= 0 ; (LHS = 0)
      
 REMAINING 12 ENTRIES SKIPPED
 
@@ -774,7 +774,7 @@ PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = 0)
      
 REMAINING 22 ENTRIES SKIPPED
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 6
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 6
 OEMO_TCMPA
 Column Listing      SOLVE TCMPA Using MIP From line 259
 
@@ -864,7 +864,7 @@ PD(t1,D1,b3)
         1       MATCHED_D(t1,D1,b3)
        -1       TOT_MATCHED_D(t1,D1)
 
-REMAINING 57 ENTRIES SKIPPED
+REMAINING 42 ENTRIES SKIPPED
 
 ---- PDT  Total matched demand [MW]
 
@@ -927,7 +927,7 @@ Th(t1,bus3)
      -833.3333  LPFE(t1,bus3,bus4)
 
 REMAINING 17 ENTRIES SKIPPED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 7
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 7
 OEMO_TCMPA
 Range Statistics    SOLVE TCMPA Using MIP From line 259
 
@@ -938,20 +938,20 @@ RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
 Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
 Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 8
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 8
 OEMO_TCMPA
 Model Statistics    SOLVE TCMPA Using MIP From line 259
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          296
-BLOCKS OF VARIABLES           8     SINGLE VARIABLES          226
-NON ZERO ELEMENTS           711     DISCRETE VARIABLES         25
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          281
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          211
+NON ZERO ELEMENTS           681     DISCRETE VARIABLES         25
 
 
-GENERATION TIME      =        0.000 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 9
+GENERATION TIME      =        0.015 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 9
 OEMO_TCMPA
 Solution Report     SOLVE TCMPA Using MIP From line 259
 
@@ -966,7 +966,7 @@ Solution Report     SOLVE TCMPA Using MIP From line 259
 **** MODEL STATUS      1 Optimal
 **** OBJECTIVE VALUE           157638.7926
 
- RESOURCE USAGE, LIMIT          0.031 10000000000.000
+ RESOURCE USAGE, LIMIT          0.515 10000000000.000
  ITERATION COUNT, LIMIT        33    2147483647
 *** This solver runs with a community license.
 --- GMO setup time: 0.00s
@@ -979,14 +979,14 @@ Solution Report     SOLVE TCMPA Using MIP From line 259
 
 
 --- MIP status (101): integer optimal solution.
---- Cplex Time: 0.02sec (det. 1.91 ticks)
+--- Cplex Time: 0.50sec (det. 1.89 ticks)
 
 --- Returning a primal only solution to GAMS (marginals all set to NA).
 --- Fixing integer variables and solving final LP...
 
 
 --- Fixed MIP status (1): optimal.
---- Cplex Time: 0.01sec (det. 0.49 ticks)
+--- Cplex Time: 0.02sec (det. 0.48 ticks)
 
 
 Proven optimal solution
@@ -1066,63 +1066,48 @@ t5.G5.b2        -INF             .              .            38.6228
 t1.D1.b1        -INF            1.0000         1.0000        65.0000      
 t1.D1.b2        -INF             .              .              .          
 t1.D1.b3        -INF             .              .              .          
-t1.D1.b4        -INF             .              .              .          
 t1.D2.b1        -INF          100.0000       100.0000        65.0000      
 t1.D2.b2        -INF          100.0000       100.0000        45.0000      
 t1.D2.b3        -INF           40.0000        40.0000        40.0000      
-t1.D2.b4        -INF             .              .              .          
 t1.D3.b1        -INF           80.0000        80.0000        65.0000      
 t1.D3.b2        -INF           50.0000        50.0000        30.0000      
 t1.D3.b3        -INF           24.0000        30.0000          .          
-t1.D3.b4        -INF             .              .              .          
 t2.D1.b1        -INF            1.0000         1.0000        39.0000      
 t2.D1.b2        -INF             .              .              .          
 t2.D1.b3        -INF             .              .              .          
-t2.D1.b4        -INF             .              .              .          
 t2.D2.b1        -INF           80.0000        80.0000        39.0000      
 t2.D2.b2        -INF           80.0000        80.0000        27.0000      
 t2.D2.b3        -INF           32.0000        32.0000        24.0000      
-t2.D2.b4        -INF             .              .              .          
 t2.D3.b1        -INF           64.0000        64.0000        39.0000      
 t2.D3.b2        -INF           40.0000        40.0000        18.0000      
 t2.D3.b3        -INF            8.0000        24.0000          .          
-t2.D3.b4        -INF             .              .              .          
 t3.D1.b1        -INF            2.0000         2.0000        50.4000      
 t3.D1.b2        -INF             .              .              .          
 t3.D1.b3        -INF             .              .              .          
-t3.D1.b4        -INF             .              .              .          
 t3.D2.b1        -INF          170.0000       170.0000        30.0000      
 t3.D2.b2        -INF          170.0000       170.0000         6.0000      
 t3.D2.b3        -INF            8.6500        68.0000          .          
-t3.D2.b4        -INF             .              .              .          
 t3.D3.b1        -INF          136.0000       136.0000        42.0000      
 t3.D3.b2        -INF            3.3500        85.0000          .          
 t3.D3.b3        -INF             .            51.0000          .          
-t3.D3.b4        -INF             .              .              .          
 t4.D1.b1        -INF            2.0000         2.0000       110.0000      
 t4.D1.b2        -INF             .              .              .          
 t4.D1.b3        -INF             .              .              .          
-t4.D1.b4        -INF             .              .              .          
 t4.D2.b1        -INF          130.0000       130.0000        79.7047      
 t4.D2.b2        -INF          130.0000       130.0000        51.7047      
 t4.D2.b3        -INF           52.0000        52.0000        44.7047      
-t4.D2.b4        -INF             .              .              .          
 t4.D3.b1        -INF          104.0000       104.0000        49.8571      
 t4.D3.b2        -INF           65.0000        65.0000         0.8571      
 t4.D3.b3        -INF             .            39.0000          .          
-t4.D3.b4        -INF             .              .              .          
 t5.D1.b1        -INF            2.0000         2.0000       100.0000      
 t5.D1.b2        -INF             .              .              .          
 t5.D1.b3        -INF             .              .              .          
-t5.D1.b4        -INF             .              .              .          
 t5.D2.b1        -INF          140.0000       140.0000        72.2953      
 t5.D2.b2        -INF          140.0000       140.0000        46.2953      
 t5.D2.b3        -INF           56.0000        56.0000        40.2953      
-t5.D2.b4        -INF             .              .              .          
 t5.D3.b1        -INF          112.0000       112.0000        45.0000      
 t5.D3.b2        -INF           34.8362        70.0000          .          
 t5.D3.b3        -INF             .            42.0000          .          
-t5.D3.b4        -INF             .              .              .          
 
 ---- EQU TOT_MATCHED_G  Total matched generation
 
@@ -1482,63 +1467,48 @@ t5.G5          .             1.0000         1.0000         EPS
 t1.D1.b1          .             1.0000        +INF             .          
 t1.D1.b2          .              .            +INF          -35.0000      
 t1.D1.b3          .              .            +INF          -35.0000      
-t1.D1.b4          .              .            +INF          -35.0000      
 t1.D2.b1          .           100.0000        +INF             .          
 t1.D2.b2          .           100.0000        +INF             .          
 t1.D2.b3          .            40.0000        +INF             .          
-t1.D2.b4          .              .            +INF          -35.0000      
 t1.D3.b1          .            80.0000        +INF             .          
 t1.D3.b2          .            50.0000        +INF             .          
 t1.D3.b3          .            24.0000        +INF             .          
-t1.D3.b4          .              .            +INF          -35.0000      
 t2.D1.b1          .             1.0000        +INF             .          
 t2.D1.b2          .              .            +INF          -21.0000      
 t2.D1.b3          .              .            +INF          -21.0000      
-t2.D1.b4          .              .            +INF          -21.0000      
 t2.D2.b1          .            80.0000        +INF             .          
 t2.D2.b2          .            80.0000        +INF             .          
 t2.D2.b3          .            32.0000        +INF             .          
-t2.D2.b4          .              .            +INF          -21.0000      
 t2.D3.b1          .            64.0000        +INF             .          
 t2.D3.b2          .            40.0000        +INF             .          
 t2.D3.b3          .             8.0000        +INF             .          
-t2.D3.b4          .              .            +INF          -21.0000      
 t3.D1.b1          .             2.0000        +INF             .          
 t3.D1.b2          .              .            +INF          -69.6000      
 t3.D1.b3          .              .            +INF          -69.6000      
-t3.D1.b4          .              .            +INF          -69.6000      
 t3.D2.b1          .           170.0000        +INF             .          
 t3.D2.b2          .           170.0000        +INF             .          
 t3.D2.b3          .             8.6500        +INF             .          
-t3.D2.b4          .              .            +INF          -90.0000      
 t3.D3.b1          .           136.0000        +INF             .          
 t3.D3.b2          .             3.3500        +INF             .          
 t3.D3.b3          .              .            +INF          -36.0000      
-t3.D3.b4          .              .            +INF          -78.0000      
 t4.D1.b1          .             2.0000        +INF             .          
 t4.D1.b2          .              .            +INF          -30.0000      
 t4.D1.b3          .              .            +INF          -30.0000      
-t4.D1.b4          .              .            +INF          -30.0000      
 t4.D2.b1          .           130.0000        +INF             .          
 t4.D2.b2          .           130.0000        +INF             .          
 t4.D2.b3          .            52.0000        +INF             .          
-t4.D2.b4          .              .            +INF          -60.2953      
 t4.D3.b1          .           104.0000        +INF             .          
 t4.D3.b2          .            65.0000        +INF             .          
 t4.D3.b3          .              .            +INF          -41.1429      
-t4.D3.b4          .              .            +INF          -90.1429      
 t5.D1.b1          .             2.0000        +INF             .          
 t5.D1.b2          .              .            +INF          -30.0000      
 t5.D1.b3          .              .            +INF          -30.0000      
-t5.D1.b4          .              .            +INF          -30.0000      
 t5.D2.b1          .           140.0000        +INF             .          
 t5.D2.b2          .           140.0000        +INF             .          
 t5.D2.b3          .            56.0000        +INF             .          
-t5.D2.b4          .              .            +INF          -57.7047      
 t5.D3.b1          .           112.0000        +INF             .          
 t5.D3.b2          .            34.8362        +INF             .          
 t5.D3.b3          .              .            +INF          -39.0000      
-t5.D3.b4          .              .            +INF          -85.0000      
 
 ---- VAR PDT  Total matched demand [MW]
 
@@ -1619,7 +1589,7 @@ t5.bus4        -INF           -0.0268        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 10
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 10
 OEMO_TCMPA
 Equation Listing    SOLVE TCMPA Using RMIP From line 261
 
@@ -1648,7 +1618,7 @@ MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 0 ; (LHS = 0)
      
 MATCHED_D(t1,D1,b3)..  PD(t1,D1,b3) =L= 0 ; (LHS = 0)
      
-REMAINING 57 ENTRIES SKIPPED
+REMAINING 42 ENTRIES SKIPPED
 
 
 ---- TOT_MATCHED_G  =E=  Total matched generation
@@ -1664,11 +1634,11 @@ REMAINING 22 ENTRIES SKIPPED
 
 ---- TOT_MATCHED_D  =E=  Total matched demand
 
-TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) - PD(t1,D1,b4) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) + PDT(t1,D1) =E= 0 ; (LHS = 0)
      
-TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) - PD(t1,D2,b4) + PDT(t1,D2) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) + PDT(t1,D2) =E= 0 ; (LHS = 0)
      
-TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) - PD(t1,D3,b4) + PDT(t1,D3) =E= 0 ; (LHS = 0)
+TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) + PDT(t1,D3) =E= 0 ; (LHS = 0)
      
 REMAINING 12 ENTRIES SKIPPED
 
@@ -1738,7 +1708,7 @@ PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = -70)
      
 REMAINING 22 ENTRIES SKIPPED
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 11
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 11
 OEMO_TCMPA
 Column Listing      SOLVE TCMPA Using RMIP From line 261
 
@@ -1828,7 +1798,7 @@ PD(t1,D1,b3)
         1       MATCHED_D(t1,D1,b3)
        -1       TOT_MATCHED_D(t1,D1)
 
-REMAINING 57 ENTRIES SKIPPED
+REMAINING 42 ENTRIES SKIPPED
 
 ---- PDT  Total matched demand [MW]
 
@@ -1891,7 +1861,7 @@ Th(t1,bus3)
      -833.3333  LPFE(t1,bus3,bus4)
 
 REMAINING 17 ENTRIES SKIPPED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 12
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 12
 OEMO_TCMPA
 Range Statistics    SOLVE TCMPA Using RMIP From line 261
 
@@ -1902,20 +1872,20 @@ RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
 Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
 Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 13
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 13
 OEMO_TCMPA
 Model Statistics    SOLVE TCMPA Using RMIP From line 261
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          296
-BLOCKS OF VARIABLES           8     SINGLE VARIABLES          226
-NON ZERO ELEMENTS           711     DISCRETE VARIABLES         25
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          281
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          211
+NON ZERO ELEMENTS           681     DISCRETE VARIABLES         25
 
 
 GENERATION TIME      =        0.000 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 14
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 14
 OEMO_TCMPA
 Solution Report     SOLVE TCMPA Using RMIP From line 261
 
@@ -1943,7 +1913,7 @@ Solution Report     SOLVE TCMPA Using RMIP From line 261
 
 
 --- LP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.59 ticks)
+--- Cplex Time: 0.00sec (det. 0.56 ticks)
 
 
 Optimal solution found
@@ -2018,63 +1988,48 @@ t5.G5.b2        -INF             .              .            38.6228
 t1.D1.b1        -INF            1.0000         1.0000        65.0000      
 t1.D1.b2        -INF             .              .              .          
 t1.D1.b3        -INF             .              .              .          
-t1.D1.b4        -INF             .              .              .          
 t1.D2.b1        -INF          100.0000       100.0000        65.0000      
 t1.D2.b2        -INF          100.0000       100.0000        45.0000      
 t1.D2.b3        -INF           40.0000        40.0000        40.0000      
-t1.D2.b4        -INF             .              .              .          
 t1.D3.b1        -INF           80.0000        80.0000        65.0000      
 t1.D3.b2        -INF           50.0000        50.0000        30.0000      
 t1.D3.b3        -INF           24.0000        30.0000          .          
-t1.D3.b4        -INF             .              .              .          
 t2.D1.b1        -INF            1.0000         1.0000        39.0000      
 t2.D1.b2        -INF             .              .              .          
 t2.D1.b3        -INF             .              .              .          
-t2.D1.b4        -INF             .              .              .          
 t2.D2.b1        -INF           80.0000        80.0000        39.0000      
 t2.D2.b2        -INF           80.0000        80.0000        27.0000      
 t2.D2.b3        -INF           32.0000        32.0000        24.0000      
-t2.D2.b4        -INF             .              .              .          
 t2.D3.b1        -INF           64.0000        64.0000        39.0000      
 t2.D3.b2        -INF           40.0000        40.0000        18.0000      
 t2.D3.b3        -INF            8.0000        24.0000          .          
-t2.D3.b4        -INF             .              .              .          
 t3.D1.b1        -INF            2.0000         2.0000        50.4000      
 t3.D1.b2        -INF             .              .              .          
 t3.D1.b3        -INF             .              .              .          
-t3.D1.b4        -INF             .              .              .          
 t3.D2.b1        -INF          170.0000       170.0000        30.0000      
 t3.D2.b2        -INF          170.0000       170.0000         6.0000      
 t3.D2.b3        -INF            8.6500        68.0000          .          
-t3.D2.b4        -INF             .              .              .          
 t3.D3.b1        -INF          136.0000       136.0000        42.0000      
 t3.D3.b2        -INF            3.3500        85.0000          .          
 t3.D3.b3        -INF             .            51.0000          .          
-t3.D3.b4        -INF             .              .              .          
 t4.D1.b1        -INF            2.0000         2.0000       110.0000      
 t4.D1.b2        -INF             .              .              .          
 t4.D1.b3        -INF             .              .              .          
-t4.D1.b4        -INF             .              .              .          
 t4.D2.b1        -INF          130.0000       130.0000        79.7047      
 t4.D2.b2        -INF          130.0000       130.0000        51.7047      
 t4.D2.b3        -INF           52.0000        52.0000        44.7047      
-t4.D2.b4        -INF             .              .              .          
 t4.D3.b1        -INF          104.0000       104.0000        49.8571      
 t4.D3.b2        -INF           65.0000        65.0000         0.8571      
 t4.D3.b3        -INF             .            39.0000          .          
-t4.D3.b4        -INF             .              .              .          
 t5.D1.b1        -INF            2.0000         2.0000       100.0000      
 t5.D1.b2        -INF             .              .              .          
 t5.D1.b3        -INF             .              .              .          
-t5.D1.b4        -INF             .              .              .          
 t5.D2.b1        -INF          140.0000       140.0000        72.2953      
 t5.D2.b2        -INF          140.0000       140.0000        46.2953      
 t5.D2.b3        -INF           56.0000        56.0000        40.2953      
-t5.D2.b4        -INF             .              .              .          
 t5.D3.b1        -INF          112.0000       112.0000        45.0000      
 t5.D3.b2        -INF           34.8362        70.0000          .          
 t5.D3.b3        -INF             .            42.0000          .          
-t5.D3.b4        -INF             .              .              .          
 
 ---- EQU TOT_MATCHED_G  Total matched generation
 
@@ -2434,63 +2389,48 @@ t5.G5         1.0000         1.0000         1.0000         EPS
 t1.D1.b1          .             1.0000        +INF             .          
 t1.D1.b2          .              .            +INF          -35.0000      
 t1.D1.b3          .              .            +INF          -35.0000      
-t1.D1.b4          .              .            +INF          -35.0000      
 t1.D2.b1          .           100.0000        +INF             .          
 t1.D2.b2          .           100.0000        +INF             .          
 t1.D2.b3          .            40.0000        +INF             .          
-t1.D2.b4          .              .            +INF          -35.0000      
 t1.D3.b1          .            80.0000        +INF             .          
 t1.D3.b2          .            50.0000        +INF             .          
 t1.D3.b3          .            24.0000        +INF             .          
-t1.D3.b4          .              .            +INF          -35.0000      
 t2.D1.b1          .             1.0000        +INF             .          
 t2.D1.b2          .              .            +INF          -21.0000      
 t2.D1.b3          .              .            +INF          -21.0000      
-t2.D1.b4          .              .            +INF          -21.0000      
 t2.D2.b1          .            80.0000        +INF             .          
 t2.D2.b2          .            80.0000        +INF             .          
 t2.D2.b3          .            32.0000        +INF             .          
-t2.D2.b4          .              .            +INF          -21.0000      
 t2.D3.b1          .            64.0000        +INF             .          
 t2.D3.b2          .            40.0000        +INF             .          
 t2.D3.b3          .             8.0000        +INF             .          
-t2.D3.b4          .              .            +INF          -21.0000      
 t3.D1.b1          .             2.0000        +INF             .          
 t3.D1.b2          .              .            +INF          -69.6000      
 t3.D1.b3          .              .            +INF          -69.6000      
-t3.D1.b4          .              .            +INF          -69.6000      
 t3.D2.b1          .           170.0000        +INF             .          
 t3.D2.b2          .           170.0000        +INF             .          
 t3.D2.b3          .             8.6500        +INF             .          
-t3.D2.b4          .              .            +INF          -90.0000      
 t3.D3.b1          .           136.0000        +INF             .          
 t3.D3.b2          .             3.3500        +INF             .          
 t3.D3.b3          .              .            +INF          -36.0000      
-t3.D3.b4          .              .            +INF          -78.0000      
 t4.D1.b1          .             2.0000        +INF             .          
 t4.D1.b2          .              .            +INF          -30.0000      
 t4.D1.b3          .              .            +INF          -30.0000      
-t4.D1.b4          .              .            +INF          -30.0000      
 t4.D2.b1          .           130.0000        +INF             .          
 t4.D2.b2          .           130.0000        +INF             .          
 t4.D2.b3          .            52.0000        +INF             .          
-t4.D2.b4          .              .            +INF          -60.2953      
 t4.D3.b1          .           104.0000        +INF             .          
 t4.D3.b2          .            65.0000        +INF             .          
 t4.D3.b3          .              .            +INF          -41.1429      
-t4.D3.b4          .              .            +INF          -90.1429      
 t5.D1.b1          .             2.0000        +INF             .          
 t5.D1.b2          .              .            +INF          -30.0000      
 t5.D1.b3          .              .            +INF          -30.0000      
-t5.D1.b4          .              .            +INF          -30.0000      
 t5.D2.b1          .           140.0000        +INF             .          
 t5.D2.b2          .           140.0000        +INF             .          
 t5.D2.b3          .            56.0000        +INF             .          
-t5.D2.b4          .              .            +INF          -57.7047      
 t5.D3.b1          .           112.0000        +INF             .          
 t5.D3.b2          .            34.8362        +INF             .          
 t5.D3.b3          .              .            +INF          -39.0000      
-t5.D3.b4          .              .            +INF          -85.0000      
 
 ---- VAR PDT  Total matched demand [MW]
 
@@ -2571,7 +2511,7 @@ t5.bus4        -INF           -0.0268        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:12:57 Page 15
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 15
 OEMO_TCMPA
 E x e c u t i o n
 
@@ -3307,25 +3247,25 @@ Total pay.   13825.000    6405.000   42387.000   34106.272   31929.864
 
 **** REPORT FILE SUMMARY
 
-MPA_eq C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_eq_T.dat
-MPA_lbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbg_T.dat
-MPA_pbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbg_T.dat
-MPA_PG C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PG_T.dat
-MPA_lbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbd_T.dat
-MPA_pbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbd_T.dat
-MPA_PD C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PD_T.dat
-MPA_PGT C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PGT.dat
-TCMPA_bus C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_bus.dat
-TCMPA_eq C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_eq.dat
-TCMPA_lbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbg.dat
-TCMPA_pbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbg.dat
-TCMPA_PG C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PG.dat
-TCMPA_lbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbd.dat
-TCMPA_pbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbd.dat
-TCMPA_PD C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PD.dat
+MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_eq_T.dat
+MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbg_T.dat
+MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbg_T.dat
+MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PG_T.dat
+MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbd_T.dat
+MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbd_T.dat
+MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PD_T.dat
+MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PGT.dat
+TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_bus.dat
+TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_eq.dat
+TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbg.dat
+TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbg.dat
+TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PG.dat
+TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbd.dat
+TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbd.dat
+TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PD.dat
 
 
-EXECUTION TIME       =        0.141 SECONDS      7 MB  46.4.1 485757e2 WEX-WEI
+EXECUTION TIME       =        0.625 SECONDS      7 MB  46.4.1 485757e2 WEX-WEI
 
 
 USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
@@ -3335,5 +3275,5 @@ USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
 
 **** FILE SUMMARY
 
-Input      C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms
-Output     C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.lst
+Input      C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA.gms
+Output     C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA.lst

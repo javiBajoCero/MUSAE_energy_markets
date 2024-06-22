@@ -1,0 +1,3406 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  ********************************************************************************
+   2  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+   3  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+   4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+   5  ********************************************************************************
+   6   
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 2
+OEMO_TCMPA
+C o m p i l a t i o n
+
+
+   8   
+   9  *********************************************************************
+  10  * DATA
+  11  *********************************************************************
+  12   
+  13  * Time periods;
+  14   
+  15  SETS
+  16  t0    Extended time periods / t0*t5 /
+  17  t(t0) Time periods / t1*t5 /;
+  18   
+  19  * Units:
+  20   
+  21  * Generation units:
+  22   
+  23  SETS
+  24  g  Generation units / G1*G6/
+  25  bg Blocks           /b1*b2/;
+  26   
+  27  PARAMETERS
+  28  pg_max(g) Max. active power generation [MW] /G1 300, G2 275, G3 100, G4 50, G5 200, G6 99999/
+  29  pg_min(g) Min. active power generation [MW] /G1 30,  G2 28,  G3 10, G4 5, G5 20, G6 0/
+  30  ru(g)     Ramp-up limit [MW:h]              /G1 100, G2 30,  G3 25, G4 10, G5 50, G6 99999/
+  31  rd(g)     Ramp-down limit [MW]              /G1 100, G2 30,  G3 20, G4 10, G5 50, G6 99999/
+  32  p0(g)     Initial power output [MW]         /G1 150, G2 28,  G3 50, G4 25, G5 100, G6 0/;
+  33   
+  34  TABLE pbg(t,g,bg) Power [MW] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg.gms
+  36         b1  b2
+  37  t1.G1  100 200
+  38  t1.G2  50  25
+  39  t1.G3  30  70
+  40  t1.G4  30  20
+  41  t1.G5  100 0
+  42  t1.G6  5   0
+  43  t2.G1  100 200
+  44  t2.G2  50  25
+  45  t2.G3  30  70
+  46  t2.G4  30  20
+  47  t2.G5  100 0
+  48  t2.G6  10  0
+  49  t3.G1  100 200
+  50  t3.G2  50  25
+  51  t3.G3  30  70
+  52  t3.G4  30  20
+  53  t3.G5  100 0
+  54  t3.G6  15  0
+  55  t4.G1  100 200
+  56  t4.G2  50  25
+  57  t4.G3  30  70
+  58  t4.G4  30  20
+  59  t4.G5  100 0
+  60  t4.G6  20  0
+  61  t5.G1  100 200
+  62  t5.G2  50  25
+  63  t5.G3  30  70
+  64  t5.G4  30  20
+  65  t5.G5  100 0
+  66  t5.G6  10  0 ;
+  67   
+  68  TABLE lbg(t,g,bg) Prices [eur:MWh] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_lbg.gms
+  70        b1   b2
+  71  t1.G1 10   30
+  72  t1.G2 40   65
+  73  t1.G3 40   59
+  74  t1.G4 40   67
+  75  t1.G5 30   30
+  76  t1.G6 0    0
+  77  t2.G1 10   30
+  78  t2.G2 40   65
+  79  t2.G3 40   59
+  80  t2.G4 40   67
+  81  t2.G5 30   30
+  82  t2.G6 0    0
+  83  t3.G1 10   30
+  84  t3.G2 40   65
+  85  t3.G3 40   59
+  86  t3.G4 40   67
+  87  t3.G5 30   30
+  88  t3.G6 0    0
+  89  t4.G1 10   30
+  90  t4.G2 40   65
+  91  t4.G3 40   59
+  92  t4.G4 40   67
+  93  t4.G5 30   30
+  94  t4.G6 0    0
+  95  t5.G1 10   30
+  96  t5.G2 40   65
+  97  t5.G3 40   59
+  98  t5.G4 40   67
+  99  t5.G5 30   30
+ 100  t5.G6 0    0
+ 101  ;
+ 102   
+ 103  * Demand units:
+ 104   
+ 105   
+ 106   
+ 107   
+ 108  SETS
+ 109  d  Demand units / D1*D3/
+ 110  bd Blocks       / b1*b3 /;
+ 111   
+ 112  TABLE pbd(t,d,bd) Power [MW] of the demand bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbd.gms
+ 114        b1  b2  b3
+ 115  t1.D1  1   0   0
+ 116  t1.D2 100 100 40
+ 117  t1.D3 80  50  30
+ 118  t2.D1  1   0   0
+ 119  t2.D2 80  80  32
+ 120  t2.D3 64  40  24
+ 121  t3.D1  2   0   0
+ 122  t3.D2 170 170 68
+ 123  t3.D3 136 85  51
+ 124  t4.D1  2   0   0
+ 125  t4.D2 130 130 52
+ 126  t4.D3 104 65  39
+ 127  t5.D1  2   0   0
+ 128  t5.D2 140 140 56
+ 129  t5.D3 112 70  42;
+ 130   
+ 131  TABLE lbd(t,d,bd) Prices [�:MWh] of the generation bid function
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_lbd.gms
+ 133        b1  b2  b3
+ 134  t1.D1 100  0   0
+ 135  t1.D2 100 80  75
+ 136  t1.D3 100 65  35
+ 137  t2.D1 60   0   0
+ 138  t2.D2 60  48  45
+ 139  t2.D3 60  39  21
+ 140  t3.D1 120  0   0
+ 141  t3.D2 120 96  90
+ 142  t3.D3 120 78  42
+ 143  t4.D1 140  0   0
+ 144  t4.D2 140 112 105
+ 145  t4.D3 140 91  49
+ 146  t5.D1 130   0   0
+ 147  t5.D2 130 104 98
+ 148  t5.D3 130 85  46;
+ 149   
+ 150  * Buses:
+ 151   
+ 152  SET  b      Buses            / bus1*bus4 /;
+ 153  SET refb(b) Reference bus    / bus1 /;
+ 154  alias(b,b_o,b_d);
+ 155   
+ 156  SET gb(g,b) Generation buses / G1.bus1, G2.bus1, G3.bus2, G4.bus2, G5.bus4 /;
+ 157  SET db(d,b) Demand buses     / D1.bus1, D2.bus2, D3.bus3 /;
+ 158   
+ 159  * Lines;
+ 160   
+ 161  SET l(b_o,b_d) lines / bus1.bus2, bus1.bus3, bus2.bus3, bus2.bus4, bus3.bus4 /;
+ 162   
+ 163  display gb, db, refb, l;
+ 164   
+ 165  PARAMETERS pbase basepower [MVAr] / 100 /;
+ 166  TABLE x(b,b) Line reactance [p.u.]
+ 167        bus1 bus2   bus3  bus4
+ 168  bus1   0.0  0.058 0.04  0.0
+ 169  bus2   0.0  0.0   0.08  0.08
+ 170  bus3   0.0  0.0   0.0   0.12
+ 171  bus4   0.0  0.0   0.0   0.0  ;
+ 172   
+ 173  TABLE s_max(b,b) Line capacity [MVA]
+ 174         bus1 bus2 bus3  bus4
+ 175  bus1   150  150  150   150
+ 176  bus2   150  150  150   150
+ 177  bus3   150  150  150   150
+ 178  bus4   150  150  150   150  ;
+ 179   
+ 180  *********************************************************************
+ 181  * VARIABLES
+ 182  *********************************************************************
+ 183   
+ 184  FREE VARIABLE     SW         Social welfare (objective function);
+ 185  * Generation;
+ 186  POSITIVE VARIABLE PG(t,g,bg) Matched generation of each block [MW]
+ 187                    PGT(t0,g)  Total matched generation [MW]
+ 188  BINARY VARIABLE   U(t,g)     on-off state of the unit;
+ 189  * Total generation at t=0:
+ 190  PGT.fx('t0',g) = p0(g);
+ 191   
+ 192  * Demand;
+ 193  POSITIVE VARIABLE PD(t,d,bd) Matched demand of each block [MW]
+ 194                    PDT(t,d)   Total matched demand [MW];
+ 195  * Grid;
+ 196  VARIABLE P(t,b,b)   Line power [MW]
+ 197           Th(t,b)    Voltage phase;
+ 198   
+ 199  P.fx(t,b_o,b_d)$(not l(b_o,b_d)) = 0.0;
+ 200  P.lo(t,b_o,b_d)   = -s_max(b_o,b_d);
+ 201  P.up(t,b_o,b_d)   = s_max(b_o,b_d);
+ 202   
+ 203  Th.fx(t,refb) = 0.0;
+ 204   
+ 205  *********************************************************************
+ 206  * OBJECTIVE FUNCTION AND CONSTRAINTS
+ 207  *********************************************************************
+ 208   
+ 209  EQUATIONS
+ 210  OF            Objective function
+ 211  MATCHED_G     Matched generation to generation block coupling
+ 212  MATCHED_D     Matched demand to demand block coupling
+ 213  TOT_MATCHED_G Total matched generation
+ 214  TOT_MATCHED_D Total matched demand
+ 215  NODAL_MARKET  Market equilibrium at bus
+ 216  LPFE          Line power flow equations
+ 217  RAMP_D        Ramp down limit constraints
+ 218  RAMP_U        Ramp up limit constraints
+ 219  PGMIN         Minimum generation
+ 220  PGMAX         Maximum generation;
+ 221   
+ 222  * Social Welfare:
+ 223  OF.. SW =e=
+ 224  sum(t,
+ 225        sum(d, sum(bd, lbd(t,d,bd)*PD(t,d,bd)))
+ 226      - sum(g, sum(bg, lbg(t,g,bg)*PG(t,g,bg)))
+ 227     );
+ 228   
+ 229  * Matched generation to generation block coupling:
+ 230  MATCHED_G(t,g,bg).. PG(t,g,bg) =l= pbg(t,g,bg);
+ 231   
+ 232  * Matched demand to demand block coupling:
+ 233  MATCHED_D(t,d,bd).. PD(t,d,bd) =l= pbd(t,d,bd);
+ 234   
+ 235  * Total matched generation:
+ 236  TOT_MATCHED_G(t,g).. PGT(t,g) =e= sum(bg, PG(t,g,bg));
+ 237   
+ 238  * Total matched demand:
+ 239  TOT_MATCHED_D(t,d).. PDT(t,d) =e= sum(bd, PD(t,d,bd));
+ 240   
+ 241  * Market Equilibrium:
+ 242  NODAL_MARKET(t,b)..
+ 243  * Total power outflow to the grid:
+ 244    sum(b_d$l(b,b_d), P(t,b,b_d))
+ 245  * Total power inflow  from the grid:
+ 246  - sum(b_o$l(b_o,b), P(t,b_o,b))
+ 247  * Net power balance of bus "b":
+ 248  =e= sum(g$gb(g,b),PGT(t,g))- sum(d$db(d,b),PDT(t,d)) ;
+ 249   
+ 250  * Line power flow equations:
+ 251  LPFE(t,b_o,b_d)$l(b_o,b_d).. P(t,b_o,b_d) =e= pbase*(Th(t,b_o)-Th(t,b_d))/x(b_o,b_d);
+ 252   
+ 253  * Ramp down limit:
+ 254  RAMP_D(t0,g)$(ord(t0) gt 1).. PGT(t0,g) - PGT(t0-1,g) =g= -rd(g);
+ 255   
+ 256  * Ramp up limit:
+ 257  RAMP_U(t0,g)$(ord(t0) gt 1).. PGT(t0,g) - PGT(t0-1,g) =l= ru(g);
+ 258   
+ 259  * Generation limits:
+ 260  PGMIN(t,g)..  PGT(t,g) =g= pg_min(g)*U(t,g);
+ 261  PGMAX(t,g)..  PGT(t,g) =l= pg_max(g)*U(t,g);
+ 262   
+ 263  *********************************************************************
+ 264  * OPTIMIZATION
+ 265  *********************************************************************
+ 266   
+ 267  MODEL TCMPA    / ALL /;
+ 268  option optCR = 0.0;
+ 269  SOLVE TCMPA USING mip MAXIMIZING SW;
+ 270  U.fx(t,g) = U.l(t,g);
+ 271  SOLVE TCMPA USING rmip MAXIMIZING SW;
+ 272   
+ 273  *********************************************************************
+ 274  * MARKET CLEARING LOG
+ 275  *********************************************************************
+ 276   
+ 277  display NODAL_MARKET.m;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium.gms
+ 279  ********************************************************************************
+ 280  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 281  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 282  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 283  ********************************************************************************
+ 284   
+ 285  SET cmat         Columns for tables "matched"      /bid_price, bid_power, matched_P/;
+ 286  SET ceq          Columns for "equilibrium" table   / 'price', 'energy', 'gen.', 'dem.', 'inflow', 'outflow',  'surp. gen.','surp. dem.', SW, 'surp. inf.', 'surp. out.', 'nodal SW'/;
+ 287  SET ceqt(ceq)    Columns for "equilibrium_T" table / 'energy', 'gen.', 'dem.', 'inflow', 'outflow',  'surp. gen.','surp. dem.', SW/;
+ 288  SET cmer         Columns for "merchandizing" table / 'price sell','price buy', 'energy', 'mer. surp.'/;
+ 289   
+ 290  PARAMETER
+ 291  matched_generation(t,g,bg,cmat), matched_demand(t,d,bd,cmat),
+ 292  market_equilibrium(t,b,ceq),
+ 293  market_equilibrium_T(t,ceqt),
+ 294  market_merchandizing(t,b,b,cmer);
+ 295   
+ 296  matched_generation(t,g,bg,'bid_price') = lbg(t,g,bg);
+ 297  matched_generation(t,g,bg,'bid_power') = pbg(t,g,bg);
+ 298  matched_demand(t,d,bd,'bid_price')     = lbd(t,d,bd);
+ 299  matched_demand(t,d,bd,'bid_power')     = pbd(t,d,bd);
+ 300   
+ 301  matched_generation(t,g,bg,'matched_P') = PG.l(t,g,bg);
+ 302  matched_demand(t,d,bd,'matched_P')     = PD.l(t,d,bd);
+ 303   
+ 304  *
+ 305  * Market equilibrium
+ 306  *
+ 307  loop(t,
+ 308   loop(b,
+ 309  *
+ 310  * Social Welfare
+ 311  *
+ 312    market_equilibrium(t,b,'surp. dem.') =
+ 313  * Demand and generation surplus:
+ 314    sum(d$db(d,b), sum(bd, (lbd(t, d, bd)-NODAL_MARKET.M(t,b))*PD.l(t,d,bd)));
+ 315    market_equilibrium(t,b,'surp. gen.') =
+ 316  * Demand and generation surplus:
+ 317   + sum(g$gb(g,b), sum(bg, (NODAL_MARKET.M(t,b)-lbg(t, g, bg))*PG.l(t,g,bg)));
+ 318    market_equilibrium(t,b,'SW') =
+ 319           market_equilibrium(t,b,'surp. dem.')
+ 320         + market_equilibrium(t,b,'surp. gen.');
+ 321  *
+ 322  * Nodal Equilibrium
+ 323  *
+ 324    market_equilibrium(t,b,'gen.')    = sum(g$gb(g,b), PGT.l(t,g));
+ 325    market_equilibrium(t,b,'dem.')    = sum(d$db(d,b), PDT.l(t,d));
+ 326    market_equilibrium(t,b,'inflow')  =
+ 327            sum(b_o$(l(b_o,b) and P.l(t,b_o,b)>0),P.l(t,b_o,b))
+ 328          - sum(b_d$(l(b,b_d) and P.l(t,b,b_d)<0),P.l(t,b,b_d));
+ 329    market_equilibrium(t,b,'surp. inf.')  =
+ 330            sum(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), (NODAL_MARKET.M(t,b)-NODAL_MARKET.M(t,b_o))*P.l(t,b_o,b))
+ 331          - sum(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), (NODAL_MARKET.M(t,b)-NODAL_MARKET.M(t,b_d))*P.l(t,b,b_d));
+ 332    market_equilibrium(t,b,'outflow') =
+ 333            sum(b_d$(l(b,b_d) and P.l(t,b,b_d)>0),P.l(t,b,b_d))
+ 334          - sum(b_o$(l(b_o,b) and P.l(t,b_o,b)<0),P.l(t,b_o,b));
+ 335    market_equilibrium(t,b,'surp. out.') =
+ 336            sum(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), (NODAL_MARKET.M(t,b_d)-NODAL_MARKET.M(t,b))*P.l(t,b,b_d))
+ 337          - sum(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), (NODAL_MARKET.M(t,b_o)-NODAL_MARKET.M(t,b))*P.l(t,b_o,b));
+ 338    market_equilibrium(t,b,'nodal SW') =   market_equilibrium(t,b,'SW')
+ 339                                         + market_equilibrium(t,b,'surp. inf.')
+ 340                                         + market_equilibrium(t,b,'surp. out.');
+ 341   
+ 342    market_equilibrium(t,b,'energy') =
+ 343           market_equilibrium(t,b,'gen.')
+ 344        +  market_equilibrium(t,b,'inflow');
+ 345    market_equilibrium(t,b,'price')  = NODAL_MARKET.m(t,b);
+ 346   );
+ 347  loop(ceqt, market_equilibrium_T(t,ceqt) = sum(b, market_equilibrium(t,b,ceqt)));
+ 348  );
+ 349  *
+ 350  * Merchandising surplus:
+ 351  *
+ 352  loop(t,
+ 353     loop(b_o,
+ 354        loop(b_d$(l(b_o,b_d) and P.l(t,b_o,b_d)>0),
+ 355  *     Positive outflow:
+ 356        market_merchandizing(t,b_o,b_d,'price buy') = NODAL_MARKET.m(t,b_o);
+ 357        market_merchandizing(t,b_o,b_d,'price sell')  = NODAL_MARKET.m(t,b_d);
+ 358        market_merchandizing(t,b_o,b_d,'energy')       = P.l(t,b_o,b_d);
+ 359        market_merchandizing(t,b_o,b_d,'mer. surp.') = (NODAL_MARKET.m(t,b_d)-NODAL_MARKET.m(t,b_o))*P.l(t,b_o,b_d);
+ 360        );
+ 361        loop(b_d$(l(b_o,b_d) and P.l(t,b_o,b_d)<0),
+ 362  *     Negative outflow (inflow):
+ 363        market_merchandizing(t,b_o,b_d,'price buy')  = NODAL_MARKET.m(t,b_d);
+ 364        market_merchandizing(t,b_o,b_d,'price sell') = NODAL_MARKET.m(t,b_o);
+ 365        market_merchandizing(t,b_o,b_d,'energy')     = -P.l(t,b_o,b_d);
+ 366        market_merchandizing(t,b_o,b_d,'mer. surp.') = (NODAL_MARKET.m(t,b_d)-NODAL_MARKET.m(t,b_o))*P.l(t,b_o,b_d);
+ 367        );
+ 368     );
+ 369  );
+ 370  display
+ 371  matched_generation, PGT.l,
+ 372  matched_demand    , PDT.l,
+ 373  market_equilibrium,
+ 374  market_equilibrium_T,
+ 375  market_merchandizing;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium_bus.gms
+ 377  ********************************************************************************
+ 378  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 379  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 380  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 381  ********************************************************************************
+ 382   
+ 383  SET cmat_bus Columns for tables "matched"      /bid_price, bid_power, matched_P/;
+ 384  SET in /in/;
+ 385  SET ou /out/;
+ 386   
+ 387  PARAMETER
+ 388  matched_generation_bus(b,t,g,bg,cmat_bus)
+ 389  matched_demand_bus(b,t,d,bd,cmat_bus)
+ 390  matched_inflow_bus(b,t,b_o,in,cmat_bus)
+ 391  matched_outflow_bus(b,t,b_o,ou,cmat_bus);
+ 392  *
+ 393  * Generation units
+ 394  *
+ 395  matched_generation_bus(b,t,g,bg,'bid_price')$gb(g,b) = lbg(t,g,bg);
+ 396  matched_generation_bus(b,t,g,bg,'bid_power')$gb(g,b) = pbg(t,g,bg);
+ 397  matched_generation_bus(b,t,g,bg,'matched_P')$gb(g,b) = PG.l(t,g,bg);
+ 398  * Positive inflow (= generation unit):
+ 399  matched_inflow_bus(b,t,b_o,in,'bid_price')$(l(b_o,b) and P.l(t,b_o,b)>0) = NODAL_MARKET.m(t,b_o);
+ 400  matched_inflow_bus(b,t,b_o,in,'bid_power')$(l(b_o,b) and P.l(t,b_o,b)>0) = P.up(t,b_o,b);
+ 401  matched_inflow_bus(b,t,b_o,in,'matched_P')$(l(b_o,b) and P.l(t,b_o,b)>0) = P.l(t,b_o,b);
+ 402  * Negative outflow (= positive inflow = generation unit):
+ 403  matched_inflow_bus(b,t,b_d,in,'bid_price')$(l(b,b_d) and P.l(t,b,b_d)<0) = NODAL_MARKET.m(t,b_d);
+ 404  matched_inflow_bus(b,t,b_d,in,'bid_power')$(l(b,b_d) and P.l(t,b,b_d)<0) = P.up(t,b,b_d);
+ 405  matched_inflow_bus(b,t,b_d,in,'matched_P')$(l(b,b_d) and P.l(t,b,b_d)<0) = -P.l(t,b,b_d);
+ 406  *
+ 407  * Demand units
+ 408  *
+ 409  matched_demand_bus(b,t,d,bd,'bid_price')$db(d,b)     = lbd(t,d,bd);
+ 410  matched_demand_bus(b,t,d,bd,'bid_power')$db(d,b)     = pbd(t,d,bd);
+ 411  matched_demand_bus(b,t,d,bd,'matched_P')$db(d,b)     = PD.l(t,d,bd);
+ 412  * Positive outflow (= demand unit):
+ 413  matched_outflow_bus(b,t,b_d,ou,'bid_price')$(l(b,b_d) and P.l(t,b,b_d)>0) = NODAL_MARKET.m(t,b_d);
+ 414  matched_outflow_bus(b,t,b_d,ou,'bid_power')$(l(b,b_d) and P.l(t,b,b_d)>0) = P.up(t,b,b_d);
+ 415  matched_outflow_bus(b,t,b_d,ou,'matched_P')$(l(b,b_d) and P.l(t,b,b_d)>0) = P.l(t,b,b_d);
+ 416  * Negative inflow ( = positive outflow = demand unit):
+ 417  matched_outflow_bus(b,t,b_o,ou,'bid_price')$(l(b_o,b) and P.l(t,b_o,b)<0) = NODAL_MARKET.m(t,b_o);
+ 418  matched_outflow_bus(b,t,b_o,ou,'bid_power')$(l(b_o,b) and P.l(t,b_o,b)<0) = P.up(t,b_o,b);
+ 419  matched_outflow_bus(b,t,b_o,ou,'matched_P')$(l(b_o,b) and P.l(t,b_o,b)<0) = -P.l(t,b_o,b);
+ 420   
+ 421  display
+ 422  matched_generation_bus, matched_inflow_bus,
+ 423  matched_demand_bus,     matched_outflow_bus;
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_settlement.gms
+ 425  ********************************************************************************
+ 426  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 427  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 428  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 429  ********************************************************************************
+ 430   
+ 431  *
+ 432  * Settlement
+ 433  *
+ 434  SET rsg  Rows for generation settlement  / Revenue, 'Total rev.', Surplus, 'Total sur.'/;
+ 435  SET rsd  Rows for demand settlement      / Payment, 'Total pay.', Surplus, 'Total sur.'/;
+ 436  PARAMETER
+ 437  settlementG(rsg, g, t),
+ 438  settlementD(rsd, d, t),
+ 439  settlementGT(rsg, t),
+ 440  settlementDT(rsd, t);
+ 441  loop(t,
+ 442           loop(g,
+ 443                   settlementG('Revenue',g,t) =
+ 444                           sum(b$gb(g,b),NODAL_MARKET.m(t,b)*PGT.l(t,g));
+ 445                   settlementG('Surplus',g,t) =
+ 446                           settlementG('Revenue',g,t) - sum(bg,lbg(t,g,bg)*PG.l(t,g,bg))
+ 447           );
+ 448           settlementGT('Total rev.',t) = sum(g,settlementG('Revenue',g,t));
+ 449           settlementGT('Total sur.',t) = sum(g,settlementG('Surplus',g,t));
+ 450           loop(d,
+ 451                   settlementD('Payment',d,t) =
+ 452                           sum(b$db(d,b),NODAL_MARKET.m(t,b)*PDT.l(t,d));
+ 453                   settlementD('Surplus',d,t) =
+ 454                           sum(bd,lbd(t,d,bd)*PD.l(t,d,bd))- settlementD('Payment',d,t)
+ 455           );
+ 456           settlementDT('Total pay.',t) = sum(d,settlementD('Payment',d,t));
+ 457           settlementDT('Total sur.',t) = sum(d,settlementD('Surplus',d,t));
+ 458  );
+ 459   
+ 460  display settlementG, settlementD, settlementGT, settlementDT;
+ 461   
+ 462  *********************************************************************
+ 463  * Matlab INPUT FILES FOR MARKET CLEARING PLOTS...
+ 464  *********************************************************************
+ 465  * ... for TCMPA_BF.m
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA2M_T.gms
+ 467  ********************************************************************************
+ 468  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 469  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 470  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 471  *********************************************************************************
+ 472  * File for the Matlab function TCMPA_BF.m to represent the aggregated
+ 473  * bid functions and the matched energy for each time period.
+ 474  *
+ 475  file MPA_eq  /TCMPA_eq_T.dat/; put MPA_eq;
+ 476  scalar aux;
+ 477  loop(t,
+ 478  aux = sum(d, sum(bd, lbd(t,d,bd)*PD.l(t,d,bd))) - sum(g, sum(bg, lbg(t,g,bg)*PG.l(t,g,bg)));
+ 479  put sum(g, sum(bg, PG.l(t,g,bg)));
+ 480  put sum(b, market_equilibrium(t,b,'price'));
+ 481  put aux;
+ 482  put /);
+ 483   
+ 484  file MPA_lbg /TCMPA_lbg_T.dat/; put MPA_lbg; loop(t, loop(g, loop(bg, put lbg(t,g,bg)));  put /);
+ 485  file MPA_pbg /TCMPA_pbg_T.dat/; put MPA_pbg; loop(t, loop(g, loop(bg, put pbg(t,g,bg)));  put /);
+ 486  file MPA_PG  /TCMPA_PG_T.dat/;  put MPA_PG;  loop(t, loop(g, loop(bg, put PG.l(t,g,bg))); put /);
+ 487  file MPA_lbd /TCMPA_lbd_T.dat/; put MPA_lbd; loop(t, loop(d, loop(bd, put lbd(t,d,bd)));  put /);
+ 488  file MPA_pbd /TCMPA_pbd_T.dat/; put MPA_pbd; loop(t, loop(d, loop(bd, put pbd(t,d,bd)));  put /);
+ 489  file MPA_PD  /TCMPA_PD_T.dat/;  put MPA_PD;  loop(t, loop(d, loop(bd, put PD.l(t,d,bd))); put /);
+ 490   
+ 491  file MPA_PGT  /TCMPA_PGT.dat/;
+ 492  *file MPA_PGmin /TCMPA_PGmin.dat/;
+ 493  *file MPA_PGmax /TCMPA_PGmax.dat/;
+ 494  *file MPA_PGRU /TCMPA_PGRU.dat/;
+ 495  *file MPA_PGRD /TCMPA_PGRD.dat/;
+ 496   
+ 497  put MPA_PGT;
+ 498  loop(g,
+ 499  loop(t0, put PGT.l(t0,g)); put/;
+ 500  loop(t0, put pg_min(g)) ; put/;
+ 501  loop(t0, put pg_max(g)) ; put/;
+ 502  loop(t0, put rd(g))     ; put/;
+ 503  loop(t0, put ru(g))     ; put/;
+ 504  );
+ 505  * ... for TCMPA_BFNodal.m
+ 506  SET bout(b) /'bus4'/
+INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA2M.gms
+ 508  ********************************************************************************
+ 509  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+ 510  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+ 511  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+ 512  ********************************************************************************
+ 513   
+ 514  file TCMPA_bus /TCMPA_bus.dat/;
+ 515  file TCMPA_eq  /TCMPA_eq.dat/;
+ 516  file TCMPA_lbg /TCMPA_lbg.dat/;
+ 517  file TCMPA_pbg /TCMPA_pbg.dat/;
+ 518  file TCMPA_PG  /TCMPA_PG.dat/;
+ 519  file TCMPA_lbd /TCMPA_lbd.dat/;
+ 520  file TCMPA_pbd /TCMPA_pbd.dat/;
+ 521  file TCMPA_PD  /TCMPA_PD.dat/;
+ 522   
+ 523  put TCMPA_bus; loop(bout, put bout.tl);
+ 524  put TCMPA_eq;
+ 525  scalar aux;
+ 526  loop(b$bout(b),
+ 527           loop(t,
+ 528                   put market_equilibrium(t,b,'energy');
+ 529                   put market_equilibrium(t,b,'price');
+ 530                   put market_equilibrium(t,b,'nodal SW');
+ 531                   put /
+ 532           );
+ 533  );
+ 534   
+ 535  loop(b$bout(b),
+ 536  put TCMPA_lbg;
+ 537  loop(t,
+ 538           loop(g$gb(g,b), loop(bg, put  lbg(t,g,bg)));
+ 539  *        Positive Inflow => generation unit
+ 540           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put NODAL_MARKET.m(t,b_o));
+ 541  *        Negative Outflow => generation unit
+ 542           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), put NODAL_MARKET.m(t,b_d));
+ 543           put /);
+ 544  put TCMPA_pbg;
+ 545  loop(t,
+ 546           loop(g$gb(g,b), loop(bg, put  pbg(t,g,bg)));
+ 547  *        Positive Inflow => generation unit
+ 548           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.up(t,b_o,b));
+ 549  *        Negative Outflow => generation unit
+ 550           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.lo(t,b,b_d); put aux);
+ 551           put /);
+ 552  put TCMPA_PG;
+ 553  loop(t,
+ 554           loop(g$gb(g,b), loop(bg, put PG.l(t,g,bg)));
+ 555  *        Positive Inflow => generation unit
+ 556           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.l(t,b_o,b));
+ 557  *        Negative Outflow => generation unit
+ 558           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.l(t,b,b_d); put aux);
+ 559           put /);
+ 560  put TCMPA_lbd;
+ 561  loop(t,
+ 562           loop(d$db(d,b), loop(bd, put  lbd(t,d,bd)));
+ 563  *        Negative Inflow => demand unit
+ 564           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), put NODAL_MARKET.m(t,b_o));
+ 565  *        Positive Outflow => demand unit
+ 566           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put NODAL_MARKET.m(t,b_d));
+ 567           put /);
+ 568  put TCMPA_pbd;
+ 569  loop(t,
+ 570           loop(d$db(d,b), loop(bd, put  pbd(t,d,bd)));
+ 571  *        Negative Inflow => demand unit
+ 572           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.lo(t,b_o,b); put aux);
+ 573  *        Positive Outflow => demand unit
+ 574           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.up(t,b,b_d));
+ 575           put /);
+ 576  put TCMPA_PD;
+ 577  loop(t,
+ 578           loop(d$db(d,b), loop(bd, put PD.l(t,d,bd)));
+ 579  *        Negative Inflow => demand unit
+ 580           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.l(t,b_o,b); put aux);
+ 581  *        Positive Outflow => demand unit
+ 582           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.l(t,b,b_d));
+ 583           put /);
+ 584  );
+ 585   
+ 586  *file TCMPA_PGT   /TCMPA_PGT.dat/;
+ 587  *file TCMPA_PGmin /TCMPA_PGmin.dat/;
+ 588  *file TCMPA_PGmax /TCMPA_PGmax.dat/;
+ 589  *file TCMPA_PGRU  /TCMPA_PGRU.dat/;
+ 590  *file TCMPA_PGRD  /TCMPA_PGRD.dat/;
+ 591   
+ 592  *put TCMPA_PGT;
+ 593  *loop(g,
+ 594  *loop(t0, put PGT.l(t0,g)); put/;
+ 595  *loop(t0, put pg_min(g)) ; put/;
+ 596  *loop(t0, put pg_max(g)) ; put/;
+ 597  *loop(t0, put rd(g))     ; put/;
+ 598  *loop(t0, put ru(g))     ; put/;
+ 599  *);
+ 600   
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 3
+OEMO_TCMPA
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+     2       35 INCLUDE        1      35  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg.gms
+     3       69 INCLUDE        1      38  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_lbg.gms
+     4      113 INCLUDE        1      50  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbd.gms
+     5      132 INCLUDE        1      53  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_lbd.gms
+     6      278 INCLUDE        1     183  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium.gms
+     7      376 INCLUDE        1     184  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium_bus.gms
+     8      424 INCLUDE        1     185  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_settlement.gms
+     9      466 INCLUDE        1     191  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA2M_T.gms
+    10      507 INCLUDE        1     194  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA2M.gms
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 4
+OEMO_TCMPA
+E x e c u t i o n
+
+
+----    163 SET gb  Generation buses
+
+          bus1        bus2        bus4
+
+G1         YES
+G2         YES
+G3                     YES
+G4                     YES
+G5                                 YES
+
+
+----    163 SET db  Demand buses
+
+          bus1        bus2        bus3
+
+D1         YES
+D2                     YES
+D3                                 YES
+
+
+----    163 SET refb  Reference bus
+
+bus1
+
+
+----    163 SET l  lines
+
+            bus2        bus3        bus4
+
+bus1         YES         YES
+bus2                     YES         YES
+bus3                                 YES
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 5
+OEMO_TCMPA
+Equation Listing    SOLVE TCMPA Using MIP From line 269
+
+
+---- OF  =E=  Objective function
+
+OF..  SW + 10*PG(t1,G1,b1) + 30*PG(t1,G1,b2) + 40*PG(t1,G2,b1) + 65*PG(t1,G2,b2) + 40*PG(t1,G3,b1) + 59*PG(t1,G3,b2) + 40*PG(t1,G4,b1) + 67*PG(t1,G4,b2) + 30*PG(t1,G5,b1) + 30*PG(t1,G5,b2) + 10*PG(t2,G1,b1) + 30*PG(t2,G1,b2) + 40*PG(t2,G2,b1) + 65*PG(t2,G2,b2) + 40*PG(t2,G3,b1) + 59*PG(t2,G3,b2) + 40*PG(t2,G4,b1) + 67*PG(t2,G4,b2) + 30*PG(t2,G5,b1) + 30*PG(t2,G5,b2) + 10*PG(t3,G1,b1) + 30*PG(t3,G1,b2) + 40*PG(t3,G2,b1) + 65*PG(t3,G2,b2) + 40*PG(t3,G3,b1) + 59*PG(t3,G3,b2) + 40*PG(t3,G4,b1) + 67*PG(t3,G4,b2) + 30*PG(t3,G5,b1) + 30*PG(t3,G5,b2) + 10*PG(t4,G1,b1) + 30*PG(t4,G1,b2) + 40*PG(t4,G2,b1) + 65*PG(t4,G2,b2) + 40*PG(t4,G3,b1) + 59*PG(t4,G3,b2) + 40*PG(t4,G4,b1) + 67*PG(t4,G4,b2) + 30*PG(t4,G5,b1) + 30*PG(t4,G5,b2) + 10*PG(t5,G1,b1) + 30*PG(t5,G1,b2) + 40*PG(t5,G2,b1) + 65*PG(t5,G2,b2) + 40*PG(t5,G3,b1) + 59*PG(t5,G3,b2) + 40*PG(t5,G4,b1) + 67*PG(t5,G4,b2) + 30*PG(t5,G5,b1) + 30*PG(t5,G5,b2) - 100*PD(t1,D1,b1) - 100*PD(t1,D2,b1) - 80*PD(t1,D2,b2) - 75*PD(t1,D2,b3) - 100*PD(t1,D3,b1) - 65*PD(t1,D3,b2) - 35*PD(t1,D3,b3) - 60*PD(t2,D1,b1) - 60*PD(t2,D2,b1) - 48*PD(t2,D2,b2) - 45*PD(t2,D2,b3) - 60*PD(t2,D3,b1) - 39*PD(t2,D3,b2) - 21*PD(t2,D3,b3) - 120*PD(t3,D1,b1) - 120*PD(t3,D2,b1) - 96*PD(t3,D2,b2) - 90*PD(t3,D2,b3) - 120*PD(t3,D3,b1) - 78*PD(t3,D3,b2) - 42*PD(t3,D3,b3) - 140*PD(t4,D1,b1) - 140*PD(t4,D2,b1) - 112*PD(t4,D2,b2) - 105*PD(t4,D2,b3) - 140*PD(t4,D3,b1) - 91*PD(t4,D3,b2) - 49*PD(t4,D3,b3) - 130*PD(t5,D1,b1) - 130*PD(t5,D2,b1) - 104*PD(t5,D2,b2) - 98*PD(t5,D2,b3) - 130*PD(t5,D3,b1) - 85*PD(t5,D3,b2) - 46*PD(t5,D3,b3) =E= 0 ; (LHS = 0)
+     
+
+---- MATCHED_G  =L=  Matched generation to generation block coupling
+
+MATCHED_G(t1,G1,b1)..  PG(t1,G1,b1) =L= 100 ; (LHS = 0)
+     
+MATCHED_G(t1,G1,b2)..  PG(t1,G1,b2) =L= 200 ; (LHS = 0)
+     
+MATCHED_G(t1,G2,b1)..  PG(t1,G2,b1) =L= 50 ; (LHS = 0)
+     
+REMAINING 57 ENTRIES SKIPPED
+
+
+---- MATCHED_D  =L=  Matched demand to demand block coupling
+
+MATCHED_D(t1,D1,b1)..  PD(t1,D1,b1) =L= 1 ; (LHS = 0)
+     
+MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 0 ; (LHS = 0)
+     
+MATCHED_D(t1,D1,b3)..  PD(t1,D1,b3) =L= 0 ; (LHS = 0)
+     
+REMAINING 42 ENTRIES SKIPPED
+
+
+---- TOT_MATCHED_G  =E=  Total matched generation
+
+TOT_MATCHED_G(t1,G1)..  - PG(t1,G1,b1) - PG(t1,G1,b2) + PGT(t1,G1) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_G(t1,G2)..  - PG(t1,G2,b1) - PG(t1,G2,b2) + PGT(t1,G2) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_G(t1,G3)..  - PG(t1,G3,b1) - PG(t1,G3,b2) + PGT(t1,G3) =E= 0 ; (LHS = 0)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- TOT_MATCHED_D  =E=  Total matched demand
+
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) + PDT(t1,D2) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) + PDT(t1,D3) =E= 0 ; (LHS = 0)
+     
+REMAINING 12 ENTRIES SKIPPED
+
+
+---- NODAL_MARKET  =E=  Market equilibrium at bus
+
+NODAL_MARKET(t1,bus1)..  - PGT(t1,G1) - PGT(t1,G2) + PDT(t1,D1) + P(t1,bus1,bus2) + P(t1,bus1,bus3) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus2)..  - PGT(t1,G3) - PGT(t1,G4) + PDT(t1,D2) - P(t1,bus1,bus2) + P(t1,bus2,bus3) + P(t1,bus2,bus4) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus3)..  PDT(t1,D3) - P(t1,bus1,bus3) - P(t1,bus2,bus3) + P(t1,bus3,bus4) =E= 0 ; (LHS = 0)
+     
+REMAINING 17 ENTRIES SKIPPED
+
+
+---- LPFE  =E=  Line power flow equations
+
+LPFE(t1,bus1,bus2)..  P(t1,bus1,bus2) - 1724.13793103448*Th(t1,bus1) + 1724.13793103448*Th(t1,bus2) =E= 0 ; (LHS = 0)
+     
+LPFE(t1,bus1,bus3)..  P(t1,bus1,bus3) - 2500*Th(t1,bus1) + 2500*Th(t1,bus3) =E= 0 ; (LHS = 0)
+     
+LPFE(t1,bus2,bus3)..  P(t1,bus2,bus3) - 1250*Th(t1,bus2) + 1250*Th(t1,bus3) =E= 0 ; (LHS = 0)
+     
+REMAINING 22 ENTRIES SKIPPED
+
+
+---- RAMP_D  =G=  Ramp down limit constraints
+
+RAMP_D(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =G= -100 ; (LHS = -150, INFES = 50 ****)
+     
+RAMP_D(t1,G2)..  - PGT(t0,G2) + PGT(t1,G2) =G= -30 ; (LHS = -28)
+     
+RAMP_D(t1,G3)..  - PGT(t0,G3) + PGT(t1,G3) =G= -20 ; (LHS = -50, INFES = 30 ****)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- RAMP_U  =L=  Ramp up limit constraints
+
+RAMP_U(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =L= 100 ; (LHS = -150)
+     
+RAMP_U(t1,G2)..  - PGT(t0,G2) + PGT(t1,G2) =L= 30 ; (LHS = -28)
+     
+RAMP_U(t1,G3)..  - PGT(t0,G3) + PGT(t1,G3) =L= 25 ; (LHS = -50)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- PGMIN  =G=  Minimum generation
+
+PGMIN(t1,G1)..  PGT(t1,G1) - 30*U(t1,G1) =G= 0 ; (LHS = 0)
+     
+PGMIN(t1,G2)..  PGT(t1,G2) - 28*U(t1,G2) =G= 0 ; (LHS = 0)
+     
+PGMIN(t1,G3)..  PGT(t1,G3) - 10*U(t1,G3) =G= 0 ; (LHS = 0)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- PGMAX  =L=  Maximum generation
+
+PGMAX(t1,G1)..  PGT(t1,G1) - 300*U(t1,G1) =L= 0 ; (LHS = 0)
+     
+PGMAX(t1,G2)..  PGT(t1,G2) - 275*U(t1,G2) =L= 0 ; (LHS = 0)
+     
+PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = 0)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 6
+OEMO_TCMPA
+Column Listing      SOLVE TCMPA Using MIP From line 269
+
+
+---- SW  Social welfare (objective function)
+
+SW
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       OF
+
+
+---- PG  Matched generation of each block [MW]
+
+PG(t1,G1,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       10       OF
+        1       MATCHED_G(t1,G1,b1)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       30       OF
+        1       MATCHED_G(t1,G1,b2)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G2,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       40       OF
+        1       MATCHED_G(t1,G2,b1)
+       -1       TOT_MATCHED_G(t1,G2)
+
+REMAINING 57 ENTRIES SKIPPED
+
+---- PGT  Total matched generation [MW]
+
+PGT(t0,G1)
+                (.LO, .L, .UP, .M = 150, 150, 150, 0)
+       -1       RAMP_D(t1,G1)
+       -1       RAMP_U(t1,G1)
+
+PGT(t0,G2)
+                (.LO, .L, .UP, .M = 28, 28, 28, 0)
+       -1       RAMP_D(t1,G2)
+       -1       RAMP_U(t1,G2)
+
+PGT(t0,G3)
+                (.LO, .L, .UP, .M = 50, 50, 50, 0)
+       -1       RAMP_D(t1,G3)
+       -1       RAMP_U(t1,G3)
+
+REMAINING 33 ENTRIES SKIPPED
+
+---- U  on-off state of the unit
+
+U(t1,G1)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+      -30       PGMIN(t1,G1)
+     -300       PGMAX(t1,G1)
+
+U(t1,G2)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+      -28       PGMIN(t1,G2)
+     -275       PGMAX(t1,G2)
+
+U(t1,G3)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+      -10       PGMIN(t1,G3)
+     -100       PGMAX(t1,G3)
+
+REMAINING 27 ENTRIES SKIPPED
+
+---- PD  Matched demand of each block [MW]
+
+PD(t1,D1,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+     -100       OF
+        1       MATCHED_D(t1,D1,b1)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       MATCHED_D(t1,D1,b2)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       MATCHED_D(t1,D1,b3)
+       -1       TOT_MATCHED_D(t1,D1)
+
+REMAINING 42 ENTRIES SKIPPED
+
+---- PDT  Total matched demand [MW]
+
+PDT(t1,D1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       TOT_MATCHED_D(t1,D1)
+        1       NODAL_MARKET(t1,bus1)
+
+PDT(t1,D2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       TOT_MATCHED_D(t1,D2)
+        1       NODAL_MARKET(t1,bus2)
+
+PDT(t1,D3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       TOT_MATCHED_D(t1,D3)
+        1       NODAL_MARKET(t1,bus3)
+
+REMAINING 12 ENTRIES SKIPPED
+
+---- P  Line power [MW]
+
+P(t1,bus1,bus2)
+                (.LO, .L, .UP, .M = -150, 0, 150, 0)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus2)
+        1       LPFE(t1,bus1,bus2)
+
+P(t1,bus1,bus3)
+                (.LO, .L, .UP, .M = -150, 0, 150, 0)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus3)
+        1       LPFE(t1,bus1,bus3)
+
+P(t1,bus2,bus3)
+                (.LO, .L, .UP, .M = -150, 0, 150, 0)
+        1       NODAL_MARKET(t1,bus2)
+       -1       NODAL_MARKET(t1,bus3)
+        1       LPFE(t1,bus2,bus3)
+
+REMAINING 22 ENTRIES SKIPPED
+
+---- Th  Voltage phase
+
+Th(t1,bus1)
+                (.LO, .L, .UP, .M = 0, 0, 0, 0)
+    -1724.1379  LPFE(t1,bus1,bus2)
+    -2500       LPFE(t1,bus1,bus3)
+
+Th(t1,bus2)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+     1724.1379  LPFE(t1,bus1,bus2)
+    -1250       LPFE(t1,bus2,bus3)
+    -1250       LPFE(t1,bus2,bus4)
+
+Th(t1,bus3)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+     2500       LPFE(t1,bus1,bus3)
+     1250       LPFE(t1,bus2,bus3)
+     -833.3333  LPFE(t1,bus3,bus4)
+
+REMAINING 17 ENTRIES SKIPPED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 7
+OEMO_TCMPA
+Range Statistics    SOLVE TCMPA Using MIP From line 269
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 8
+OEMO_TCMPA
+Model Statistics    SOLVE TCMPA Using MIP From line 269
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          316
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          232
+NON ZERO ELEMENTS           741     DISCRETE VARIABLES         30
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 9
+OEMO_TCMPA
+Solution Report     SOLVE TCMPA Using MIP From line 269
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   TCMPA               OBJECTIVE  SW
+     TYPE    MIP                 DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  269
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE           157638.7926
+
+ RESOURCE USAGE, LIMIT          0.578 10000000000.000
+ ITERATION COUNT, LIMIT        33    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- Space for names approximately 0.01 Mb
+--- Use option 'names no' to turn use of names off
+--- GMO memory 0.56 Mb (peak 0.56 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Starting Cplex
+
+
+--- MIP status (101): integer optimal solution.
+--- Cplex Time: 0.58sec (det. 1.92 ticks)
+
+--- Returning a primal only solution to GAMS (marginals all set to NA).
+--- Fixing integer variables and solving final LP...
+
+
+--- Fixed MIP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.51 ticks)
+
+
+Proven optimal solution
+MIP Solution:       157638.792556    (33 iterations, 0 nodes)
+Final Solve:        157638.792556    (31 iterations)
+
+Best possible:      157638.792556
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU OF                  .              .              .             1.0000      
+
+  OF  Objective function
+
+---- EQU MATCHED_G  Matched generation to generation block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1        -INF          100.0000       100.0000        20.0000      
+t1.G1.b2        -INF          150.0000       200.0000          .          
+t1.G2.b1        -INF             .            50.0000          .          
+t1.G2.b2        -INF             .            25.0000          .          
+t1.G3.b1        -INF           30.0000        30.0000        19.0000      
+t1.G3.b2        -INF             .            70.0000          .          
+t1.G4.b1        -INF           15.0000        30.0000          .          
+t1.G4.b2        -INF             .            20.0000          .          
+t1.G5.b1        -INF          100.0000       100.0000          .          
+t1.G5.b2        -INF             .              .              .          
+t1.G6.b1        -INF             .             5.0000          .          
+t1.G6.b2        -INF             .              .              .          
+t2.G1.b1        -INF          100.0000       100.0000        20.0000      
+t2.G1.b2        -INF          100.0000       200.0000          .          
+t2.G2.b1        -INF             .            50.0000          .          
+t2.G2.b2        -INF             .            25.0000          .          
+t2.G3.b1        -INF           30.0000        30.0000        12.0000      
+t2.G3.b2        -INF             .            70.0000          .          
+t2.G4.b1        -INF           25.0000        30.0000          .          
+t2.G4.b2        -INF             .            20.0000          .          
+t2.G5.b1        -INF           50.0000       100.0000          .          
+t2.G5.b2        -INF             .              .              .          
+t2.G6.b1        -INF             .            10.0000          .          
+t2.G6.b2        -INF             .              .              .          
+t3.G1.b1        -INF          100.0000       100.0000        50.6000      
+t3.G1.b2        -INF          200.0000       200.0000        30.6000      
+t3.G2.b1        -INF             .            50.0000          .          
+t3.G2.b2        -INF             .            25.0000          .          
+t3.G3.b1        -INF           30.0000        30.0000        19.0000      
+t3.G3.b2        -INF           25.0000        70.0000          .          
+t3.G4.b1        -INF           30.0000        30.0000        27.0000      
+t3.G4.b2        -INF            5.0000        20.0000          .          
+t3.G5.b1        -INF          100.0000       100.0000        51.2000      
+t3.G5.b2        -INF             .              .            51.2000      
+t3.G6.b1        -INF             .            15.0000          .          
+t3.G6.b2        -INF             .              .              .          
+t4.G1.b1        -INF          100.0000       100.0000        20.0000      
+t4.G1.b2        -INF          176.1379       200.0000          .          
+t4.G2.b1        -INF             .            50.0000          .          
+t4.G2.b2        -INF             .            25.0000          .          
+t4.G3.b1        -INF           30.0000        30.0000        19.0000      
+t4.G3.b2        -INF           46.8621        70.0000          .          
+t4.G4.b1        -INF           30.0000        30.0000        20.2953      
+t4.G4.b2        -INF             .            20.0000          .          
+t4.G5.b1        -INF          100.0000       100.0000        42.2343      
+t4.G5.b2        -INF             .              .            42.2343      
+t4.G6.b1        -INF             .            20.0000          .          
+t4.G6.b2        -INF             .              .              .          
+t5.G1.b1        -INF          100.0000       100.0000        20.0000      
+t5.G1.b2        -INF          197.9742       200.0000          .          
+t5.G2.b1        -INF             .            50.0000          .          
+t5.G2.b2        -INF             .            25.0000          .          
+t5.G3.b1        -INF           30.0000        30.0000        19.0000      
+t5.G3.b2        -INF           26.8621        70.0000          .          
+t5.G4.b1        -INF           30.0000        30.0000        17.7047      
+t5.G4.b2        -INF             .            20.0000          .          
+t5.G5.b1        -INF          100.0000       100.0000        38.6228      
+t5.G5.b2        -INF             .              .            38.6228      
+t5.G6.b1        -INF             .            10.0000          .          
+t5.G6.b2        -INF             .              .              .          
+
+---- EQU MATCHED_D  Matched demand to demand block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1        -INF            1.0000         1.0000        65.0000      
+t1.D1.b2        -INF             .              .              .          
+t1.D1.b3        -INF             .              .              .          
+t1.D2.b1        -INF          100.0000       100.0000        65.0000      
+t1.D2.b2        -INF          100.0000       100.0000        45.0000      
+t1.D2.b3        -INF           40.0000        40.0000        40.0000      
+t1.D3.b1        -INF           80.0000        80.0000        65.0000      
+t1.D3.b2        -INF           50.0000        50.0000        30.0000      
+t1.D3.b3        -INF           24.0000        30.0000          .          
+t2.D1.b1        -INF            1.0000         1.0000        39.0000      
+t2.D1.b2        -INF             .              .              .          
+t2.D1.b3        -INF             .              .              .          
+t2.D2.b1        -INF           80.0000        80.0000        39.0000      
+t2.D2.b2        -INF           80.0000        80.0000        27.0000      
+t2.D2.b3        -INF           32.0000        32.0000        24.0000      
+t2.D3.b1        -INF           64.0000        64.0000        39.0000      
+t2.D3.b2        -INF           40.0000        40.0000        18.0000      
+t2.D3.b3        -INF            8.0000        24.0000          .          
+t3.D1.b1        -INF            2.0000         2.0000        50.4000      
+t3.D1.b2        -INF             .              .              .          
+t3.D1.b3        -INF             .              .              .          
+t3.D2.b1        -INF          170.0000       170.0000        30.0000      
+t3.D2.b2        -INF          170.0000       170.0000         6.0000      
+t3.D2.b3        -INF            8.6500        68.0000          .          
+t3.D3.b1        -INF          136.0000       136.0000        42.0000      
+t3.D3.b2        -INF            3.3500        85.0000          .          
+t3.D3.b3        -INF             .            51.0000          .          
+t4.D1.b1        -INF            2.0000         2.0000       110.0000      
+t4.D1.b2        -INF             .              .              .          
+t4.D1.b3        -INF             .              .              .          
+t4.D2.b1        -INF          130.0000       130.0000        79.7047      
+t4.D2.b2        -INF          130.0000       130.0000        51.7047      
+t4.D2.b3        -INF           52.0000        52.0000        44.7047      
+t4.D3.b1        -INF          104.0000       104.0000        49.8571      
+t4.D3.b2        -INF           65.0000        65.0000         0.8571      
+t4.D3.b3        -INF             .            39.0000          .          
+t5.D1.b1        -INF            2.0000         2.0000       100.0000      
+t5.D1.b2        -INF             .              .              .          
+t5.D1.b3        -INF             .              .              .          
+t5.D2.b1        -INF          140.0000       140.0000        72.2953      
+t5.D2.b2        -INF          140.0000       140.0000        46.2953      
+t5.D2.b3        -INF           56.0000        56.0000        40.2953      
+t5.D3.b1        -INF          112.0000       112.0000        45.0000      
+t5.D3.b2        -INF           34.8362        70.0000          .          
+t5.D3.b3        -INF             .            42.0000          .          
+
+---- EQU TOT_MATCHED_G  Total matched generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .              .              .            30.0000      
+t1.G2          .              .              .              .          
+t1.G3          .              .              .            59.0000      
+t1.G4          .              .              .            40.0000      
+t1.G5          .              .              .            30.0000      
+t1.G6          .              .              .             EPS         
+t2.G1          .              .              .            30.0000      
+t2.G2          .              .              .              .          
+t2.G3          .              .              .            52.0000      
+t2.G4          .              .              .            40.0000      
+t2.G5          .              .              .            30.0000      
+t2.G6          .              .              .             EPS         
+t3.G1          .              .              .            60.6000      
+t3.G2          .              .              .              .          
+t3.G3          .              .              .            59.0000      
+t3.G4          .              .              .            67.0000      
+t3.G5          .              .              .            81.2000      
+t3.G6          .              .              .             EPS         
+t4.G1          .              .              .            30.0000      
+t4.G2          .              .              .              .          
+t4.G3          .              .              .            59.0000      
+t4.G4          .              .              .            60.2953      
+t4.G5          .              .              .            72.2343      
+t4.G6          .              .              .             EPS         
+t5.G1          .              .              .            30.0000      
+t5.G2          .              .              .              .          
+t5.G3          .              .              .            59.0000      
+t5.G4          .              .              .            57.7047      
+t5.G5          .              .              .            68.6228      
+t5.G6          .              .              .             EPS         
+
+---- EQU TOT_MATCHED_D  Total matched demand
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .              .              .           -35.0000      
+t1.D2          .              .              .           -35.0000      
+t1.D3          .              .              .           -35.0000      
+t2.D1          .              .              .           -21.0000      
+t2.D2          .              .              .           -21.0000      
+t2.D3          .              .              .           -21.0000      
+t3.D1          .              .              .           -69.6000      
+t3.D2          .              .              .           -90.0000      
+t3.D3          .              .              .           -78.0000      
+t4.D1          .              .              .           -30.0000      
+t4.D2          .              .              .           -60.2953      
+t4.D3          .              .              .           -90.1429      
+t5.D1          .              .              .           -30.0000      
+t5.D2          .              .              .           -57.7047      
+t5.D3          .              .              .           -85.0000      
+
+---- EQU NODAL_MARKET  Market equilibrium at bus
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .            35.0000      
+t1.bus2          .              .              .            35.0000      
+t1.bus3          .              .              .            35.0000      
+t1.bus4          .              .              .            35.0000      
+t2.bus1          .              .              .            21.0000      
+t2.bus2          .              .              .            21.0000      
+t2.bus3          .              .              .            21.0000      
+t2.bus4          .              .              .            21.0000      
+t3.bus1          .              .              .            69.6000      
+t3.bus2          .              .              .            90.0000      
+t3.bus3          .              .              .            78.0000      
+t3.bus4          .              .              .            85.2000      
+t4.bus1          .              .              .            30.0000      
+t4.bus2          .              .              .            60.2953      
+t4.bus3          .              .              .            90.1429      
+t4.bus4          .              .              .            72.2343      
+t5.bus1          .              .              .            30.0000      
+t5.bus2          .              .              .            57.7047      
+t5.bus3          .              .              .            85.0000      
+t5.bus4          .              .              .            68.6228      
+
+---- EQU LPFE  Line power flow equations
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2          .              .              .             EPS         
+t1.bus1.bus3          .              .              .             EPS         
+t1.bus2.bus3          .              .              .             EPS         
+t1.bus2.bus4          .              .              .             EPS         
+t1.bus3.bus4          .              .              .             EPS         
+t2.bus1.bus2          .              .              .             EPS         
+t2.bus1.bus3          .              .              .             EPS         
+t2.bus2.bus3          .              .              .             EPS         
+t2.bus2.bus4          .              .              .             EPS         
+t2.bus3.bus4          .              .              .             EPS         
+t3.bus1.bus2          .              .              .           -12.1800      
+t3.bus1.bus3          .              .              .             8.4000      
+t3.bus2.bus3          .              .              .           -12.0000      
+t3.bus2.bus4          .              .              .            -4.8000      
+t3.bus3.bus4          .              .              .             7.2000      
+t4.bus1.bus2          .              .              .            30.2953      
+t4.bus1.bus3          .              .              .           -20.8933      
+t4.bus2.bus3          .              .              .            29.8476      
+t4.bus2.bus4          .              .              .            11.9390      
+t4.bus3.bus4          .              .              .           -17.9085      
+t5.bus1.bus2          .              .              .            27.7047      
+t5.bus1.bus3          .              .              .           -19.1067      
+t5.bus2.bus3          .              .              .            27.2953      
+t5.bus2.bus4          .              .              .            10.9181      
+t5.bus3.bus4          .              .              .           -16.3772      
+
+---- EQU RAMP_D  Ramp down limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1      -100.0000       100.0000        +INF             .          
+t1.G2       -30.0000       -28.0000        +INF             .          
+t1.G3       -20.0000       -20.0000        +INF          -24.0000      
+t1.G4       -10.0000       -10.0000        +INF           -1.0000      
+t1.G5       -50.0000          .            +INF             .          
+t1.G6    -99999.0000          .            +INF             .          
+t2.G1      -100.0000       -50.0000        +INF             .          
+t2.G2       -30.0000          .            +INF             .          
+t2.G3       -20.0000          .            +INF             .          
+t2.G4       -10.0000        10.0000        +INF             .          
+t2.G5       -50.0000       -50.0000        +INF           -5.0000      
+t2.G6    -99999.0000          .            +INF             .          
+t3.G1      -100.0000       100.0000        +INF             .          
+t3.G2       -30.0000          .            +INF             .          
+t3.G3       -20.0000        25.0000        +INF             .          
+t3.G4       -10.0000        10.0000        +INF             .          
+t3.G5       -50.0000        50.0000        +INF             .          
+t3.G6    -99999.0000          .            +INF             .          
+t4.G1      -100.0000       -23.8621        +INF             .          
+t4.G2       -30.0000          .            +INF             .          
+t4.G3       -20.0000        21.8621        +INF             .          
+t4.G4       -10.0000        -5.0000        +INF             .          
+t4.G5       -50.0000          .            +INF             .          
+t4.G6    -99999.0000          .            +INF             .          
+t5.G1      -100.0000        21.8362        +INF             .          
+t5.G2       -30.0000          .            +INF             .          
+t5.G3       -20.0000       -20.0000        +INF           -1.2953      
+t5.G4       -10.0000          .            +INF             .          
+t5.G5       -50.0000          .            +INF             .          
+t5.G6    -99999.0000          .            +INF             .          
+
+---- EQU RAMP_U  Ramp up limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF          100.0000       100.0000         5.0000      
+t1.G2        -INF          -28.0000        30.0000          .          
+t1.G3        -INF          -20.0000        25.0000          .          
+t1.G4        -INF          -10.0000        10.0000          .          
+t1.G5        -INF             .            50.0000          .          
+t1.G6        -INF             .         99999.0000          .          
+t2.G1        -INF          -50.0000       100.0000          .          
+t2.G2        -INF             .            30.0000          .          
+t2.G3        -INF             .            25.0000          .          
+t2.G4        -INF           10.0000        10.0000         4.0000      
+t2.G5        -INF          -50.0000        50.0000          .          
+t2.G6        -INF             .         99999.0000          .          
+t3.G1        -INF          100.0000       100.0000         9.0000      
+t3.G2        -INF             .            30.0000          .          
+t3.G3        -INF           25.0000        25.0000        31.0000      
+t3.G4        -INF           10.0000        10.0000        23.0000      
+t3.G5        -INF           50.0000        50.0000         4.0000      
+t3.G6        -INF             .         99999.0000          .          
+t4.G1        -INF          -23.8621       100.0000          .          
+t4.G2        -INF             .            30.0000          .          
+t4.G3        -INF           21.8621        25.0000          .          
+t4.G4        -INF           -5.0000        10.0000          .          
+t4.G5        -INF             .            50.0000          .          
+t4.G6        -INF             .         99999.0000          .          
+t5.G1        -INF           21.8362       100.0000          .          
+t5.G2        -INF             .            30.0000          .          
+t5.G3        -INF          -20.0000        25.0000          .          
+t5.G4        -INF             .            10.0000          .          
+t5.G5        -INF             .            50.0000          .          
+t5.G6        -INF             .         99999.0000          .          
+
+---- EQU PGMIN  Minimum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .           220.0000        +INF             .          
+t1.G2          .              .            +INF             .          
+t1.G3          .            20.0000        +INF             .          
+t1.G4          .            10.0000        +INF             .          
+t1.G5          .            80.0000        +INF             .          
+t1.G6          .              .            +INF             .          
+t2.G1          .           170.0000        +INF             .          
+t2.G2          .              .            +INF             .          
+t2.G3          .            20.0000        +INF             .          
+t2.G4          .            20.0000        +INF             .          
+t2.G5          .            30.0000        +INF             .          
+t2.G6          .              .            +INF             .          
+t3.G1          .           270.0000        +INF             .          
+t3.G2          .              .            +INF             .          
+t3.G3          .            45.0000        +INF             .          
+t3.G4          .            30.0000        +INF             .          
+t3.G5          .            80.0000        +INF             .          
+t3.G6          .              .            +INF             .          
+t4.G1          .           246.1379        +INF             .          
+t4.G2          .              .            +INF             .          
+t4.G3          .            66.8621        +INF             .          
+t4.G4          .            25.0000        +INF             .          
+t4.G5          .            80.0000        +INF             .          
+t4.G6          .              .            +INF             .          
+t5.G1          .           267.9742        +INF             .          
+t5.G2          .              .            +INF             .          
+t5.G3          .            46.8621        +INF             .          
+t5.G4          .            25.0000        +INF             .          
+t5.G5          .            80.0000        +INF             .          
+t5.G6          .              .            +INF             .          
+
+---- EQU PGMAX  Maximum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF          -50.0000          .              .          
+t1.G2        -INF             .              .            35.0000      
+t1.G3        -INF          -70.0000          .              .          
+t1.G4        -INF          -35.0000          .              .          
+t1.G5        -INF         -100.0000          .              .          
+t1.G6        -INF       -99999.0000          .              .          
+t2.G1        -INF         -100.0000          .              .          
+t2.G2        -INF             .              .            21.0000      
+t2.G3        -INF          -70.0000          .              .          
+t2.G4        -INF          -25.0000          .              .          
+t2.G5        -INF         -150.0000          .              .          
+t2.G6        -INF       -99999.0000          .              .          
+t3.G1        -INF             .              .              .          
+t3.G2        -INF             .              .            69.6000      
+t3.G3        -INF          -45.0000          .              .          
+t3.G4        -INF          -15.0000          .              .          
+t3.G5        -INF         -100.0000          .              .          
+t3.G6        -INF       -99999.0000          .              .          
+t4.G1        -INF          -23.8621          .              .          
+t4.G2        -INF             .              .            30.0000      
+t4.G3        -INF          -23.1379          .              .          
+t4.G4        -INF          -20.0000          .              .          
+t4.G5        -INF         -100.0000          .              .          
+t4.G6        -INF       -99999.0000          .              .          
+t5.G1        -INF           -2.0258          .              .          
+t5.G2        -INF             .              .            30.0000      
+t5.G3        -INF          -43.1379          .              .          
+t5.G4        -INF          -20.0000          .              .          
+t5.G5        -INF         -100.0000          .              .          
+t5.G6        -INF       -99999.0000          .              .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR SW                -INF       157638.7926        +INF             .          
+
+  SW  Social welfare (objective function)
+
+---- VAR PG  Matched generation of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1          .           100.0000        +INF             .          
+t1.G1.b2          .           150.0000        +INF             .          
+t1.G2.b1          .              .            +INF          -40.0000      
+t1.G2.b2          .              .            +INF          -65.0000      
+t1.G3.b1          .            30.0000        +INF             .          
+t1.G3.b2          .              .            +INF             .          
+t1.G4.b1          .            15.0000        +INF             .          
+t1.G4.b2          .              .            +INF          -27.0000      
+t1.G5.b1          .           100.0000        +INF             .          
+t1.G5.b2          .              .            +INF            EPS         
+t1.G6.b1          .              .            +INF             .          
+t1.G6.b2          .              .            +INF            EPS         
+t2.G1.b1          .           100.0000        +INF             .          
+t2.G1.b2          .           100.0000        +INF             .          
+t2.G2.b1          .              .            +INF          -40.0000      
+t2.G2.b2          .              .            +INF          -65.0000      
+t2.G3.b1          .            30.0000        +INF             .          
+t2.G3.b2          .              .            +INF           -7.0000      
+t2.G4.b1          .            25.0000        +INF             .          
+t2.G4.b2          .              .            +INF          -27.0000      
+t2.G5.b1          .            50.0000        +INF             .          
+t2.G5.b2          .              .            +INF            EPS         
+t2.G6.b1          .              .            +INF             .          
+t2.G6.b2          .              .            +INF            EPS         
+t3.G1.b1          .           100.0000        +INF             .          
+t3.G1.b2          .           200.0000        +INF             .          
+t3.G2.b1          .              .            +INF          -40.0000      
+t3.G2.b2          .              .            +INF          -65.0000      
+t3.G3.b1          .            30.0000        +INF             .          
+t3.G3.b2          .            25.0000        +INF             .          
+t3.G4.b1          .            30.0000        +INF             .          
+t3.G4.b2          .             5.0000        +INF             .          
+t3.G5.b1          .           100.0000        +INF             .          
+t3.G5.b2          .              .            +INF             .          
+t3.G6.b1          .              .            +INF             .          
+t3.G6.b2          .              .            +INF            EPS         
+t4.G1.b1          .           100.0000        +INF             .          
+t4.G1.b2          .           176.1379        +INF             .          
+t4.G2.b1          .              .            +INF          -40.0000      
+t4.G2.b2          .              .            +INF          -65.0000      
+t4.G3.b1          .            30.0000        +INF             .          
+t4.G3.b2          .            46.8621        +INF             .          
+t4.G4.b1          .            30.0000        +INF             .          
+t4.G4.b2          .              .            +INF           -6.7047      
+t4.G5.b1          .           100.0000        +INF             .          
+t4.G5.b2          .              .            +INF             .          
+t4.G6.b1          .              .            +INF             .          
+t4.G6.b2          .              .            +INF            EPS         
+t5.G1.b1          .           100.0000        +INF             .          
+t5.G1.b2          .           197.9742        +INF             .          
+t5.G2.b1          .              .            +INF          -40.0000      
+t5.G2.b2          .              .            +INF          -65.0000      
+t5.G3.b1          .            30.0000        +INF             .          
+t5.G3.b2          .            26.8621        +INF             .          
+t5.G4.b1          .            30.0000        +INF             .          
+t5.G4.b2          .              .            +INF           -9.2953      
+t5.G5.b1          .           100.0000        +INF             .          
+t5.G5.b2          .              .            +INF             .          
+t5.G6.b1          .              .            +INF             .          
+t5.G6.b2          .              .            +INF            EPS         
+
+---- VAR PGT  Total matched generation [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t0.G1       150.0000       150.0000       150.0000         5.0000      
+t0.G2        28.0000        28.0000        28.0000         EPS         
+t0.G3        50.0000        50.0000        50.0000       -24.0000      
+t0.G4        25.0000        25.0000        25.0000        -1.0000      
+t0.G5       100.0000       100.0000       100.0000         EPS         
+t0.G6          .              .              .             EPS         
+t1.G1          .           250.0000        +INF             .          
+t1.G2          .              .            +INF             .          
+t1.G3          .            30.0000        +INF             .          
+t1.G4          .            15.0000        +INF             .          
+t1.G5          .           100.0000        +INF             .          
+t1.G6          .              .            +INF            EPS         
+t2.G1          .           200.0000        +INF             .          
+t2.G2          .              .            +INF             .          
+t2.G3          .            30.0000        +INF             .          
+t2.G4          .            25.0000        +INF             .          
+t2.G5          .            50.0000        +INF             .          
+t2.G6          .              .            +INF            EPS         
+t3.G1          .           300.0000        +INF             .          
+t3.G2          .              .            +INF             .          
+t3.G3          .            55.0000        +INF             .          
+t3.G4          .            35.0000        +INF             .          
+t3.G5          .           100.0000        +INF             .          
+t3.G6          .              .            +INF            EPS         
+t4.G1          .           276.1379        +INF             .          
+t4.G2          .              .            +INF             .          
+t4.G3          .            76.8621        +INF             .          
+t4.G4          .            30.0000        +INF             .          
+t4.G5          .           100.0000        +INF             .          
+t4.G6          .              .            +INF            EPS         
+t5.G1          .           297.9742        +INF             .          
+t5.G2          .              .            +INF             .          
+t5.G3          .            56.8621        +INF             .          
+t5.G4          .            30.0000        +INF             .          
+t5.G5          .           100.0000        +INF             .          
+t5.G6          .              .            +INF            EPS         
+
+---- VAR U  on-off state of the unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .             1.0000         1.0000         EPS         
+t1.G2          .              .             1.0000      9625.0000      
+t1.G3          .             1.0000         1.0000         EPS         
+t1.G4          .             1.0000         1.0000         EPS         
+t1.G5          .             1.0000         1.0000         EPS         
+t1.G6          .             1.0000         1.0000         EPS         
+t2.G1          .             1.0000         1.0000         EPS         
+t2.G2          .              .             1.0000      5775.0000      
+t2.G3          .             1.0000         1.0000         EPS         
+t2.G4          .             1.0000         1.0000         EPS         
+t2.G5          .             1.0000         1.0000         EPS         
+t2.G6          .             1.0000         1.0000         EPS         
+t3.G1          .             1.0000         1.0000         EPS         
+t3.G2          .              .             1.0000     19140.0000      
+t3.G3          .             1.0000         1.0000         EPS         
+t3.G4          .             1.0000         1.0000         EPS         
+t3.G5          .             1.0000         1.0000         EPS         
+t3.G6          .             1.0000         1.0000         EPS         
+t4.G1          .             1.0000         1.0000         EPS         
+t4.G2          .              .             1.0000      8250.0000      
+t4.G3          .             1.0000         1.0000         EPS         
+t4.G4          .             1.0000         1.0000         EPS         
+t4.G5          .             1.0000         1.0000         EPS         
+t4.G6          .             1.0000         1.0000         EPS         
+t5.G1          .             1.0000         1.0000         EPS         
+t5.G2          .              .             1.0000      8250.0000      
+t5.G3          .             1.0000         1.0000         EPS         
+t5.G4          .             1.0000         1.0000         EPS         
+t5.G5          .             1.0000         1.0000         EPS         
+t5.G6          .             1.0000         1.0000         EPS         
+
+---- VAR PD  Matched demand of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1          .             1.0000        +INF             .          
+t1.D1.b2          .              .            +INF          -35.0000      
+t1.D1.b3          .              .            +INF          -35.0000      
+t1.D2.b1          .           100.0000        +INF             .          
+t1.D2.b2          .           100.0000        +INF             .          
+t1.D2.b3          .            40.0000        +INF             .          
+t1.D3.b1          .            80.0000        +INF             .          
+t1.D3.b2          .            50.0000        +INF             .          
+t1.D3.b3          .            24.0000        +INF             .          
+t2.D1.b1          .             1.0000        +INF             .          
+t2.D1.b2          .              .            +INF          -21.0000      
+t2.D1.b3          .              .            +INF          -21.0000      
+t2.D2.b1          .            80.0000        +INF             .          
+t2.D2.b2          .            80.0000        +INF             .          
+t2.D2.b3          .            32.0000        +INF             .          
+t2.D3.b1          .            64.0000        +INF             .          
+t2.D3.b2          .            40.0000        +INF             .          
+t2.D3.b3          .             8.0000        +INF             .          
+t3.D1.b1          .             2.0000        +INF             .          
+t3.D1.b2          .              .            +INF          -69.6000      
+t3.D1.b3          .              .            +INF          -69.6000      
+t3.D2.b1          .           170.0000        +INF             .          
+t3.D2.b2          .           170.0000        +INF             .          
+t3.D2.b3          .             8.6500        +INF             .          
+t3.D3.b1          .           136.0000        +INF             .          
+t3.D3.b2          .             3.3500        +INF             .          
+t3.D3.b3          .              .            +INF          -36.0000      
+t4.D1.b1          .             2.0000        +INF             .          
+t4.D1.b2          .              .            +INF          -30.0000      
+t4.D1.b3          .              .            +INF          -30.0000      
+t4.D2.b1          .           130.0000        +INF             .          
+t4.D2.b2          .           130.0000        +INF             .          
+t4.D2.b3          .            52.0000        +INF             .          
+t4.D3.b1          .           104.0000        +INF             .          
+t4.D3.b2          .            65.0000        +INF             .          
+t4.D3.b3          .              .            +INF          -41.1429      
+t5.D1.b1          .             2.0000        +INF             .          
+t5.D1.b2          .              .            +INF          -30.0000      
+t5.D1.b3          .              .            +INF          -30.0000      
+t5.D2.b1          .           140.0000        +INF             .          
+t5.D2.b2          .           140.0000        +INF             .          
+t5.D2.b3          .            56.0000        +INF             .          
+t5.D3.b1          .           112.0000        +INF             .          
+t5.D3.b2          .            34.8362        +INF             .          
+t5.D3.b3          .              .            +INF          -39.0000      
+
+---- VAR PDT  Total matched demand [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .             1.0000        +INF             .          
+t1.D2          .           240.0000        +INF             .          
+t1.D3          .           154.0000        +INF             .          
+t2.D1          .             1.0000        +INF             .          
+t2.D2          .           192.0000        +INF             .          
+t2.D3          .           112.0000        +INF             .          
+t3.D1          .             2.0000        +INF             .          
+t3.D2          .           348.6500        +INF             .          
+t3.D3          .           139.3500        +INF             .          
+t4.D1          .             2.0000        +INF             .          
+t4.D2          .           312.0000        +INF             .          
+t4.D3          .           169.0000        +INF             .          
+t5.D1          .             2.0000        +INF             .          
+t5.D2          .           336.0000        +INF             .          
+t5.D3          .           146.8362        +INF             .          
+
+---- VAR P  Line power [MW]
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2      -150.0000       113.9227       150.0000          .          
+t1.bus1.bus3      -150.0000       135.0773       150.0000          .          
+t1.bus2.bus3      -150.0000       -15.0552       150.0000          .          
+t1.bus2.bus4      -150.0000       -66.0221       150.0000          .          
+t1.bus3.bus4      -150.0000       -33.9779       150.0000          .          
+t2.bus1.bus2      -150.0000        90.7182       150.0000          .          
+t2.bus1.bus3      -150.0000       108.2818       150.0000          .          
+t2.bus2.bus3      -150.0000       -11.6298       150.0000          .          
+t2.bus2.bus4      -150.0000       -34.6519       150.0000          .          
+t2.bus3.bus4      -150.0000       -15.3481       150.0000          .          
+t3.bus1.bus2      -150.0000       150.0000       150.0000        32.5800      
+t3.bus1.bus3      -150.0000       148.0000       150.0000          .          
+t3.bus2.bus3      -150.0000       -34.7500       150.0000          .          
+t3.bus2.bus4      -150.0000       -73.9000       150.0000          .          
+t3.bus3.bus4      -150.0000       -26.1000       150.0000          .          
+t4.bus1.bus2      -150.0000       124.1379       150.0000          .          
+t4.bus1.bus3      -150.0000       150.0000       150.0000        81.0362      
+t4.bus2.bus3      -150.0000       -15.0000       150.0000          .          
+t4.bus2.bus4      -150.0000       -66.0000       150.0000          .          
+t4.bus3.bus4      -150.0000       -34.0000       150.0000          .          
+t5.bus1.bus2      -150.0000       145.9742       150.0000          .          
+t5.bus1.bus3      -150.0000       150.0000       150.0000        74.1067      
+t5.bus2.bus3      -150.0000       -30.8313       150.0000          .          
+t5.bus2.bus4      -150.0000       -72.3325       150.0000          .          
+t5.bus3.bus4      -150.0000       -27.6675       150.0000          .          
+
+---- VAR Th  Voltage phase
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             EPS         
+t1.bus2        -INF           -0.0661        +INF             .          
+t1.bus3        -INF           -0.0540        +INF             .          
+t1.bus4        -INF           -0.0133        +INF             .          
+t2.bus1          .              .              .             EPS         
+t2.bus2        -INF           -0.0526        +INF             .          
+t2.bus3        -INF           -0.0433        +INF             .          
+t2.bus4        -INF           -0.0249        +INF             .          
+t3.bus1          .              .              .             EPS         
+t3.bus2        -INF           -0.0870        +INF             .          
+t3.bus3        -INF           -0.0592        +INF             .          
+t3.bus4        -INF           -0.0279        +INF             .          
+t4.bus1          .              .              .             EPS         
+t4.bus2        -INF           -0.0720        +INF             .          
+t4.bus3        -INF           -0.0600        +INF             .          
+t4.bus4        -INF           -0.0192        +INF             .          
+t5.bus1          .              .              .             EPS         
+t5.bus2        -INF           -0.0847        +INF             .          
+t5.bus3        -INF           -0.0600        +INF             .          
+t5.bus4        -INF           -0.0268        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 10
+OEMO_TCMPA
+Equation Listing    SOLVE TCMPA Using RMIP From line 271
+
+
+---- OF  =E=  Objective function
+
+OF..  SW + 10*PG(t1,G1,b1) + 30*PG(t1,G1,b2) + 40*PG(t1,G2,b1) + 65*PG(t1,G2,b2) + 40*PG(t1,G3,b1) + 59*PG(t1,G3,b2) + 40*PG(t1,G4,b1) + 67*PG(t1,G4,b2) + 30*PG(t1,G5,b1) + 30*PG(t1,G5,b2) + 10*PG(t2,G1,b1) + 30*PG(t2,G1,b2) + 40*PG(t2,G2,b1) + 65*PG(t2,G2,b2) + 40*PG(t2,G3,b1) + 59*PG(t2,G3,b2) + 40*PG(t2,G4,b1) + 67*PG(t2,G4,b2) + 30*PG(t2,G5,b1) + 30*PG(t2,G5,b2) + 10*PG(t3,G1,b1) + 30*PG(t3,G1,b2) + 40*PG(t3,G2,b1) + 65*PG(t3,G2,b2) + 40*PG(t3,G3,b1) + 59*PG(t3,G3,b2) + 40*PG(t3,G4,b1) + 67*PG(t3,G4,b2) + 30*PG(t3,G5,b1) + 30*PG(t3,G5,b2) + 10*PG(t4,G1,b1) + 30*PG(t4,G1,b2) + 40*PG(t4,G2,b1) + 65*PG(t4,G2,b2) + 40*PG(t4,G3,b1) + 59*PG(t4,G3,b2) + 40*PG(t4,G4,b1) + 67*PG(t4,G4,b2) + 30*PG(t4,G5,b1) + 30*PG(t4,G5,b2) + 10*PG(t5,G1,b1) + 30*PG(t5,G1,b2) + 40*PG(t5,G2,b1) + 65*PG(t5,G2,b2) + 40*PG(t5,G3,b1) + 59*PG(t5,G3,b2) + 40*PG(t5,G4,b1) + 67*PG(t5,G4,b2) + 30*PG(t5,G5,b1) + 30*PG(t5,G5,b2) - 100*PD(t1,D1,b1) - 100*PD(t1,D2,b1) - 80*PD(t1,D2,b2) - 75*PD(t1,D2,b3) - 100*PD(t1,D3,b1) - 65*PD(t1,D3,b2) - 35*PD(t1,D3,b3) - 60*PD(t2,D1,b1) - 60*PD(t2,D2,b1) - 48*PD(t2,D2,b2) - 45*PD(t2,D2,b3) - 60*PD(t2,D3,b1) - 39*PD(t2,D3,b2) - 21*PD(t2,D3,b3) - 120*PD(t3,D1,b1) - 120*PD(t3,D2,b1) - 96*PD(t3,D2,b2) - 90*PD(t3,D2,b3) - 120*PD(t3,D3,b1) - 78*PD(t3,D3,b2) - 42*PD(t3,D3,b3) - 140*PD(t4,D1,b1) - 140*PD(t4,D2,b1) - 112*PD(t4,D2,b2) - 105*PD(t4,D2,b3) - 140*PD(t4,D3,b1) - 91*PD(t4,D3,b2) - 49*PD(t4,D3,b3) - 130*PD(t5,D1,b1) - 130*PD(t5,D2,b1) - 104*PD(t5,D2,b2) - 98*PD(t5,D2,b3) - 130*PD(t5,D3,b1) - 85*PD(t5,D3,b2) - 46*PD(t5,D3,b3) =E= 0 ; (LHS = 0)
+     
+
+---- MATCHED_G  =L=  Matched generation to generation block coupling
+
+MATCHED_G(t1,G1,b1)..  PG(t1,G1,b1) =L= 100 ; (LHS = 100)
+     
+MATCHED_G(t1,G1,b2)..  PG(t1,G1,b2) =L= 200 ; (LHS = 150)
+     
+MATCHED_G(t1,G2,b1)..  PG(t1,G2,b1) =L= 50 ; (LHS = 0)
+     
+REMAINING 57 ENTRIES SKIPPED
+
+
+---- MATCHED_D  =L=  Matched demand to demand block coupling
+
+MATCHED_D(t1,D1,b1)..  PD(t1,D1,b1) =L= 1 ; (LHS = 1)
+     
+MATCHED_D(t1,D1,b2)..  PD(t1,D1,b2) =L= 0 ; (LHS = 0)
+     
+MATCHED_D(t1,D1,b3)..  PD(t1,D1,b3) =L= 0 ; (LHS = 0)
+     
+REMAINING 42 ENTRIES SKIPPED
+
+
+---- TOT_MATCHED_G  =E=  Total matched generation
+
+TOT_MATCHED_G(t1,G1)..  - PG(t1,G1,b1) - PG(t1,G1,b2) + PGT(t1,G1) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_G(t1,G2)..  - PG(t1,G2,b1) - PG(t1,G2,b2) + PGT(t1,G2) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_G(t1,G3)..  - PG(t1,G3,b1) - PG(t1,G3,b2) + PGT(t1,G3) =E= 0 ; (LHS = 0)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- TOT_MATCHED_D  =E=  Total matched demand
+
+TOT_MATCHED_D(t1,D1)..  - PD(t1,D1,b1) - PD(t1,D1,b2) - PD(t1,D1,b3) + PDT(t1,D1) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_D(t1,D2)..  - PD(t1,D2,b1) - PD(t1,D2,b2) - PD(t1,D2,b3) + PDT(t1,D2) =E= 0 ; (LHS = 0)
+     
+TOT_MATCHED_D(t1,D3)..  - PD(t1,D3,b1) - PD(t1,D3,b2) - PD(t1,D3,b3) + PDT(t1,D3) =E= 0 ; (LHS = 0)
+     
+REMAINING 12 ENTRIES SKIPPED
+
+
+---- NODAL_MARKET  =E=  Market equilibrium at bus
+
+NODAL_MARKET(t1,bus1)..  - PGT(t1,G1) - PGT(t1,G2) + PDT(t1,D1) + P(t1,bus1,bus2) + P(t1,bus1,bus3) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus2)..  - PGT(t1,G3) - PGT(t1,G4) + PDT(t1,D2) - P(t1,bus1,bus2) + P(t1,bus2,bus3) + P(t1,bus2,bus4) =E= 0 ; (LHS = 0)
+     
+NODAL_MARKET(t1,bus3)..  PDT(t1,D3) - P(t1,bus1,bus3) - P(t1,bus2,bus3) + P(t1,bus3,bus4) =E= 0 ; (LHS = 0)
+     
+REMAINING 17 ENTRIES SKIPPED
+
+
+---- LPFE  =E=  Line power flow equations
+
+LPFE(t1,bus1,bus2)..  P(t1,bus1,bus2) - 1724.13793103448*Th(t1,bus1) + 1724.13793103448*Th(t1,bus2) =E= 0 ; (LHS = 0)
+     
+LPFE(t1,bus1,bus3)..  P(t1,bus1,bus3) - 2500*Th(t1,bus1) + 2500*Th(t1,bus3) =E= 0 ; (LHS = 0)
+     
+LPFE(t1,bus2,bus3)..  P(t1,bus2,bus3) - 1250*Th(t1,bus2) + 1250*Th(t1,bus3) =E= 0 ; (LHS = 0)
+     
+REMAINING 22 ENTRIES SKIPPED
+
+
+---- RAMP_D  =G=  Ramp down limit constraints
+
+RAMP_D(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =G= -100 ; (LHS = 100)
+     
+RAMP_D(t1,G2)..  - PGT(t0,G2) + PGT(t1,G2) =G= -30 ; (LHS = -28)
+     
+RAMP_D(t1,G3)..  - PGT(t0,G3) + PGT(t1,G3) =G= -20 ; (LHS = -20)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- RAMP_U  =L=  Ramp up limit constraints
+
+RAMP_U(t1,G1)..  - PGT(t0,G1) + PGT(t1,G1) =L= 100 ; (LHS = 100)
+     
+RAMP_U(t1,G2)..  - PGT(t0,G2) + PGT(t1,G2) =L= 30 ; (LHS = -28)
+     
+RAMP_U(t1,G3)..  - PGT(t0,G3) + PGT(t1,G3) =L= 25 ; (LHS = -20)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- PGMIN  =G=  Minimum generation
+
+PGMIN(t1,G1)..  PGT(t1,G1) - 30*U(t1,G1) =G= 0 ; (LHS = 220)
+     
+PGMIN(t1,G2)..  PGT(t1,G2) - 28*U(t1,G2) =G= 0 ; (LHS = 0)
+     
+PGMIN(t1,G3)..  PGT(t1,G3) - 10*U(t1,G3) =G= 0 ; (LHS = 20)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+
+---- PGMAX  =L=  Maximum generation
+
+PGMAX(t1,G1)..  PGT(t1,G1) - 300*U(t1,G1) =L= 0 ; (LHS = -50)
+     
+PGMAX(t1,G2)..  PGT(t1,G2) - 275*U(t1,G2) =L= 0 ; (LHS = 0)
+     
+PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = -70)
+     
+REMAINING 27 ENTRIES SKIPPED
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 11
+OEMO_TCMPA
+Column Listing      SOLVE TCMPA Using RMIP From line 271
+
+
+---- SW  Social welfare (objective function)
+
+SW
+                (.LO, .L, .UP, .M = -INF, 157638.792555831, +INF, 0)
+        1       OF
+
+
+---- PG  Matched generation of each block [MW]
+
+PG(t1,G1,b1)
+                (.LO, .L, .UP, .M = 0, 100, +INF, 0)
+       10       OF
+        1       MATCHED_G(t1,G1,b1)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G1,b2)
+                (.LO, .L, .UP, .M = 0, 150, +INF, 0)
+       30       OF
+        1       MATCHED_G(t1,G1,b2)
+       -1       TOT_MATCHED_G(t1,G1)
+
+PG(t1,G2,b1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, -40)
+       40       OF
+        1       MATCHED_G(t1,G2,b1)
+       -1       TOT_MATCHED_G(t1,G2)
+
+REMAINING 57 ENTRIES SKIPPED
+
+---- PGT  Total matched generation [MW]
+
+PGT(t0,G1)
+                (.LO, .L, .UP, .M = 150, 150, 150, 5)
+       -1       RAMP_D(t1,G1)
+       -1       RAMP_U(t1,G1)
+
+PGT(t0,G2)
+                (.LO, .L, .UP, .M = 28, 28, 28, EPS)
+       -1       RAMP_D(t1,G2)
+       -1       RAMP_U(t1,G2)
+
+PGT(t0,G3)
+                (.LO, .L, .UP, .M = 50, 50, 50, -24)
+       -1       RAMP_D(t1,G3)
+       -1       RAMP_U(t1,G3)
+
+REMAINING 33 ENTRIES SKIPPED
+
+---- U  on-off state of the unit
+
+U(t1,G1)
+                (.LO, .L, .UP, .M = 1, 1, 1, EPS)
+      -30       PGMIN(t1,G1)
+     -300       PGMAX(t1,G1)
+
+U(t1,G2)
+                (.LO, .L, .UP, .M = 0, 0, 0, 9625)
+      -28       PGMIN(t1,G2)
+     -275       PGMAX(t1,G2)
+
+U(t1,G3)
+                (.LO, .L, .UP, .M = 1, 1, 1, EPS)
+      -10       PGMIN(t1,G3)
+     -100       PGMAX(t1,G3)
+
+REMAINING 27 ENTRIES SKIPPED
+
+---- PD  Matched demand of each block [MW]
+
+PD(t1,D1,b1)
+                (.LO, .L, .UP, .M = 0, 1, +INF, 0)
+     -100       OF
+        1       MATCHED_D(t1,D1,b1)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, -35)
+        1       MATCHED_D(t1,D1,b2)
+       -1       TOT_MATCHED_D(t1,D1)
+
+PD(t1,D1,b3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, -35)
+        1       MATCHED_D(t1,D1,b3)
+       -1       TOT_MATCHED_D(t1,D1)
+
+REMAINING 42 ENTRIES SKIPPED
+
+---- PDT  Total matched demand [MW]
+
+PDT(t1,D1)
+                (.LO, .L, .UP, .M = 0, 1, +INF, 0)
+        1       TOT_MATCHED_D(t1,D1)
+        1       NODAL_MARKET(t1,bus1)
+
+PDT(t1,D2)
+                (.LO, .L, .UP, .M = 0, 240, +INF, 0)
+        1       TOT_MATCHED_D(t1,D2)
+        1       NODAL_MARKET(t1,bus2)
+
+PDT(t1,D3)
+                (.LO, .L, .UP, .M = 0, 154, +INF, 0)
+        1       TOT_MATCHED_D(t1,D3)
+        1       NODAL_MARKET(t1,bus3)
+
+REMAINING 12 ENTRIES SKIPPED
+
+---- P  Line power [MW]
+
+P(t1,bus1,bus2)
+                (.LO, .L, .UP, .M = -150, 113.922651933702, 150, 0)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus2)
+        1       LPFE(t1,bus1,bus2)
+
+P(t1,bus1,bus3)
+                (.LO, .L, .UP, .M = -150, 135.077348066298, 150, 0)
+        1       NODAL_MARKET(t1,bus1)
+       -1       NODAL_MARKET(t1,bus3)
+        1       LPFE(t1,bus1,bus3)
+
+P(t1,bus2,bus3)
+                (.LO, .L, .UP, .M = -150, -15.0552486187846, 150, 0)
+        1       NODAL_MARKET(t1,bus2)
+       -1       NODAL_MARKET(t1,bus3)
+        1       LPFE(t1,bus2,bus3)
+
+REMAINING 22 ENTRIES SKIPPED
+
+---- Th  Voltage phase
+
+Th(t1,bus1)
+                (.LO, .L, .UP, .M = 0, 0, 0, EPS)
+    -1724.1379  LPFE(t1,bus1,bus2)
+    -2500       LPFE(t1,bus1,bus3)
+
+Th(t1,bus2)
+                (.LO, .L, .UP, .M = -INF, -0.066075138121547, +INF, 0)
+     1724.1379  LPFE(t1,bus1,bus2)
+    -1250       LPFE(t1,bus2,bus3)
+    -1250       LPFE(t1,bus2,bus4)
+
+Th(t1,bus3)
+                (.LO, .L, .UP, .M = -INF, -0.0540309392265194, +INF, 0)
+     2500       LPFE(t1,bus1,bus3)
+     1250       LPFE(t1,bus2,bus3)
+     -833.3333  LPFE(t1,bus3,bus4)
+
+REMAINING 17 ENTRIES SKIPPED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 12
+OEMO_TCMPA
+Range Statistics    SOLVE TCMPA Using RMIP From line 271
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
+
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 13
+OEMO_TCMPA
+Model Statistics    SOLVE TCMPA Using RMIP From line 271
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          316
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          232
+NON ZERO ELEMENTS           741     DISCRETE VARIABLES         30
+
+
+GENERATION TIME      =        0.015 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 14
+OEMO_TCMPA
+Solution Report     SOLVE TCMPA Using RMIP From line 271
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   TCMPA               OBJECTIVE  SW
+     TYPE    RMIP                DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  271
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE           157638.7926
+
+ RESOURCE USAGE, LIMIT          0.016 10000000000.000
+ ITERATION COUNT, LIMIT         2    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- Space for names approximately 0.01 Mb
+--- Use option 'names no' to turn use of names off
+--- GMO memory 0.56 Mb (peak 0.56 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.02sec (det. 0.61 ticks)
+
+
+Optimal solution found
+Objective:       157638.792556
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU OF                  .              .              .             1.0000      
+
+  OF  Objective function
+
+---- EQU MATCHED_G  Matched generation to generation block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1        -INF          100.0000       100.0000        20.0000      
+t1.G1.b2        -INF          150.0000       200.0000          .          
+t1.G2.b1        -INF             .            50.0000          .          
+t1.G2.b2        -INF             .            25.0000          .          
+t1.G3.b1        -INF           30.0000        30.0000        19.0000      
+t1.G3.b2        -INF             .            70.0000          .          
+t1.G4.b1        -INF           15.0000        30.0000          .          
+t1.G4.b2        -INF             .            20.0000          .          
+t1.G5.b1        -INF          100.0000       100.0000          .          
+t1.G5.b2        -INF             .              .              .          
+t1.G6.b1        -INF             .             5.0000          .          
+t1.G6.b2        -INF             .              .              .          
+t2.G1.b1        -INF          100.0000       100.0000        20.0000      
+t2.G1.b2        -INF          100.0000       200.0000          .          
+t2.G2.b1        -INF             .            50.0000          .          
+t2.G2.b2        -INF             .            25.0000          .          
+t2.G3.b1        -INF           30.0000        30.0000        12.0000      
+t2.G3.b2        -INF             .            70.0000          .          
+t2.G4.b1        -INF           25.0000        30.0000          .          
+t2.G4.b2        -INF             .            20.0000          .          
+t2.G5.b1        -INF           50.0000       100.0000          .          
+t2.G5.b2        -INF             .              .              .          
+t2.G6.b1        -INF             .            10.0000          .          
+t2.G6.b2        -INF             .              .              .          
+t3.G1.b1        -INF          100.0000       100.0000        20.0000      
+t3.G1.b2        -INF          200.0000       200.0000          .          
+t3.G2.b1        -INF             .            50.0000          .          
+t3.G2.b2        -INF             .            25.0000          .          
+t3.G3.b1        -INF           30.0000        30.0000        19.0000      
+t3.G3.b2        -INF           25.0000        70.0000          .          
+t3.G4.b1        -INF           30.0000        30.0000        27.0000      
+t3.G4.b2        -INF            5.0000        20.0000          .          
+t3.G5.b1        -INF          100.0000       100.0000        51.2000      
+t3.G5.b2        -INF             .              .            51.2000      
+t3.G6.b1        -INF             .            15.0000          .          
+t3.G6.b2        -INF             .              .              .          
+t4.G1.b1        -INF          100.0000       100.0000        20.0000      
+t4.G1.b2        -INF          176.1379       200.0000          .          
+t4.G2.b1        -INF             .            50.0000          .          
+t4.G2.b2        -INF             .            25.0000          .          
+t4.G3.b1        -INF           30.0000        30.0000        19.0000      
+t4.G3.b2        -INF           46.8621        70.0000          .          
+t4.G4.b1        -INF           30.0000        30.0000        20.2953      
+t4.G4.b2        -INF             .            20.0000          .          
+t4.G5.b1        -INF          100.0000       100.0000        42.2343      
+t4.G5.b2        -INF             .              .            42.2343      
+t4.G6.b1        -INF             .            20.0000          .          
+t4.G6.b2        -INF             .              .              .          
+t5.G1.b1        -INF          100.0000       100.0000        20.0000      
+t5.G1.b2        -INF          197.9742       200.0000          .          
+t5.G2.b1        -INF             .            50.0000          .          
+t5.G2.b2        -INF             .            25.0000          .          
+t5.G3.b1        -INF           30.0000        30.0000        19.0000      
+t5.G3.b2        -INF           26.8621        70.0000          .          
+t5.G4.b1        -INF           30.0000        30.0000        17.7047      
+t5.G4.b2        -INF             .            20.0000          .          
+t5.G5.b1        -INF          100.0000       100.0000        38.6228      
+t5.G5.b2        -INF             .              .            38.6228      
+t5.G6.b1        -INF             .            10.0000          .          
+t5.G6.b2        -INF             .              .              .          
+
+---- EQU MATCHED_D  Matched demand to demand block coupling
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1        -INF            1.0000         1.0000        65.0000      
+t1.D1.b2        -INF             .              .              .          
+t1.D1.b3        -INF             .              .              .          
+t1.D2.b1        -INF          100.0000       100.0000        65.0000      
+t1.D2.b2        -INF          100.0000       100.0000        45.0000      
+t1.D2.b3        -INF           40.0000        40.0000        40.0000      
+t1.D3.b1        -INF           80.0000        80.0000        65.0000      
+t1.D3.b2        -INF           50.0000        50.0000        30.0000      
+t1.D3.b3        -INF           24.0000        30.0000          .          
+t2.D1.b1        -INF            1.0000         1.0000        39.0000      
+t2.D1.b2        -INF             .              .              .          
+t2.D1.b3        -INF             .              .              .          
+t2.D2.b1        -INF           80.0000        80.0000        39.0000      
+t2.D2.b2        -INF           80.0000        80.0000        27.0000      
+t2.D2.b3        -INF           32.0000        32.0000        24.0000      
+t2.D3.b1        -INF           64.0000        64.0000        39.0000      
+t2.D3.b2        -INF           40.0000        40.0000        18.0000      
+t2.D3.b3        -INF            8.0000        24.0000          .          
+t3.D1.b1        -INF            2.0000         2.0000        50.4000      
+t3.D1.b2        -INF             .              .              .          
+t3.D1.b3        -INF             .              .              .          
+t3.D2.b1        -INF          170.0000       170.0000        30.0000      
+t3.D2.b2        -INF          170.0000       170.0000         6.0000      
+t3.D2.b3        -INF            8.6500        68.0000          .          
+t3.D3.b1        -INF          136.0000       136.0000        42.0000      
+t3.D3.b2        -INF            3.3500        85.0000          .          
+t3.D3.b3        -INF             .            51.0000          .          
+t4.D1.b1        -INF            2.0000         2.0000       110.0000      
+t4.D1.b2        -INF             .              .              .          
+t4.D1.b3        -INF             .              .              .          
+t4.D2.b1        -INF          130.0000       130.0000        79.7047      
+t4.D2.b2        -INF          130.0000       130.0000        51.7047      
+t4.D2.b3        -INF           52.0000        52.0000        44.7047      
+t4.D3.b1        -INF          104.0000       104.0000        49.8571      
+t4.D3.b2        -INF           65.0000        65.0000         0.8571      
+t4.D3.b3        -INF             .            39.0000          .          
+t5.D1.b1        -INF            2.0000         2.0000       100.0000      
+t5.D1.b2        -INF             .              .              .          
+t5.D1.b3        -INF             .              .              .          
+t5.D2.b1        -INF          140.0000       140.0000        72.2953      
+t5.D2.b2        -INF          140.0000       140.0000        46.2953      
+t5.D2.b3        -INF           56.0000        56.0000        40.2953      
+t5.D3.b1        -INF          112.0000       112.0000        45.0000      
+t5.D3.b2        -INF           34.8362        70.0000          .          
+t5.D3.b3        -INF             .            42.0000          .          
+
+---- EQU TOT_MATCHED_G  Total matched generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .              .              .            30.0000      
+t1.G2          .              .              .              .          
+t1.G3          .              .              .            59.0000      
+t1.G4          .              .              .            40.0000      
+t1.G5          .              .              .            30.0000      
+t1.G6          .              .              .             EPS         
+t2.G1          .              .              .            30.0000      
+t2.G2          .              .              .              .          
+t2.G3          .              .              .            52.0000      
+t2.G4          .              .              .            40.0000      
+t2.G5          .              .              .            30.0000      
+t2.G6          .              .              .             EPS         
+t3.G1          .              .              .            30.0000      
+t3.G2          .              .              .              .          
+t3.G3          .              .              .            59.0000      
+t3.G4          .              .              .            67.0000      
+t3.G5          .              .              .            81.2000      
+t3.G6          .              .              .             EPS         
+t4.G1          .              .              .            30.0000      
+t4.G2          .              .              .              .          
+t4.G3          .              .              .            59.0000      
+t4.G4          .              .              .            60.2953      
+t4.G5          .              .              .            72.2343      
+t4.G6          .              .              .             EPS         
+t5.G1          .              .              .            30.0000      
+t5.G2          .              .              .              .          
+t5.G3          .              .              .            59.0000      
+t5.G4          .              .              .            57.7047      
+t5.G5          .              .              .            68.6228      
+t5.G6          .              .              .             EPS         
+
+---- EQU TOT_MATCHED_D  Total matched demand
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .              .              .           -35.0000      
+t1.D2          .              .              .           -35.0000      
+t1.D3          .              .              .           -35.0000      
+t2.D1          .              .              .           -21.0000      
+t2.D2          .              .              .           -21.0000      
+t2.D3          .              .              .           -21.0000      
+t3.D1          .              .              .           -69.6000      
+t3.D2          .              .              .           -90.0000      
+t3.D3          .              .              .           -78.0000      
+t4.D1          .              .              .           -30.0000      
+t4.D2          .              .              .           -60.2953      
+t4.D3          .              .              .           -90.1429      
+t5.D1          .              .              .           -30.0000      
+t5.D2          .              .              .           -57.7047      
+t5.D3          .              .              .           -85.0000      
+
+---- EQU NODAL_MARKET  Market equilibrium at bus
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .            35.0000      
+t1.bus2          .              .              .            35.0000      
+t1.bus3          .              .              .            35.0000      
+t1.bus4          .              .              .            35.0000      
+t2.bus1          .              .              .            21.0000      
+t2.bus2          .              .              .            21.0000      
+t2.bus3          .              .              .            21.0000      
+t2.bus4          .              .              .            21.0000      
+t3.bus1          .              .              .            69.6000      
+t3.bus2          .              .              .            90.0000      
+t3.bus3          .              .              .            78.0000      
+t3.bus4          .              .              .            85.2000      
+t4.bus1          .              .              .            30.0000      
+t4.bus2          .              .              .            60.2953      
+t4.bus3          .              .              .            90.1429      
+t4.bus4          .              .              .            72.2343      
+t5.bus1          .              .              .            30.0000      
+t5.bus2          .              .              .            57.7047      
+t5.bus3          .              .              .            85.0000      
+t5.bus4          .              .              .            68.6228      
+
+---- EQU LPFE  Line power flow equations
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2          .              .              .             EPS         
+t1.bus1.bus3          .              .              .             EPS         
+t1.bus2.bus3          .              .              .             EPS         
+t1.bus2.bus4          .              .              .             EPS         
+t1.bus3.bus4          .              .              .             EPS         
+t2.bus1.bus2          .              .              .             EPS         
+t2.bus1.bus3          .              .              .             EPS         
+t2.bus2.bus3          .              .              .             EPS         
+t2.bus2.bus4          .              .              .             EPS         
+t2.bus3.bus4          .              .              .             EPS         
+t3.bus1.bus2          .              .              .           -12.1800      
+t3.bus1.bus3          .              .              .             8.4000      
+t3.bus2.bus3          .              .              .           -12.0000      
+t3.bus2.bus4          .              .              .            -4.8000      
+t3.bus3.bus4          .              .              .             7.2000      
+t4.bus1.bus2          .              .              .            30.2953      
+t4.bus1.bus3          .              .              .           -20.8933      
+t4.bus2.bus3          .              .              .            29.8476      
+t4.bus2.bus4          .              .              .            11.9390      
+t4.bus3.bus4          .              .              .           -17.9085      
+t5.bus1.bus2          .              .              .            27.7047      
+t5.bus1.bus3          .              .              .           -19.1067      
+t5.bus2.bus3          .              .              .            27.2953      
+t5.bus2.bus4          .              .              .            10.9181      
+t5.bus3.bus4          .              .              .           -16.3772      
+
+---- EQU RAMP_D  Ramp down limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1      -100.0000       100.0000        +INF             .          
+t1.G2       -30.0000       -28.0000        +INF             .          
+t1.G3       -20.0000       -20.0000        +INF          -24.0000      
+t1.G4       -10.0000       -10.0000        +INF           -1.0000      
+t1.G5       -50.0000          .            +INF             .          
+t1.G6    -99999.0000          .            +INF             .          
+t2.G1      -100.0000       -50.0000        +INF             .          
+t2.G2       -30.0000          .            +INF             .          
+t2.G3       -20.0000          .            +INF             .          
+t2.G4       -10.0000        10.0000        +INF             .          
+t2.G5       -50.0000       -50.0000        +INF           -5.0000      
+t2.G6    -99999.0000          .            +INF             .          
+t3.G1      -100.0000       100.0000        +INF             .          
+t3.G2       -30.0000          .            +INF             .          
+t3.G3       -20.0000        25.0000        +INF             .          
+t3.G4       -10.0000        10.0000        +INF             .          
+t3.G5       -50.0000        50.0000        +INF             .          
+t3.G6    -99999.0000          .            +INF             .          
+t4.G1      -100.0000       -23.8621        +INF             .          
+t4.G2       -30.0000          .            +INF             .          
+t4.G3       -20.0000        21.8621        +INF             .          
+t4.G4       -10.0000        -5.0000        +INF             .          
+t4.G5       -50.0000          .            +INF             .          
+t4.G6    -99999.0000          .            +INF             .          
+t5.G1      -100.0000        21.8362        +INF             .          
+t5.G2       -30.0000          .            +INF             .          
+t5.G3       -20.0000       -20.0000        +INF           -1.2953      
+t5.G4       -10.0000          .            +INF             .          
+t5.G5       -50.0000          .            +INF             .          
+t5.G6    -99999.0000          .            +INF             .          
+
+---- EQU RAMP_U  Ramp up limit constraints
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF          100.0000       100.0000         5.0000      
+t1.G2        -INF          -28.0000        30.0000          .          
+t1.G3        -INF          -20.0000        25.0000          .          
+t1.G4        -INF          -10.0000        10.0000          .          
+t1.G5        -INF             .            50.0000          .          
+t1.G6        -INF             .         99999.0000          .          
+t2.G1        -INF          -50.0000       100.0000          .          
+t2.G2        -INF             .            30.0000          .          
+t2.G3        -INF             .            25.0000          .          
+t2.G4        -INF           10.0000        10.0000         4.0000      
+t2.G5        -INF          -50.0000        50.0000          .          
+t2.G6        -INF             .         99999.0000          .          
+t3.G1        -INF          100.0000       100.0000         9.0000      
+t3.G2        -INF             .            30.0000          .          
+t3.G3        -INF           25.0000        25.0000        31.0000      
+t3.G4        -INF           10.0000        10.0000        23.0000      
+t3.G5        -INF           50.0000        50.0000         4.0000      
+t3.G6        -INF             .         99999.0000          .          
+t4.G1        -INF          -23.8621       100.0000          .          
+t4.G2        -INF             .            30.0000          .          
+t4.G3        -INF           21.8621        25.0000          .          
+t4.G4        -INF           -5.0000        10.0000          .          
+t4.G5        -INF             .            50.0000          .          
+t4.G6        -INF             .         99999.0000          .          
+t5.G1        -INF           21.8362       100.0000          .          
+t5.G2        -INF             .            30.0000          .          
+t5.G3        -INF          -20.0000        25.0000          .          
+t5.G4        -INF             .            10.0000          .          
+t5.G5        -INF             .            50.0000          .          
+t5.G6        -INF             .         99999.0000          .          
+
+---- EQU PGMIN  Minimum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1          .           220.0000        +INF             .          
+t1.G2          .              .            +INF             .          
+t1.G3          .            20.0000        +INF             .          
+t1.G4          .            10.0000        +INF             .          
+t1.G5          .            80.0000        +INF             .          
+t1.G6          .              .            +INF             .          
+t2.G1          .           170.0000        +INF             .          
+t2.G2          .              .            +INF             .          
+t2.G3          .            20.0000        +INF             .          
+t2.G4          .            20.0000        +INF             .          
+t2.G5          .            30.0000        +INF             .          
+t2.G6          .              .            +INF             .          
+t3.G1          .           270.0000        +INF             .          
+t3.G2          .              .            +INF             .          
+t3.G3          .            45.0000        +INF             .          
+t3.G4          .            30.0000        +INF             .          
+t3.G5          .            80.0000        +INF             .          
+t3.G6          .              .            +INF             .          
+t4.G1          .           246.1379        +INF             .          
+t4.G2          .              .            +INF             .          
+t4.G3          .            66.8621        +INF             .          
+t4.G4          .            25.0000        +INF             .          
+t4.G5          .            80.0000        +INF             .          
+t4.G6          .              .            +INF             .          
+t5.G1          .           267.9742        +INF             .          
+t5.G2          .              .            +INF             .          
+t5.G3          .            46.8621        +INF             .          
+t5.G4          .            25.0000        +INF             .          
+t5.G5          .            80.0000        +INF             .          
+t5.G6          .              .            +INF             .          
+
+---- EQU PGMAX  Maximum generation
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1        -INF          -50.0000          .              .          
+t1.G2        -INF             .              .            35.0000      
+t1.G3        -INF          -70.0000          .              .          
+t1.G4        -INF          -35.0000          .              .          
+t1.G5        -INF         -100.0000          .              .          
+t1.G6        -INF       -99999.0000          .              .          
+t2.G1        -INF         -100.0000          .              .          
+t2.G2        -INF             .              .            21.0000      
+t2.G3        -INF          -70.0000          .              .          
+t2.G4        -INF          -25.0000          .              .          
+t2.G5        -INF         -150.0000          .              .          
+t2.G6        -INF       -99999.0000          .              .          
+t3.G1        -INF             .              .            30.6000      
+t3.G2        -INF             .              .            69.6000      
+t3.G3        -INF          -45.0000          .              .          
+t3.G4        -INF          -15.0000          .              .          
+t3.G5        -INF         -100.0000          .              .          
+t3.G6        -INF       -99999.0000          .              .          
+t4.G1        -INF          -23.8621          .              .          
+t4.G2        -INF             .              .            30.0000      
+t4.G3        -INF          -23.1379          .              .          
+t4.G4        -INF          -20.0000          .              .          
+t4.G5        -INF         -100.0000          .              .          
+t4.G6        -INF       -99999.0000          .              .          
+t5.G1        -INF           -2.0258          .              .          
+t5.G2        -INF             .              .            30.0000      
+t5.G3        -INF          -43.1379          .              .          
+t5.G4        -INF          -20.0000          .              .          
+t5.G5        -INF         -100.0000          .              .          
+t5.G6        -INF       -99999.0000          .              .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR SW                -INF       157638.7926        +INF             .          
+
+  SW  Social welfare (objective function)
+
+---- VAR PG  Matched generation of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1.b1          .           100.0000        +INF             .          
+t1.G1.b2          .           150.0000        +INF             .          
+t1.G2.b1          .              .            +INF          -40.0000      
+t1.G2.b2          .              .            +INF          -65.0000      
+t1.G3.b1          .            30.0000        +INF             .          
+t1.G3.b2          .              .            +INF             .          
+t1.G4.b1          .            15.0000        +INF             .          
+t1.G4.b2          .              .            +INF          -27.0000      
+t1.G5.b1          .           100.0000        +INF             .          
+t1.G5.b2          .              .            +INF            EPS         
+t1.G6.b1          .              .            +INF             .          
+t1.G6.b2          .              .            +INF            EPS         
+t2.G1.b1          .           100.0000        +INF             .          
+t2.G1.b2          .           100.0000        +INF             .          
+t2.G2.b1          .              .            +INF          -40.0000      
+t2.G2.b2          .              .            +INF          -65.0000      
+t2.G3.b1          .            30.0000        +INF             .          
+t2.G3.b2          .              .            +INF           -7.0000      
+t2.G4.b1          .            25.0000        +INF             .          
+t2.G4.b2          .              .            +INF          -27.0000      
+t2.G5.b1          .            50.0000        +INF             .          
+t2.G5.b2          .              .            +INF            EPS         
+t2.G6.b1          .              .            +INF             .          
+t2.G6.b2          .              .            +INF            EPS         
+t3.G1.b1          .           100.0000        +INF             .          
+t3.G1.b2          .           200.0000        +INF             .          
+t3.G2.b1          .              .            +INF          -40.0000      
+t3.G2.b2          .              .            +INF          -65.0000      
+t3.G3.b1          .            30.0000        +INF             .          
+t3.G3.b2          .            25.0000        +INF             .          
+t3.G4.b1          .            30.0000        +INF             .          
+t3.G4.b2          .             5.0000        +INF             .          
+t3.G5.b1          .           100.0000        +INF             .          
+t3.G5.b2          .              .            +INF             .          
+t3.G6.b1          .              .            +INF             .          
+t3.G6.b2          .              .            +INF            EPS         
+t4.G1.b1          .           100.0000        +INF             .          
+t4.G1.b2          .           176.1379        +INF             .          
+t4.G2.b1          .              .            +INF          -40.0000      
+t4.G2.b2          .              .            +INF          -65.0000      
+t4.G3.b1          .            30.0000        +INF             .          
+t4.G3.b2          .            46.8621        +INF             .          
+t4.G4.b1          .            30.0000        +INF             .          
+t4.G4.b2          .              .            +INF           -6.7047      
+t4.G5.b1          .           100.0000        +INF             .          
+t4.G5.b2          .              .            +INF             .          
+t4.G6.b1          .              .            +INF             .          
+t4.G6.b2          .              .            +INF            EPS         
+t5.G1.b1          .           100.0000        +INF             .          
+t5.G1.b2          .           197.9742        +INF             .          
+t5.G2.b1          .              .            +INF          -40.0000      
+t5.G2.b2          .              .            +INF          -65.0000      
+t5.G3.b1          .            30.0000        +INF             .          
+t5.G3.b2          .            26.8621        +INF             .          
+t5.G4.b1          .            30.0000        +INF             .          
+t5.G4.b2          .              .            +INF           -9.2953      
+t5.G5.b1          .           100.0000        +INF             .          
+t5.G5.b2          .              .            +INF             .          
+t5.G6.b1          .              .            +INF             .          
+t5.G6.b2          .              .            +INF            EPS         
+
+---- VAR PGT  Total matched generation [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t0.G1       150.0000       150.0000       150.0000         5.0000      
+t0.G2        28.0000        28.0000        28.0000         EPS         
+t0.G3        50.0000        50.0000        50.0000       -24.0000      
+t0.G4        25.0000        25.0000        25.0000        -1.0000      
+t0.G5       100.0000       100.0000       100.0000         EPS         
+t0.G6          .              .              .             EPS         
+t1.G1          .           250.0000        +INF             .          
+t1.G2          .              .            +INF             .          
+t1.G3          .            30.0000        +INF             .          
+t1.G4          .            15.0000        +INF             .          
+t1.G5          .           100.0000        +INF             .          
+t1.G6          .              .            +INF            EPS         
+t2.G1          .           200.0000        +INF             .          
+t2.G2          .              .            +INF             .          
+t2.G3          .            30.0000        +INF             .          
+t2.G4          .            25.0000        +INF             .          
+t2.G5          .            50.0000        +INF             .          
+t2.G6          .              .            +INF            EPS         
+t3.G1          .           300.0000        +INF             .          
+t3.G2          .              .            +INF             .          
+t3.G3          .            55.0000        +INF             .          
+t3.G4          .            35.0000        +INF             .          
+t3.G5          .           100.0000        +INF             .          
+t3.G6          .              .            +INF            EPS         
+t4.G1          .           276.1379        +INF             .          
+t4.G2          .              .            +INF             .          
+t4.G3          .            76.8621        +INF             .          
+t4.G4          .            30.0000        +INF             .          
+t4.G5          .           100.0000        +INF             .          
+t4.G6          .              .            +INF            EPS         
+t5.G1          .           297.9742        +INF             .          
+t5.G2          .              .            +INF             .          
+t5.G3          .            56.8621        +INF             .          
+t5.G4          .            30.0000        +INF             .          
+t5.G5          .           100.0000        +INF             .          
+t5.G6          .              .            +INF            EPS         
+
+---- VAR U  on-off state of the unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.G1         1.0000         1.0000         1.0000         EPS         
+t1.G2          .              .              .          9625.0000      
+t1.G3         1.0000         1.0000         1.0000         EPS         
+t1.G4         1.0000         1.0000         1.0000         EPS         
+t1.G5         1.0000         1.0000         1.0000         EPS         
+t1.G6         1.0000         1.0000         1.0000         EPS         
+t2.G1         1.0000         1.0000         1.0000         EPS         
+t2.G2          .              .              .          5775.0000      
+t2.G3         1.0000         1.0000         1.0000         EPS         
+t2.G4         1.0000         1.0000         1.0000         EPS         
+t2.G5         1.0000         1.0000         1.0000         EPS         
+t2.G6         1.0000         1.0000         1.0000         EPS         
+t3.G1         1.0000         1.0000         1.0000      9180.0000      
+t3.G2          .              .              .         19140.0000      
+t3.G3         1.0000         1.0000         1.0000         EPS         
+t3.G4         1.0000         1.0000         1.0000         EPS         
+t3.G5         1.0000         1.0000         1.0000         EPS         
+t3.G6         1.0000         1.0000         1.0000         EPS         
+t4.G1         1.0000         1.0000         1.0000         EPS         
+t4.G2          .              .              .          8250.0000      
+t4.G3         1.0000         1.0000         1.0000         EPS         
+t4.G4         1.0000         1.0000         1.0000         EPS         
+t4.G5         1.0000         1.0000         1.0000         EPS         
+t4.G6         1.0000         1.0000         1.0000         EPS         
+t5.G1         1.0000         1.0000         1.0000         EPS         
+t5.G2          .              .              .          8250.0000      
+t5.G3         1.0000         1.0000         1.0000         EPS         
+t5.G4         1.0000         1.0000         1.0000         EPS         
+t5.G5         1.0000         1.0000         1.0000         EPS         
+t5.G6         1.0000         1.0000         1.0000         EPS         
+
+---- VAR PD  Matched demand of each block [MW]
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1.b1          .             1.0000        +INF             .          
+t1.D1.b2          .              .            +INF          -35.0000      
+t1.D1.b3          .              .            +INF          -35.0000      
+t1.D2.b1          .           100.0000        +INF             .          
+t1.D2.b2          .           100.0000        +INF             .          
+t1.D2.b3          .            40.0000        +INF             .          
+t1.D3.b1          .            80.0000        +INF             .          
+t1.D3.b2          .            50.0000        +INF             .          
+t1.D3.b3          .            24.0000        +INF             .          
+t2.D1.b1          .             1.0000        +INF             .          
+t2.D1.b2          .              .            +INF          -21.0000      
+t2.D1.b3          .              .            +INF          -21.0000      
+t2.D2.b1          .            80.0000        +INF             .          
+t2.D2.b2          .            80.0000        +INF             .          
+t2.D2.b3          .            32.0000        +INF             .          
+t2.D3.b1          .            64.0000        +INF             .          
+t2.D3.b2          .            40.0000        +INF             .          
+t2.D3.b3          .             8.0000        +INF             .          
+t3.D1.b1          .             2.0000        +INF             .          
+t3.D1.b2          .              .            +INF          -69.6000      
+t3.D1.b3          .              .            +INF          -69.6000      
+t3.D2.b1          .           170.0000        +INF             .          
+t3.D2.b2          .           170.0000        +INF             .          
+t3.D2.b3          .             8.6500        +INF             .          
+t3.D3.b1          .           136.0000        +INF             .          
+t3.D3.b2          .             3.3500        +INF             .          
+t3.D3.b3          .              .            +INF          -36.0000      
+t4.D1.b1          .             2.0000        +INF             .          
+t4.D1.b2          .              .            +INF          -30.0000      
+t4.D1.b3          .              .            +INF          -30.0000      
+t4.D2.b1          .           130.0000        +INF             .          
+t4.D2.b2          .           130.0000        +INF             .          
+t4.D2.b3          .            52.0000        +INF             .          
+t4.D3.b1          .           104.0000        +INF             .          
+t4.D3.b2          .            65.0000        +INF             .          
+t4.D3.b3          .              .            +INF          -41.1429      
+t5.D1.b1          .             2.0000        +INF             .          
+t5.D1.b2          .              .            +INF          -30.0000      
+t5.D1.b3          .              .            +INF          -30.0000      
+t5.D2.b1          .           140.0000        +INF             .          
+t5.D2.b2          .           140.0000        +INF             .          
+t5.D2.b3          .            56.0000        +INF             .          
+t5.D3.b1          .           112.0000        +INF             .          
+t5.D3.b2          .            34.8362        +INF             .          
+t5.D3.b3          .              .            +INF          -39.0000      
+
+---- VAR PDT  Total matched demand [MW]
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+t1.D1          .             1.0000        +INF             .          
+t1.D2          .           240.0000        +INF             .          
+t1.D3          .           154.0000        +INF             .          
+t2.D1          .             1.0000        +INF             .          
+t2.D2          .           192.0000        +INF             .          
+t2.D3          .           112.0000        +INF             .          
+t3.D1          .             2.0000        +INF             .          
+t3.D2          .           348.6500        +INF             .          
+t3.D3          .           139.3500        +INF             .          
+t4.D1          .             2.0000        +INF             .          
+t4.D2          .           312.0000        +INF             .          
+t4.D3          .           169.0000        +INF             .          
+t5.D1          .             2.0000        +INF             .          
+t5.D2          .           336.0000        +INF             .          
+t5.D3          .           146.8362        +INF             .          
+
+---- VAR P  Line power [MW]
+
+                    LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1.bus2      -150.0000       113.9227       150.0000          .          
+t1.bus1.bus3      -150.0000       135.0773       150.0000          .          
+t1.bus2.bus3      -150.0000       -15.0552       150.0000          .          
+t1.bus2.bus4      -150.0000       -66.0221       150.0000          .          
+t1.bus3.bus4      -150.0000       -33.9779       150.0000          .          
+t2.bus1.bus2      -150.0000        90.7182       150.0000          .          
+t2.bus1.bus3      -150.0000       108.2818       150.0000          .          
+t2.bus2.bus3      -150.0000       -11.6298       150.0000          .          
+t2.bus2.bus4      -150.0000       -34.6519       150.0000          .          
+t2.bus3.bus4      -150.0000       -15.3481       150.0000          .          
+t3.bus1.bus2      -150.0000       150.0000       150.0000        32.5800      
+t3.bus1.bus3      -150.0000       148.0000       150.0000          .          
+t3.bus2.bus3      -150.0000       -34.7500       150.0000          .          
+t3.bus2.bus4      -150.0000       -73.9000       150.0000          .          
+t3.bus3.bus4      -150.0000       -26.1000       150.0000          .          
+t4.bus1.bus2      -150.0000       124.1379       150.0000          .          
+t4.bus1.bus3      -150.0000       150.0000       150.0000        81.0362      
+t4.bus2.bus3      -150.0000       -15.0000       150.0000          .          
+t4.bus2.bus4      -150.0000       -66.0000       150.0000          .          
+t4.bus3.bus4      -150.0000       -34.0000       150.0000          .          
+t5.bus1.bus2      -150.0000       145.9742       150.0000          .          
+t5.bus1.bus3      -150.0000       150.0000       150.0000        74.1067      
+t5.bus2.bus3      -150.0000       -30.8313       150.0000          .          
+t5.bus2.bus4      -150.0000       -72.3325       150.0000          .          
+t5.bus3.bus4      -150.0000       -27.6675       150.0000          .          
+
+---- VAR Th  Voltage phase
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+t1.bus1          .              .              .             EPS         
+t1.bus2        -INF           -0.0661        +INF             .          
+t1.bus3        -INF           -0.0540        +INF             .          
+t1.bus4        -INF           -0.0133        +INF             .          
+t2.bus1          .              .              .             EPS         
+t2.bus2        -INF           -0.0526        +INF             .          
+t2.bus3        -INF           -0.0433        +INF             .          
+t2.bus4        -INF           -0.0249        +INF             .          
+t3.bus1          .              .              .             EPS         
+t3.bus2        -INF           -0.0870        +INF             .          
+t3.bus3        -INF           -0.0592        +INF             .          
+t3.bus4        -INF           -0.0279        +INF             .          
+t4.bus1          .              .              .             EPS         
+t4.bus2        -INF           -0.0720        +INF             .          
+t4.bus3        -INF           -0.0600        +INF             .          
+t4.bus4        -INF           -0.0192        +INF             .          
+t5.bus1          .              .              .             EPS         
+t5.bus2        -INF           -0.0847        +INF             .          
+t5.bus3        -INF           -0.0600        +INF             .          
+t5.bus4        -INF           -0.0268        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:52:37 Page 15
+OEMO_TCMPA
+E x e c u t i o n
+
+
+----    277 EQUATION NODAL_MARKET.M  Market equilibrium at bus
+
+          bus1        bus2        bus3        bus4
+
+t1      35.000      35.000      35.000      35.000
+t2      21.000      21.000      21.000      21.000
+t3      69.600      90.000      78.000      85.200
+t4      30.000      60.295      90.143      72.234
+t5      30.000      57.705      85.000      68.623
+
+
+----    371 PARAMETER matched_generation  
+
+INDEX 1 = t1
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     150.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000
+G4.b1      40.000      30.000      15.000
+G4.b2      67.000      20.000
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+G6.b1                   5.000
+
+INDEX 1 = t2
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     100.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000
+G4.b1      40.000      30.000      25.000
+G4.b2      67.000      20.000
+G5.b1      30.000     100.000      50.000
+G5.b2      30.000
+G6.b1                  10.000
+
+INDEX 1 = t3
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     200.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      25.000
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000       5.000
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+G6.b1                  15.000
+
+INDEX 1 = t4
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     176.138
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      46.862
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+G6.b1                  20.000
+
+INDEX 1 = t5
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     197.974
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      26.862
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+G6.b1                  10.000
+
+
+----    371 VARIABLE PGT.L  Total matched generation [MW]
+
+            G1          G2          G3          G4          G5
+
+t0     150.000      28.000      50.000      25.000     100.000
+t1     250.000                  30.000      15.000     100.000
+t2     200.000                  30.000      25.000      50.000
+t3     300.000                  55.000      35.000     100.000
+t4     276.138                  76.862      30.000     100.000
+t5     297.974                  56.862      30.000     100.000
+
+
+----    371 PARAMETER matched_demand  
+
+INDEX 1 = t1
+
+        bid_price   bid_power   matched_P
+
+D1.b1     100.000       1.000       1.000
+D2.b1     100.000     100.000     100.000
+D2.b2      80.000     100.000     100.000
+D2.b3      75.000      40.000      40.000
+D3.b1     100.000      80.000      80.000
+D3.b2      65.000      50.000      50.000
+D3.b3      35.000      30.000      24.000
+
+INDEX 1 = t2
+
+        bid_price   bid_power   matched_P
+
+D1.b1      60.000       1.000       1.000
+D2.b1      60.000      80.000      80.000
+D2.b2      48.000      80.000      80.000
+D2.b3      45.000      32.000      32.000
+D3.b1      60.000      64.000      64.000
+D3.b2      39.000      40.000      40.000
+D3.b3      21.000      24.000       8.000
+
+INDEX 1 = t3
+
+        bid_price   bid_power   matched_P
+
+D1.b1     120.000       2.000       2.000
+D2.b1     120.000     170.000     170.000
+D2.b2      96.000     170.000     170.000
+D2.b3      90.000      68.000       8.650
+D3.b1     120.000     136.000     136.000
+D3.b2      78.000      85.000       3.350
+D3.b3      42.000      51.000
+
+INDEX 1 = t4
+
+        bid_price   bid_power   matched_P
+
+D1.b1     140.000       2.000       2.000
+D2.b1     140.000     130.000     130.000
+D2.b2     112.000     130.000     130.000
+D2.b3     105.000      52.000      52.000
+D3.b1     140.000     104.000     104.000
+D3.b2      91.000      65.000      65.000
+D3.b3      49.000      39.000
+
+INDEX 1 = t5
+
+        bid_price   bid_power   matched_P
+
+D1.b1     130.000       2.000       2.000
+D2.b1     130.000     140.000     140.000
+D2.b2     104.000     140.000     140.000
+D2.b3      98.000      56.000      56.000
+D3.b1     130.000     112.000     112.000
+D3.b2      85.000      70.000      34.836
+D3.b3      46.000      42.000
+
+
+----    371 VARIABLE PDT.L  Total matched demand [MW]
+
+            D1          D2          D3
+
+t1       1.000     240.000     154.000
+t2       1.000     192.000     112.000
+t3       2.000     348.650     139.350
+t4       2.000     312.000     169.000
+t5       2.000     336.000     146.836
+
+
+----    371 PARAMETER market_equilibrium  
+
+              price      energy        gen.        dem.      inflow     outflow  surp. gen.  surp. dem.          SW  surp. inf.  surp. out.    nodal SW
+
+t1.bus1      35.000     250.000     250.000       1.000                 249.000    3250.000      65.000    3315.000                            3315.000
+t1.bus2      35.000     240.000      45.000     240.000     195.000                -225.000   12600.000   12375.000                           12375.000
+t1.bus3      35.000     169.055                 154.000     169.055      15.055                6700.000    6700.000                            6700.000
+t1.bus4      35.000     100.000     100.000                             100.000     500.000                 500.000                             500.000
+t2.bus1      21.000     200.000     200.000       1.000                 199.000     200.000      39.000     239.000                             239.000
+t2.bus2      21.000     192.000      55.000     192.000     137.000               -1045.000    6048.000    5003.000                            5003.000
+t2.bus3      21.000     123.630                 112.000     123.630      11.630                3216.000    3216.000                            3216.000
+t2.bus4      21.000      50.000      50.000                              50.000    -450.000                -450.000                            -450.000
+t3.bus1      69.600     300.000     300.000       2.000                 298.000   13880.000     100.800   13980.800                4303.200   18284.000
+t3.bus2      90.000     348.650      90.000     348.650     258.650                3890.000    6120.000   10010.000    3831.720               13841.720
+t3.bus3      78.000     174.100                 139.350     174.100      34.750                5712.000    5712.000    1055.280     417.000    7184.280
+t3.bus4      85.200     100.000     100.000                             100.000    5520.000                5520.000                 166.800    5686.800
+t4.bus1      30.000     276.138     276.138       2.000                 274.138    2000.000     220.000    2220.000               12782.223   15002.223
+t4.bus2      60.295     312.000     106.862     312.000     205.138                1278.417   19407.871   20686.288    2525.105               23211.392
+t4.bus3      90.143     184.000                 169.000     184.000      15.000                5240.857    5240.857    9630.319    -447.714   14423.463
+t4.bus4      72.234     100.000     100.000                             100.000    4223.431                4223.431                -179.085    4044.346
+t5.bus1      30.000     297.974     297.974       2.000                 295.974    2000.000     200.000    2200.000               12294.172   14494.172
+t5.bus2      57.705     336.000      86.862     336.000     249.138                1027.489   18859.216   19886.705    2412.890               22299.594
+t5.bus3      85.000     177.667                 146.836     177.667      30.831                5040.000    5040.000    8703.115    -841.548   12901.567
+t5.bus4      68.623     100.000     100.000                             100.000    3862.283                3862.283                -336.619    3525.664
+
+
+----    371 PARAMETER market_equilibrium_T  
+
+        energy        gen.        dem.      inflow     outflow  surp. gen.  surp. dem.          SW
+
+t1     759.055     395.000     395.000     364.055     364.055    3525.000   19365.000   22890.000
+t2     565.630     305.000     305.000     260.630     260.630   -1295.000    9303.000    8008.000
+t3     922.750     490.000     490.000     432.750     432.750   23290.000   11932.800   35222.800
+t4     872.138     483.000     483.000     389.138     389.138    7501.848   24868.728   32370.576
+t5     911.642     484.836     484.836     426.805     426.805    6889.772   24099.216   30988.988
+
+
+----    371 PARAMETER market_merchandizing  
+
+INDEX 1 = t1
+
+               energy  price sell   price buy
+
+bus1.bus2     113.923      35.000      35.000
+bus1.bus3     135.077      35.000      35.000
+bus2.bus3      15.055      35.000      35.000
+bus2.bus4      66.022      35.000      35.000
+bus3.bus4      33.978      35.000      35.000
+
+INDEX 1 = t2
+
+               energy  price sell   price buy
+
+bus1.bus2      90.718      21.000      21.000
+bus1.bus3     108.282      21.000      21.000
+bus2.bus3      11.630      21.000      21.000
+bus2.bus4      34.652      21.000      21.000
+bus3.bus4      15.348      21.000      21.000
+
+INDEX 1 = t3
+
+               energy  price sell   price buy  mer. surp.
+
+bus1.bus2     150.000      90.000      69.600    3060.000
+bus1.bus3     148.000      78.000      69.600    1243.200
+bus2.bus3      34.750      90.000      78.000     417.000
+bus2.bus4      73.900      90.000      85.200     354.720
+bus3.bus4      26.100      78.000      85.200    -187.920
+
+INDEX 1 = t4
+
+               energy  price sell   price buy  mer. surp.
+
+bus1.bus2     124.138      60.295      30.000    3760.794
+bus1.bus3     150.000      90.143      30.000    9021.429
+bus2.bus3      15.000      60.295      90.143    -447.714
+bus2.bus4      66.000      60.295      72.234    -787.976
+bus3.bus4      34.000      90.143      72.234     608.890
+
+INDEX 1 = t5
+
+               energy  price sell   price buy  mer. surp.
+
+bus1.bus2     145.974      57.705      30.000    4044.172
+bus1.bus3     150.000      85.000      30.000    8250.000
+bus2.bus3      30.831      57.705      85.000    -841.548
+bus2.bus4      72.333      57.705      68.623    -789.735
+bus3.bus4      27.667      85.000      68.623     453.115
+
+
+----    422 PARAMETER matched_generation_bus  
+
+INDEX 1 = bus1  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     150.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+
+INDEX 1 = bus1  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     100.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+
+INDEX 1 = bus1  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     200.000
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+
+INDEX 1 = bus1  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     176.138
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+
+INDEX 1 = bus1  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+G1.b1      10.000     100.000     100.000
+G1.b2      30.000     200.000     197.974
+G2.b1      40.000      50.000
+G2.b2      65.000      25.000
+
+INDEX 1 = bus2  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000
+G4.b1      40.000      30.000      15.000
+G4.b2      67.000      20.000
+
+INDEX 1 = bus2  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000
+G4.b1      40.000      30.000      25.000
+G4.b2      67.000      20.000
+
+INDEX 1 = bus2  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      25.000
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000       5.000
+
+INDEX 1 = bus2  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      46.862
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000
+
+INDEX 1 = bus2  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+G3.b1      40.000      30.000      30.000
+G3.b2      59.000      70.000      26.862
+G4.b1      40.000      30.000      30.000
+G4.b2      67.000      20.000
+
+INDEX 1 = bus4  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+
+INDEX 1 = bus4  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+G5.b1      30.000     100.000      50.000
+G5.b2      30.000
+
+INDEX 1 = bus4  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+
+INDEX 1 = bus4  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+
+INDEX 1 = bus4  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+G5.b1      30.000     100.000     100.000
+G5.b2      30.000
+
+
+----    422 PARAMETER matched_inflow_bus  
+
+INDEX 1 = bus2  INDEX 2 = t1
+
+          bid_price   bid_power   matched_P
+
+bus1.in      35.000     150.000     113.923
+bus3.in      35.000     150.000      15.055
+bus4.in      35.000     150.000      66.022
+
+INDEX 1 = bus2  INDEX 2 = t2
+
+          bid_price   bid_power   matched_P
+
+bus1.in      21.000     150.000      90.718
+bus3.in      21.000     150.000      11.630
+bus4.in      21.000     150.000      34.652
+
+INDEX 1 = bus2  INDEX 2 = t3
+
+          bid_price   bid_power   matched_P
+
+bus1.in      69.600     150.000     150.000
+bus3.in      78.000     150.000      34.750
+bus4.in      85.200     150.000      73.900
+
+INDEX 1 = bus2  INDEX 2 = t4
+
+          bid_price   bid_power   matched_P
+
+bus1.in      30.000     150.000     124.138
+bus3.in      90.143     150.000      15.000
+bus4.in      72.234     150.000      66.000
+
+INDEX 1 = bus2  INDEX 2 = t5
+
+          bid_price   bid_power   matched_P
+
+bus1.in      30.000     150.000     145.974
+bus3.in      85.000     150.000      30.831
+bus4.in      68.623     150.000      72.333
+
+INDEX 1 = bus3  INDEX 2 = t1
+
+          bid_price   bid_power   matched_P
+
+bus1.in      35.000     150.000     135.077
+bus4.in      35.000     150.000      33.978
+
+INDEX 1 = bus3  INDEX 2 = t2
+
+          bid_price   bid_power   matched_P
+
+bus1.in      21.000     150.000     108.282
+bus4.in      21.000     150.000      15.348
+
+INDEX 1 = bus3  INDEX 2 = t3
+
+          bid_price   bid_power   matched_P
+
+bus1.in      69.600     150.000     148.000
+bus4.in      85.200     150.000      26.100
+
+INDEX 1 = bus3  INDEX 2 = t4
+
+          bid_price   bid_power   matched_P
+
+bus1.in      30.000     150.000     150.000
+bus4.in      72.234     150.000      34.000
+
+INDEX 1 = bus3  INDEX 2 = t5
+
+          bid_price   bid_power   matched_P
+
+bus1.in      30.000     150.000     150.000
+bus4.in      68.623     150.000      27.667
+
+
+----    422 PARAMETER matched_demand_bus  
+
+INDEX 1 = bus1  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+D1.b1     100.000       1.000       1.000
+
+INDEX 1 = bus1  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+D1.b1      60.000       1.000       1.000
+
+INDEX 1 = bus1  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+D1.b1     120.000       2.000       2.000
+
+INDEX 1 = bus1  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+D1.b1     140.000       2.000       2.000
+
+INDEX 1 = bus1  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+D1.b1     130.000       2.000       2.000
+
+INDEX 1 = bus2  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+D2.b1     100.000     100.000     100.000
+D2.b2      80.000     100.000     100.000
+D2.b3      75.000      40.000      40.000
+
+INDEX 1 = bus2  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+D2.b1      60.000      80.000      80.000
+D2.b2      48.000      80.000      80.000
+D2.b3      45.000      32.000      32.000
+
+INDEX 1 = bus2  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+D2.b1     120.000     170.000     170.000
+D2.b2      96.000     170.000     170.000
+D2.b3      90.000      68.000       8.650
+
+INDEX 1 = bus2  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+D2.b1     140.000     130.000     130.000
+D2.b2     112.000     130.000     130.000
+D2.b3     105.000      52.000      52.000
+
+INDEX 1 = bus2  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+D2.b1     130.000     140.000     140.000
+D2.b2     104.000     140.000     140.000
+D2.b3      98.000      56.000      56.000
+
+INDEX 1 = bus3  INDEX 2 = t1
+
+        bid_price   bid_power   matched_P
+
+D3.b1     100.000      80.000      80.000
+D3.b2      65.000      50.000      50.000
+D3.b3      35.000      30.000      24.000
+
+INDEX 1 = bus3  INDEX 2 = t2
+
+        bid_price   bid_power   matched_P
+
+D3.b1      60.000      64.000      64.000
+D3.b2      39.000      40.000      40.000
+D3.b3      21.000      24.000       8.000
+
+INDEX 1 = bus3  INDEX 2 = t3
+
+        bid_price   bid_power   matched_P
+
+D3.b1     120.000     136.000     136.000
+D3.b2      78.000      85.000       3.350
+D3.b3      42.000      51.000
+
+INDEX 1 = bus3  INDEX 2 = t4
+
+        bid_price   bid_power   matched_P
+
+D3.b1     140.000     104.000     104.000
+D3.b2      91.000      65.000      65.000
+D3.b3      49.000      39.000
+
+INDEX 1 = bus3  INDEX 2 = t5
+
+        bid_price   bid_power   matched_P
+
+D3.b1     130.000     112.000     112.000
+D3.b2      85.000      70.000      34.836
+D3.b3      46.000      42.000
+
+
+----    422 PARAMETER matched_outflow_bus  
+
+INDEX 1 = bus1  INDEX 2 = t1
+
+           bid_price   bid_power   matched_P
+
+bus2.out      35.000     150.000     113.923
+bus3.out      35.000     150.000     135.077
+
+INDEX 1 = bus1  INDEX 2 = t2
+
+           bid_price   bid_power   matched_P
+
+bus2.out      21.000     150.000      90.718
+bus3.out      21.000     150.000     108.282
+
+INDEX 1 = bus1  INDEX 2 = t3
+
+           bid_price   bid_power   matched_P
+
+bus2.out      90.000     150.000     150.000
+bus3.out      78.000     150.000     148.000
+
+INDEX 1 = bus1  INDEX 2 = t4
+
+           bid_price   bid_power   matched_P
+
+bus2.out      60.295     150.000     124.138
+bus3.out      90.143     150.000     150.000
+
+INDEX 1 = bus1  INDEX 2 = t5
+
+           bid_price   bid_power   matched_P
+
+bus2.out      57.705     150.000     145.974
+bus3.out      85.000     150.000     150.000
+
+INDEX 1 = bus3  INDEX 2 = t1
+
+           bid_price   bid_power   matched_P
+
+bus2.out      35.000     150.000      15.055
+
+INDEX 1 = bus3  INDEX 2 = t2
+
+           bid_price   bid_power   matched_P
+
+bus2.out      21.000     150.000      11.630
+
+INDEX 1 = bus3  INDEX 2 = t3
+
+           bid_price   bid_power   matched_P
+
+bus2.out      90.000     150.000      34.750
+
+INDEX 1 = bus3  INDEX 2 = t4
+
+           bid_price   bid_power   matched_P
+
+bus2.out      60.295     150.000      15.000
+
+INDEX 1 = bus3  INDEX 2 = t5
+
+           bid_price   bid_power   matched_P
+
+bus2.out      57.705     150.000      30.831
+
+INDEX 1 = bus4  INDEX 2 = t1
+
+           bid_price   bid_power   matched_P
+
+bus2.out      35.000     150.000      66.022
+bus3.out      35.000     150.000      33.978
+
+INDEX 1 = bus4  INDEX 2 = t2
+
+           bid_price   bid_power   matched_P
+
+bus2.out      21.000     150.000      34.652
+bus3.out      21.000     150.000      15.348
+
+INDEX 1 = bus4  INDEX 2 = t3
+
+           bid_price   bid_power   matched_P
+
+bus2.out      90.000     150.000      73.900
+bus3.out      78.000     150.000      26.100
+
+INDEX 1 = bus4  INDEX 2 = t4
+
+           bid_price   bid_power   matched_P
+
+bus2.out      60.295     150.000      66.000
+bus3.out      90.143     150.000      34.000
+
+INDEX 1 = bus4  INDEX 2 = t5
+
+           bid_price   bid_power   matched_P
+
+bus2.out      57.705     150.000      72.333
+bus3.out      85.000     150.000      27.667
+
+
+----    460 PARAMETER settlementG  
+
+                    t1          t2          t3          t4          t5
+
+Revenue.G1    8750.000    4200.000   20880.000    8284.138    8939.225
+Revenue.G3    1050.000     630.000    4950.000    4634.420    3281.209
+Revenue.G4     525.000     525.000    3150.000    1808.859    1731.141
+Revenue.G5    3500.000    1050.000    8520.000    7223.431    6862.283
+Surplus.G1    3250.000     200.000   13880.000    2000.000    2000.000
+Surplus.G3    -150.000    -570.000    2275.000     669.558     496.347
+Surplus.G4     -75.000    -475.000    1615.000     608.859     531.141
+Surplus.G5     500.000    -450.000    5520.000    4223.431    3862.283
+
+
+----    460 PARAMETER settlementD  
+
+                    t1          t2          t3          t4          t5
+
+Surplus.D1      65.000      39.000     100.800     220.000     200.000
+Surplus.D2   12600.000    6048.000    6120.000   19407.871   18859.216
+Surplus.D3    6700.000    3216.000    5712.000    5240.857    5040.000
+Payment.D1      35.000      21.000     139.200      60.000      60.000
+Payment.D2    8400.000    4032.000   31378.500   18812.129   19388.784
+Payment.D3    5390.000    2352.000   10869.300   15234.143   12481.079
+
+
+----    460 PARAMETER settlementGT  
+
+                    t1          t2          t3          t4          t5
+
+Total rev.   13825.000    6405.000   37500.000   21950.848   20813.859
+Total sur.    3525.000   -1295.000   23290.000    7501.848    6889.772
+
+
+----    460 PARAMETER settlementDT  
+
+                    t1          t2          t3          t4          t5
+
+Total sur.   19365.000    9303.000   11932.800   24868.728   24099.216
+Total pay.   13825.000    6405.000   42387.000   34106.272   31929.864
+
+
+**** REPORT FILE SUMMARY
+
+MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq_T.dat
+MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg_T.dat
+MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg_T.dat
+MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG_T.dat
+MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd_T.dat
+MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd_T.dat
+MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD_T.dat
+MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PGT.dat
+TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_bus.dat
+TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq.dat
+TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg.dat
+TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg.dat
+TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG.dat
+TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd.dat
+TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd.dat
+TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD.dat
+
+
+EXECUTION TIME       =        0.734 SECONDS      8 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+Output     C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.lst

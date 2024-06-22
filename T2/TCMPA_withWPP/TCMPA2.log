@@ -1,0 +1,230 @@
+
+--- Job TCMPA.gms Start 06/21/24 20:12:57 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\46\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA.gms"
+    PageSize 0
+    ScrDir "C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\225a\"
+    SysDir C:\GAMS\46\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+          CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+          C:\Users\PC\Documents\GAMS\gamslice.txt
+          F.-Javier Heredia, f.javier.heredia@upc.edu                      
+          Other time limited license
+          The evaluation period of the license will expire on Apr 11, 2025
+Processor information: 1 socket(s), 4 core(s), and 8 thread(s) available
+GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- TCMPA.gms(35) 3 Mb
+--- . t2_pbg.gms(26) 3 Mb
+--- TCMPA.gms(38) 3 Mb
+--- . t2_lbg.gms(27) 3 Mb
+--- TCMPA.gms(50) 3 Mb
+--- . t2_pbd.gms(16) 3 Mb
+--- TCMPA.gms(53) 3 Mb
+--- . t2_lbd.gms(16) 3 Mb
+--- TCMPA.gms(183) 3 Mb
+--- . TCMPA_disp_equilibrium.gms(97) 3 Mb
+--- TCMPA.gms(184) 3 Mb
+--- . TCMPA_disp_equilibrium_bus.gms(47) 3 Mb
+--- TCMPA.gms(185) 3 Mb
+--- . TCMPA_disp_settlement.gms(36) 3 Mb
+--- TCMPA.gms(191) 3 Mb
+--- . TCMPA2M_T.gms(38) 3 Mb
+--- TCMPA.gms(194) 3 Mb
+--- . TCMPA2M.gms(92) 3 Mb
+--- TCMPA.gms(195) 3 Mb
+--- Starting execution: elapsed 0:00:00.015
+--- TCMPA.gms(258) 4 Mb
+--- Generating MIP model TCMPA
+--- TCMPA.gms(259) 4 Mb
+---   296 rows  226 columns  711 non-zeroes
+---   25 discrete-columns
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
+--- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
+--- Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.028
+
+IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
+
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- Space for names approximately 0.01 Mb
+--- Use option 'names no' to turn use of names off
+--- GMO memory 0.56 Mb (peak 0.56 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 0
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+CPXPARAM_MIP_Tolerances_MIPGap                   0
+Generic callback                                 0x50
+Tried aggregator 2 times.
+MIP Presolve eliminated 144 rows and 59 columns.
+MIP Presolve modified 9 coefficients.
+Aggregator did 39 substitutions.
+Reduced MIP has 112 rows, 128 columns, and 404 nonzeros.
+Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.41 ticks)
+Found incumbent of value 13800.000000 after 0.00 sec. (0.69 ticks)
+Probing time = 0.00 sec. (0.02 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 112 rows, 128 columns, and 404 nonzeros.
+Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.21 ticks)
+Probing time = 0.00 sec. (0.02 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Parallel mode: deterministic, using up to 2 threads for parallel tasks at root LP.
+Tried aggregator 1 time.
+LP Presolve eliminated 19 rows and 0 columns.
+Aggregator did 19 substitutions.
+Reduced LP has 74 rows, 109 columns, and 300 nonzeros.
+Presolve time = 0.00 sec. (0.09 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Dual objective     =        212647.000000
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Dual objective     =        157697.992556
+Root relaxation solution time = 0.00 sec. (0.34 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        13800.0000   236752.0000              --- 
+Found incumbent of value 13800.000000 after 0.02 sec. (1.40 ticks)
+*     0+    0                       156329.9926   236752.0000            51.44%
+Found incumbent of value 156329.992556 after 0.02 sec. (1.41 ticks)
+      0     0   157697.9926     1   156329.9926   157697.9926       29    0.88%
+*     0+    0                       157638.7926   157697.9926             0.04%
+Found incumbent of value 157638.792556 after 0.02 sec. (1.67 ticks)
+      0     0        cutoff         157638.7926                     33     --- 
+Elapsed time = 0.02 sec. (1.90 ticks, tree = 0.01 MB)
+
+Root node processing (before b&c):
+  Real time             =    0.02 sec. (1.91 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.02 sec. (1.91 ticks)
+
+--- MIP status (101): integer optimal solution.
+--- Cplex Time: 0.02sec (det. 1.91 ticks)
+
+--- Returning a primal only solution to GAMS (marginals all set to NA).
+--- Fixing integer variables and solving final LP...
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+CPXPARAM_MIP_Tolerances_MIPGap                   0
+Tried aggregator 1 time.
+LP Presolve eliminated 185 rows and 83 columns.
+Aggregator did 35 substitutions.
+Reduced LP has 75 rows, 108 columns, and 244 nonzeros.
+Presolve time = 0.01 sec. (0.23 ticks)
+Initializing dual steep norms . . .
+
+Iteration log . . .
+Iteration:     1   Dual objective     =        234352.000000
+
+--- Fixed MIP status (1): optimal.
+--- Cplex Time: 0.01sec (det. 0.49 ticks)
+
+
+Proven optimal solution
+MIP Solution:       157638.792556    (33 iterations, 0 nodes)
+Final Solve:        157638.792556    (31 iterations)
+
+Best possible:      157638.792556
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- Reading solution for model TCMPA
+--- Executing after solve: elapsed 0:00:00.091
+--- TCMPA.gms(260) 4 Mb
+--- Generating RMIP model TCMPA
+--- TCMPA.gms(261) 4 Mb
+---   296 rows  226 columns  711 non-zeroes
+---   25 discrete-columns
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
+--- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
+--- Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.094
+
+IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
+
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- Space for names approximately 0.01 Mb
+--- Use option 'names no' to turn use of names off
+--- GMO memory 0.56 Mb (peak 0.56 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+CPXPARAM_MIP_Tolerances_MIPGap                   0
+Tried aggregator 1 time.
+LP Presolve eliminated 185 rows and 83 columns.
+Aggregator did 35 substitutions.
+Reduced LP has 75 rows, 108 columns, and 244 nonzeros.
+Presolve time = 0.00 sec. (0.23 ticks)
+Using devex.
+
+Iteration log . . .
+Iteration:     1    Objective     =        157638.792556
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.59 ticks)
+
+
+Optimal solution found
+Objective:       157638.792556
+
+--- Reading solution for model TCMPA
+--- Executing after solve: elapsed 0:00:00.134
+--- TCMPA.gms(525) 7 Mb
+--- Putfile MPA_eq C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_eq_T.dat
+--- Putfile MPA_lbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbg_T.dat
+--- Putfile MPA_pbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbg_T.dat
+--- Putfile MPA_PG C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PG_T.dat
+--- Putfile MPA_lbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbd_T.dat
+--- Putfile MPA_pbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbd_T.dat
+--- Putfile MPA_PD C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PD_T.dat
+--- Putfile MPA_PGT C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PGT.dat
+--- Putfile TCMPA_bus C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_bus.dat
+--- Putfile TCMPA_eq C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_eq.dat
+--- Putfile TCMPA_lbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbg.dat
+--- Putfile TCMPA_pbg C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbg.dat
+--- Putfile TCMPA_PG C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PG.dat
+--- Putfile TCMPA_lbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_lbd.dat
+--- Putfile TCMPA_pbd C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_pbd.dat
+--- Putfile TCMPA_PD C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA_PD.dat
+*** Status: Normal completion
+--- Job TCMPA.gms Stop 06/21/24 20:12:57 elapsed 0:00:00.146

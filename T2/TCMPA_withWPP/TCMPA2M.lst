@@ -1,0 +1,159 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/21/24 20:13:20 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  ********************************************************************************
+   2  * F.-Javier Heredia f.javier.heredia(at)upc.edu http://gnom.upc.edu/heredia
+   3  * Code under Creative Commons Attribution-NonCommercial-NoDerivs
+   4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
+   5  ********************************************************************************
+   6   
+   7  file TCMPA_bus /TCMPA_bus.dat/;
+   8  file TCMPA_eq  /TCMPA_eq.dat/;
+   9  file TCMPA_lbg /TCMPA_lbg.dat/;
+  10  file TCMPA_pbg /TCMPA_pbg.dat/;
+  11  file TCMPA_PG  /TCMPA_PG.dat/;
+  12  file TCMPA_lbd /TCMPA_lbd.dat/;
+  13  file TCMPA_pbd /TCMPA_pbd.dat/;
+  14  file TCMPA_PD  /TCMPA_PD.dat/;
+  15   
+  16  put TCMPA_bus; loop(bout, put bout.tl);
+****                         $120
+**** 120  Unknown identifier entered as set
+  17  put TCMPA_eq;
+  18  scalar aux;
+  19  loop(b$bout(b),
+****       $120
+**** 120  Unknown identifier entered as set
+  20           loop(t,
+****                $120
+**** 120  Unknown identifier entered as set
+  21                   put market_equilibrium(t,b,'energy');
+****                                        $140         $116
+**** 116  Label is unknown
+**** 140  Unknown symbol
+  22                   put market_equilibrium(t,b,'price');
+****                                                    $116
+**** 116  Label is unknown
+  23                   put market_equilibrium(t,b,'nodal SW');
+****                                                       $116
+**** 116  Label is unknown
+  24                   put /
+  25           );
+  26  );
+  27   
+  28  loop(b$bout(b),
+  29  put TCMPA_lbg;
+  30  loop(t,
+  31           loop(g$gb(g,b), loop(bg, put  lbg(t,g,bg)));
+****                $120,340,140     $120,340  $140
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+**** 340  A label/element with the same name exist. You may have forgotten
+****         to quote a label/element reference. For example,
+****         set i / a,b,c /; parameter x(i); x('a') = 10;
+  32  *        Positive Inflow => generation unit
+  33           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put NODAL_MARKET.m(t,b_o));
+****                  $120,340,140      $140                            $140
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+**** 340  A label/element with the same name exist. You may have forgotten
+****         to quote a label/element reference. For example,
+****         set i / a,b,c /; parameter x(i); x('a') = 10;
+  34  *        Negative Outflow => generation unit
+  35           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), put NODAL_MARKET.m(t,b_d));
+****                  $120,340
+**** 120  Unknown identifier entered as set
+**** 340  A label/element with the same name exist. You may have forgotten
+****         to quote a label/element reference. For example,
+****         set i / a,b,c /; parameter x(i); x('a') = 10;
+  36           put /);
+  37  put TCMPA_pbg;
+  38  loop(t,
+  39           loop(g$gb(g,b), loop(bg, put  pbg(t,g,bg)));
+****                                           $140
+**** 140  Unknown symbol
+  40  *        Positive Inflow => generation unit
+  41           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.up(t,b_o,b));
+  42  *        Negative Outflow => generation unit
+  43           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.lo(t,b,b_d); put aux);
+  44           put /);
+  45  put TCMPA_PG;
+  46  loop(t,
+  47           loop(g$gb(g,b), loop(bg, put PG.l(t,g,bg)));
+****                                           $140
+**** 140  Unknown symbol
+  48  *        Positive Inflow => generation unit
+  49           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)>0), put  P.l(t,b_o,b));
+  50  *        Negative Outflow => generation unit
+  51           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)<0), aux = -P.l(t,b,b_d); put aux);
+  52           put /);
+  53  put TCMPA_lbd;
+  54  loop(t,
+  55           loop(d$db(d,b), loop(bd, put  lbd(t,d,bd)));
+****                $120,340,140     $120,340  $140
+**** 120  Unknown identifier entered as set
+**** 140  Unknown symbol
+**** 340  A label/element with the same name exist. You may have forgotten
+****         to quote a label/element reference. For example,
+****         set i / a,b,c /; parameter x(i); x('a') = 10;
+  56  *        Negative Inflow => demand unit
+  57           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), put NODAL_MARKET.m(t,b_o));
+  58  *        Positive Outflow => demand unit
+  59           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put NODAL_MARKET.m(t,b_d));
+  60           put /);
+  61  put TCMPA_pbd;
+  62  loop(t,
+  63           loop(d$db(d,b), loop(bd, put  pbd(t,d,bd)));
+****                                           $140
+**** 140  Unknown symbol
+  64  *        Negative Inflow => demand unit
+  65           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.lo(t,b_o,b); put aux);
+  66  *        Positive Outflow => demand unit
+  67           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.up(t,b,b_d));
+  68           put /);
+  69  put TCMPA_PD;
+  70  loop(t,
+  71           loop(d$db(d,b), loop(bd, put PD.l(t,d,bd)));
+****                                           $140
+**** 140  Unknown symbol
+  72  *        Negative Inflow => demand unit
+  73           loop(b_o$(l(b_o,b) and P.l(t,b_o,b)<0), aux = -P.l(t,b_o,b); put aux);
+  74  *        Positive Outflow => demand unit
+  75           loop(b_d$(l(b,b_d) and P.l(t,b,b_d)>0), put  P.l(t,b,b_d));
+  76           put /);
+  77  );
+  78   
+  79  *file TCMPA_PGT   /TCMPA_PGT.dat/;
+  80  *file TCMPA_PGmin /TCMPA_PGmin.dat/;
+  81  *file TCMPA_PGmax /TCMPA_PGmax.dat/;
+  82  *file TCMPA_PGRU  /TCMPA_PGRU.dat/;
+  83  *file TCMPA_PGRD  /TCMPA_PGRD.dat/;
+  84   
+  85  *put TCMPA_PGT;
+  86  *loop(g,
+  87  *loop(t0, put PGT.l(t0,g)); put/;
+  88  *loop(t0, put pg_min(g)) ; put/;
+  89  *loop(t0, put pg_max(g)) ; put/;
+  90  *loop(t0, put rd(g))     ; put/;
+  91  *loop(t0, put ru(g))     ; put/;
+  92  *);
+
+**** 30 ERROR(S)   0 WARNING(S)
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M.gms
+Output     C:\Users\PC\Desktop\UPC\Energy Markets\GAMS files for MCM\TCMPA\TCMPA2M.lst
+
+**** USER ERROR(S) ENCOUNTERED
