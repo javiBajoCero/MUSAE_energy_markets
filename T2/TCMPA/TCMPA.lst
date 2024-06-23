@@ -1,4 +1,4 @@
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 1
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -9,7 +9,7 @@ C o m p i l a t i o n
    4  * 3.0 Unported License http://creativecommons.org/licenses/by-nc-nd/3.0/
    5  ********************************************************************************
    6   
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 2
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 2
 OEMO_TCMPA
 C o m p i l a t i o n
 
@@ -597,7 +597,7 @@ INCLUDE    C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\
  588  *loop(t0, put ru(g))     ; put/;
  589  *);
  590   
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 3
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 3
 OEMO_TCMPA
 Include File Summary
 
@@ -616,8 +616,8 @@ Include File Summary
     10      497 INCLUDE        1     194  .C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA2M.gms
 
 
-COMPILATION TIME     =        0.047 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 4
+COMPILATION TIME     =        0.000 SECONDS      3 MB  46.4.1 485757e2 WEX-WEI
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 4
 OEMO_TCMPA
 E x e c u t i o n
 
@@ -655,7 +655,7 @@ bus1         YES         YES
 bus2                     YES         YES
 bus3                                 YES
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 5
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 5
 OEMO_TCMPA
 Equation Listing    SOLVE TCMPA Using MIP From line 259
 
@@ -774,7 +774,7 @@ PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = 0)
      
 REMAINING 22 ENTRIES SKIPPED
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 6
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 6
 OEMO_TCMPA
 Column Listing      SOLVE TCMPA Using MIP From line 259
 
@@ -927,7 +927,7 @@ Th(t1,bus3)
      -833.3333  LPFE(t1,bus3,bus4)
 
 REMAINING 17 ENTRIES SKIPPED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 7
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 7
 OEMO_TCMPA
 Range Statistics    SOLVE TCMPA Using MIP From line 259
 
@@ -938,7 +938,7 @@ RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
 Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
 Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 8
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 8
 OEMO_TCMPA
 Model Statistics    SOLVE TCMPA Using MIP From line 259
 
@@ -951,7 +951,7 @@ NON ZERO ELEMENTS           681     DISCRETE VARIABLES         25
 
 
 GENERATION TIME      =        0.015 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 9
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 9
 OEMO_TCMPA
 Solution Report     SOLVE TCMPA Using MIP From line 259
 
@@ -966,7 +966,7 @@ Solution Report     SOLVE TCMPA Using MIP From line 259
 **** MODEL STATUS      1 Optimal
 **** OBJECTIVE VALUE           157638.7926
 
- RESOURCE USAGE, LIMIT          0.515 10000000000.000
+ RESOURCE USAGE, LIMIT          0.031 10000000000.000
  ITERATION COUNT, LIMIT        33    2147483647
 *** This solver runs with a community license.
 --- GMO setup time: 0.00s
@@ -979,14 +979,14 @@ Solution Report     SOLVE TCMPA Using MIP From line 259
 
 
 --- MIP status (101): integer optimal solution.
---- Cplex Time: 0.50sec (det. 1.89 ticks)
+--- Cplex Time: 0.03sec (det. 1.89 ticks)
 
 --- Returning a primal only solution to GAMS (marginals all set to NA).
 --- Fixing integer variables and solving final LP...
 
 
 --- Fixed MIP status (1): optimal.
---- Cplex Time: 0.02sec (det. 0.48 ticks)
+--- Cplex Time: 0.00sec (det. 0.48 ticks)
 
 
 Proven optimal solution
@@ -1589,7 +1589,7 @@ t5.bus4        -INF           -0.0268        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 10
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 10
 OEMO_TCMPA
 Equation Listing    SOLVE TCMPA Using RMIP From line 261
 
@@ -1708,7 +1708,7 @@ PGMAX(t1,G3)..  PGT(t1,G3) - 100*U(t1,G3) =L= 0 ; (LHS = -70)
      
 REMAINING 22 ENTRIES SKIPPED
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 11
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 11
 OEMO_TCMPA
 Column Listing      SOLVE TCMPA Using RMIP From line 261
 
@@ -1861,7 +1861,7 @@ Th(t1,bus3)
      -833.3333  LPFE(t1,bus3,bus4)
 
 REMAINING 17 ENTRIES SKIPPED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 12
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 12
 OEMO_TCMPA
 Range Statistics    SOLVE TCMPA Using RMIP From line 261
 
@@ -1872,7 +1872,7 @@ RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
 Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
 Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
 
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 13
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 13
 OEMO_TCMPA
 Model Statistics    SOLVE TCMPA Using RMIP From line 261
 
@@ -1885,7 +1885,7 @@ NON ZERO ELEMENTS           681     DISCRETE VARIABLES         25
 
 
 GENERATION TIME      =        0.000 SECONDS      4 MB  46.4.1 485757e2 WEX-WEI
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 14
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 14
 OEMO_TCMPA
 Solution Report     SOLVE TCMPA Using RMIP From line 261
 
@@ -2511,7 +2511,7 @@ t5.bus4        -INF           -0.0268        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 18:22:00 Page 15
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/22/24 19:09:36 Page 15
 OEMO_TCMPA
 E x e c u t i o n
 
@@ -3265,7 +3265,7 @@ TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\T
 TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PD.dat
 
 
-EXECUTION TIME       =        0.625 SECONDS      7 MB  46.4.1 485757e2 WEX-WEI
+EXECUTION TIME       =        0.156 SECONDS      7 MB  46.4.1 485757e2 WEX-WEI
 
 
 USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN

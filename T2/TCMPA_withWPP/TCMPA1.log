@@ -1,10 +1,11 @@
---- Job TCMPA.gms Start 06/21/24 20:18:03 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+
+--- Job TCMPA.gms Start 06/22/24 20:35:08 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\46\gmsprmNT.txt
 --- GAMS Parameters defined
-    Input C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA.gms
+    Input C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
     PageSize 0
-    ScrDir C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\225a\
+    ScrDir C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\225a\
     SysDir C:\GAMS\46\
     LogOption 3
     ErrMsg 1
@@ -21,9 +22,9 @@ Processor information: 1 socket(s), 12 core(s), and 16 thread(s) available
 GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
 --- Starting compilation
 --- TCMPA.gms(35) 3 Mb
---- . t2_pbg.gms(26) 3 Mb
+--- . t2_pbg.gms(31) 3 Mb
 --- TCMPA.gms(38) 3 Mb
---- . t2_lbg.gms(27) 3 Mb
+--- . t2_lbg.gms(32) 3 Mb
 --- TCMPA.gms(50) 3 Mb
 --- . t2_pbd.gms(16) 3 Mb
 --- TCMPA.gms(53) 3 Mb
@@ -39,17 +40,17 @@ GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
 --- TCMPA.gms(194) 3 Mb
 --- . TCMPA2M.gms(92) 3 Mb
 --- TCMPA.gms(195) 3 Mb
---- Starting execution: elapsed 0:00:00.015
---- TCMPA.gms(258) 4 Mb
+--- Starting execution: elapsed 0:00:00.008
+--- TCMPA.gms(268) 4 Mb
 --- Generating MIP model TCMPA
---- TCMPA.gms(259) 4 Mb
----   296 rows  226 columns  711 non-zeroes
----   25 discrete-columns
+--- TCMPA.gms(269) 4 Mb
+---   316 rows  232 columns  746 non-zeroes
+---   30 discrete-columns
 --- Range statistics (absolute non-zero finite values)
---- RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
+--- RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
 --- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
---- Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.027
+--- Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.014
 
 IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
 
@@ -70,17 +71,17 @@ CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 CPXPARAM_MIP_Tolerances_MIPGap                   0
 Generic callback                                 0x50
 Tried aggregator 2 times.
-MIP Presolve eliminated 144 rows and 59 columns.
+MIP Presolve eliminated 164 rows and 60 columns.
 MIP Presolve modified 9 coefficients.
 Aggregator did 39 substitutions.
-Reduced MIP has 112 rows, 128 columns, and 404 nonzeros.
+Reduced MIP has 112 rows, 133 columns, and 409 nonzeros.
 Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0.00 sec. (0.41 ticks)
-Found incumbent of value 13800.000000 after 0.00 sec. (0.69 ticks)
+Presolve time = 0.00 sec. (0.43 ticks)
+Found incumbent of value 12364.000000 after 0.00 sec. (0.71 ticks)
 Probing time = 0.00 sec. (0.02 ticks)
 Tried aggregator 1 time.
 Detecting symmetries...
-Reduced MIP has 112 rows, 128 columns, and 404 nonzeros.
+Reduced MIP has 112 rows, 133 columns, and 409 nonzeros.
 Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
 Presolve time = 0.00 sec. (0.21 ticks)
 Probing time = 0.00 sec. (0.02 ticks)
@@ -91,42 +92,42 @@ Parallel mode: deterministic, using up to 3 threads for parallel tasks at root L
 Tried aggregator 1 time.
 LP Presolve eliminated 19 rows and 0 columns.
 Aggregator did 19 substitutions.
-Reduced LP has 74 rows, 109 columns, and 300 nonzeros.
-Presolve time = 0.00 sec. (0.09 ticks)
+Reduced LP has 74 rows, 114 columns, and 305 nonzeros.
+Presolve time = 0.00 sec. (0.10 ticks)
 Initializing dual steep norms . . .
 
 Iteration log . . .
-Iteration:     1   Dual objective     =        212647.000000
+Iteration:     1   Dual objective     =        236752.000000
 Initializing dual steep norms . . .
 
 Iteration log . . .
-Iteration:     1   Dual objective     =        157697.992556
-Root relaxation solution time = 0.02 sec. (0.34 ticks)
+Iteration:     1   Dual objective     =        161859.708571
+Root relaxation solution time = 0.00 sec. (0.36 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
 
-*     0+    0                        13800.0000   236752.0000              --- 
-Found incumbent of value 13800.000000 after 0.02 sec. (1.40 ticks)
-*     0+    0                       156329.9926   236752.0000            51.44%
-Found incumbent of value 156329.992556 after 0.02 sec. (1.41 ticks)
-      0     0   157697.9926     1   156329.9926   157697.9926       29    0.88%
-*     0+    0                       157638.7926   157697.9926             0.04%
-Found incumbent of value 157638.792556 after 0.02 sec. (1.67 ticks)
-      0     0        cutoff         157638.7926                     33     --- 
-Elapsed time = 0.98 sec. (1.90 ticks, tree = 0.01 MB)
+*     0+    0                        12364.0000   236752.0000              --- 
+Found incumbent of value 12364.000000 after 0.00 sec. (1.45 ticks)
+*     0+    0                       160471.9286   236752.0000            47.53%
+Found incumbent of value 160471.928571 after 0.00 sec. (1.45 ticks)
+      0     0   161859.7086     1   160471.9286   161859.7086       34    0.86%
+*     0+    0                       161800.5086   161859.7086             0.04%
+Found incumbent of value 161800.508571 after 0.01 sec. (1.71 ticks)
+      0     0        cutoff         161800.5086                     38     --- 
+Elapsed time = 0.58 sec. (1.96 ticks, tree = 0.01 MB)
 
 Root node processing (before b&c):
-  Real time             =    0.98 sec. (1.91 ticks)
+  Real time             =    0.58 sec. (1.96 ticks)
 Parallel b&c, 16 threads:
   Real time             =    0.00 sec. (0.00 ticks)
   Sync time (average)   =    0.00 sec.
   Wait time (average)   =    0.00 sec.
                           ------------
-Total (root+branch&cut) =    0.98 sec. (1.91 ticks)
+Total (root+branch&cut) =    0.58 sec. (1.96 ticks)
 
 --- MIP status (101): integer optimal solution.
---- Cplex Time: 1.00sec (det. 1.91 ticks)
+--- Cplex Time: 0.59sec (det. 1.96 ticks)
 
 --- Returning a primal only solution to GAMS (marginals all set to NA).
 --- Fixing integer variables and solving final LP...
@@ -138,39 +139,39 @@ CPXPARAM_MIP_Pool_Capacity                       0
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 CPXPARAM_MIP_Tolerances_MIPGap                   0
 Tried aggregator 1 time.
-LP Presolve eliminated 185 rows and 83 columns.
+LP Presolve eliminated 205 rows and 84 columns.
 Aggregator did 35 substitutions.
-Reduced LP has 75 rows, 108 columns, and 244 nonzeros.
-Presolve time = 0.00 sec. (0.23 ticks)
+Reduced LP has 75 rows, 113 columns, and 249 nonzeros.
+Presolve time = 0.00 sec. (0.24 ticks)
 Initializing dual steep norms . . .
 
 Iteration log . . .
 Iteration:     1   Dual objective     =        234352.000000
 
 --- Fixed MIP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.49 ticks)
+--- Cplex Time: 0.00sec (det. 0.50 ticks)
 
 
 Proven optimal solution
-MIP Solution:       157638.792556    (33 iterations, 0 nodes)
-Final Solve:        157638.792556    (31 iterations)
+MIP Solution:       161800.508571    (38 iterations, 0 nodes)
+Final Solve:        161800.508571    (28 iterations)
 
-Best possible:      157638.792556
+Best possible:      161800.508571
 Absolute gap:            0.000000
 Relative gap:            0.000000
 
 --- Reading solution for model TCMPA
---- Executing after solve: elapsed 0:00:01.097
---- TCMPA.gms(260) 4 Mb
+--- Executing after solve: elapsed 0:00:00.650
+--- TCMPA.gms(270) 4 Mb
 --- Generating RMIP model TCMPA
---- TCMPA.gms(261) 4 Mb
----   296 rows  226 columns  711 non-zeroes
----   25 discrete-columns
+--- TCMPA.gms(271) 4 Mb
+---   316 rows  232 columns  746 non-zeroes
+---   30 discrete-columns
 --- Range statistics (absolute non-zero finite values)
---- RHS       [min, max] : [ 1.000E+00, 2.000E+02] - Zero values observed as well
+--- RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
 --- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
---- Matrix    [min, max] : [ 1.000E+00, 2.500E+03]
---- Executing CPLEX (Solvelink=2): elapsed 0:00:01.100
+--- Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.652
 
 IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
 
@@ -190,40 +191,40 @@ CPXPARAM_MIP_Pool_Capacity                       0
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 CPXPARAM_MIP_Tolerances_MIPGap                   0
 Tried aggregator 1 time.
-LP Presolve eliminated 185 rows and 83 columns.
+LP Presolve eliminated 205 rows and 84 columns.
 Aggregator did 35 substitutions.
-Reduced LP has 75 rows, 108 columns, and 244 nonzeros.
-Presolve time = 0.00 sec. (0.23 ticks)
+Reduced LP has 75 rows, 113 columns, and 249 nonzeros.
+Presolve time = 0.00 sec. (0.24 ticks)
 Using devex.
 
 Iteration log . . .
-Iteration:     1    Objective     =        157638.792556
+Iteration:     1    Objective     =        161800.508571
 
 --- LP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.59 ticks)
+--- Cplex Time: 0.00sec (det. 0.61 ticks)
 
 
 Optimal solution found
-Objective:       157638.792556
+Objective:       161800.508571
 
 --- Reading solution for model TCMPA
---- Executing after solve: elapsed 0:00:01.146
---- TCMPA.gms(525) 7 Mb
---- Putfile MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_eq_T.dat
---- Putfile MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbg_T.dat
---- Putfile MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbg_T.dat
---- Putfile MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PG_T.dat
---- Putfile MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbd_T.dat
---- Putfile MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbd_T.dat
---- Putfile MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PD_T.dat
---- Putfile MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PGT.dat
---- Putfile TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_bus.dat
---- Putfile TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_eq.dat
---- Putfile TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbg.dat
---- Putfile TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbg.dat
---- Putfile TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PG.dat
---- Putfile TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_lbd.dat
---- Putfile TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_pbd.dat
---- Putfile TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA\TCMPA_PD.dat
+--- Executing after solve: elapsed 0:00:00.690
+--- TCMPA.gms(535) 7 Mb
+--- Putfile MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq_T.dat
+--- Putfile MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg_T.dat
+--- Putfile MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg_T.dat
+--- Putfile MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG_T.dat
+--- Putfile MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd_T.dat
+--- Putfile MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd_T.dat
+--- Putfile MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD_T.dat
+--- Putfile MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PGT.dat
+--- Putfile TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_bus.dat
+--- Putfile TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq.dat
+--- Putfile TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg.dat
+--- Putfile TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg.dat
+--- Putfile TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG.dat
+--- Putfile TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd.dat
+--- Putfile TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd.dat
+--- Putfile TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD.dat
 *** Status: Normal completion
---- Job TCMPA.gms Stop 06/21/24 20:18:04 elapsed 0:00:01.154
+--- Job TCMPA.gms Stop 06/22/24 20:35:09 elapsed 0:00:00.695

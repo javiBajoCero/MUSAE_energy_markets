@@ -58,7 +58,7 @@ SET  b      Buses            / bus1*bus4 /;
 SET refb(b) Reference bus    / bus1 /;
 alias(b,b_o,b_d);
 
-SET gb(g,b) Generation buses / G1.bus1, G2.bus1, G3.bus2, G4.bus2, G5.bus4 /;
+SET gb(g,b) Generation buses / G1.bus1, G2.bus1, G3.bus2, G4.bus2, G5.bus4 ,G6.bus3/;
 SET db(d,b) Demand buses     / D1.bus1, D2.bus2, D3.bus3 /;
 
 * Lines;
@@ -190,6 +190,6 @@ $ include TCMPA_disp_settlement
 * ... for TCMPA_BF.m
 $ include TCMPA2M_T
 * ... for TCMPA_BFNodal.m
-SET bout(b) /'bus4'/
+SET bout(b) /'bus1'/
 $ include TCMPA2M
 
