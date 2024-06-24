@@ -32,7 +32,7 @@ rd(g)     Ramp-down limit [MW]              /G1 100, G2 30,  G3 20, G4 10, G5 50
 p0(g)     Initial power output [MW]         /G1 150, G2 28,  G3 50, G4 25, G5 100, G6 0/;
 
 TABLE pbg(t,g,bg) Power [MW] of the generation bid function
-$ include t2_pbg
+$ include t2_pbg_moreWPP
 
 TABLE lbg(t,g,bg) Prices [eur:MWh] of the generation bid function
 $ include t2_lbg

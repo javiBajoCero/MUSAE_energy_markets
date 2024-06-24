@@ -1,0 +1,32 @@
+
+--- Job t2_pbg_moreWPP.gms Start 06/24/24 23:06:51 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\46\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.gms
+    PageSize 0
+    ScrDir C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\225a\
+    SysDir C:\GAMS\46\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+          CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+          C:\Users\citcea\Documents\GAMS\gamslice.txt
+          F.-Javier Heredia, f.javier.heredia@upc.edu                      
+          Other time limited license
+          The evaluation period of the license will expire on Apr 11, 2025
+Processor information: 1 socket(s), 12 core(s), and 16 thread(s) available
+GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- t2_pbg_moreWPP.gms(1) 2 Mb 2 Errors
+*** Error 140 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.gms
+    Unknown symbol
+*** Error  36 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.gms
+    '=' or '..' or ':=' or '$=' operator expected
+    rest of statement ignored
+--- t2_pbg_moreWPP.gms(31) 2 Mb 2 Errors
+*** Status: Compilation error(s)
+--- Job t2_pbg_moreWPP.gms Stop 06/24/24 23:06:51 elapsed 0:00:00.006

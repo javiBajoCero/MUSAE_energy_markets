@@ -1,5 +1,5 @@
 
---- Job TCMPA.gms Start 06/22/24 20:32:13 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
+--- Job TCMPA.gms Start 06/24/24 23:08:50 46.4.1 485757e2 WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\46\gmsprmNT.txt
 --- GAMS Parameters defined
@@ -22,14 +22,59 @@ Processor information: 1 socket(s), 12 core(s), and 16 thread(s) available
 GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
 --- Starting compilation
 --- TCMPA.gms(35) 3 Mb
---- . t2_pbg.gms(31) 3 Mb
+--- . t2_pbg_moreWPP.gms(7) 3 Mb 1 Error
+*** Error 409 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- . t2_pbg_moreWPP.gms(31) 3 Mb
 --- TCMPA.gms(38) 3 Mb
 --- . t2_lbg.gms(32) 3 Mb
 --- TCMPA.gms(50) 3 Mb
 --- . t2_pbd.gms(16) 3 Mb
 --- TCMPA.gms(53) 3 Mb
 --- . t2_lbd.gms(16) 3 Mb
+--- TCMPA.gms(174) 3 Mb 2 Errors
+*** Error 257 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+    Solve statement not checked because of previous errors
+--- TCMPA.gms(175) 3 Mb 3 Errors
+*** Error 141 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- TCMPA.gms(176) 3 Mb 4 Errors
+*** Error 257 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+    Solve statement not checked because of previous errors
+--- TCMPA.gms(182) 3 Mb 5 Errors
+*** Error 141 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
 --- TCMPA.gms(183) 3 Mb
+--- . TCMPA_disp_equilibrium.gms(23) 3 Mb 6 Errors
+*** Error 141 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- . TCMPA_disp_equilibrium.gms(24) 3 Mb 7 Errors
+*** Error 141 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- . TCMPA_disp_equilibrium.gms(47) 3 Mb 8 Errors
+*** Error 141 in C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_disp_equilibrium.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement. Suppress with $onImplicitAssign.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
 --- . TCMPA_disp_equilibrium.gms(97) 3 Mb
 --- TCMPA.gms(184) 3 Mb
 --- . TCMPA_disp_equilibrium_bus.gms(47) 3 Mb
@@ -39,192 +84,6 @@ GAMS 46.4.1   Copyright (C) 1987-2024 GAMS Development. All rights reserved
 --- . TCMPA2M_T.gms(38) 3 Mb
 --- TCMPA.gms(194) 3 Mb
 --- . TCMPA2M.gms(92) 3 Mb
---- TCMPA.gms(195) 3 Mb
---- Starting execution: elapsed 0:00:00.010
---- TCMPA.gms(268) 4 Mb
---- Generating MIP model TCMPA
---- TCMPA.gms(269) 4 Mb
----   316 rows  232 columns  746 non-zeroes
----   30 discrete-columns
---- Range statistics (absolute non-zero finite values)
---- RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
---- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
---- Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.014
-
-IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
-
-*** This solver runs with a community license.
---- GMO setup time: 0.00s
---- Space for names approximately 0.01 Mb
---- Use option 'names no' to turn use of names off
---- GMO memory 0.56 Mb (peak 0.56 Mb)
---- Dictionary memory 0.00 Mb
---- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
---- Starting Cplex
-
-Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
-CPXPARAM_Advance                                 0
-CPXPARAM_MIP_Display                             4
-CPXPARAM_MIP_Pool_Capacity                       0
-CPXPARAM_MIP_Tolerances_AbsMIPGap                0
-CPXPARAM_MIP_Tolerances_MIPGap                   0
-Generic callback                                 0x50
-Tried aggregator 2 times.
-MIP Presolve eliminated 164 rows and 60 columns.
-MIP Presolve modified 9 coefficients.
-Aggregator did 39 substitutions.
-Reduced MIP has 112 rows, 133 columns, and 409 nonzeros.
-Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0.00 sec. (0.43 ticks)
-Found incumbent of value 12364.000000 after 0.00 sec. (0.71 ticks)
-Probing time = 0.00 sec. (0.02 ticks)
-Tried aggregator 1 time.
-Detecting symmetries...
-Reduced MIP has 112 rows, 133 columns, and 409 nonzeros.
-Reduced MIP has 19 binaries, 0 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0.00 sec. (0.21 ticks)
-Probing time = 0.00 sec. (0.02 ticks)
-MIP emphasis: balance optimality and feasibility.
-MIP search method: dynamic search.
-Parallel mode: deterministic, using up to 16 threads.
-Parallel mode: deterministic, using up to 3 threads for parallel tasks at root LP.
-Tried aggregator 1 time.
-LP Presolve eliminated 19 rows and 0 columns.
-Aggregator did 19 substitutions.
-Reduced LP has 74 rows, 114 columns, and 305 nonzeros.
-Presolve time = 0.00 sec. (0.10 ticks)
-Initializing dual steep norms . . .
-
-Iteration log . . .
-Iteration:     1   Dual objective     =        236752.000000
-Initializing dual steep norms . . .
-
-Iteration log . . .
-Iteration:     1   Dual objective     =        161859.708571
-Root relaxation solution time = 0.00 sec. (0.36 ticks)
-
-        Nodes                                         Cuts/
-   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
-
-*     0+    0                        12364.0000   236752.0000              --- 
-Found incumbent of value 12364.000000 after 0.00 sec. (1.45 ticks)
-*     0+    0                       160471.9286   236752.0000            47.53%
-Found incumbent of value 160471.928571 after 0.00 sec. (1.45 ticks)
-      0     0   161859.7086     1   160471.9286   161859.7086       34    0.86%
-*     0+    0                       161800.5086   161859.7086             0.04%
-Found incumbent of value 161800.508571 after 0.00 sec. (1.71 ticks)
-      0     0        cutoff         161800.5086                     38     --- 
-Elapsed time = 0.56 sec. (1.96 ticks, tree = 0.01 MB)
-
-Root node processing (before b&c):
-  Real time             =    0.56 sec. (1.96 ticks)
-Parallel b&c, 16 threads:
-  Real time             =    0.00 sec. (0.00 ticks)
-  Sync time (average)   =    0.00 sec.
-  Wait time (average)   =    0.00 sec.
-                          ------------
-Total (root+branch&cut) =    0.56 sec. (1.96 ticks)
-
---- MIP status (101): integer optimal solution.
---- Cplex Time: 0.58sec (det. 1.96 ticks)
-
---- Returning a primal only solution to GAMS (marginals all set to NA).
---- Fixing integer variables and solving final LP...
-
-Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
-CPXPARAM_Advance                                 2
-CPXPARAM_MIP_Display                             4
-CPXPARAM_MIP_Pool_Capacity                       0
-CPXPARAM_MIP_Tolerances_AbsMIPGap                0
-CPXPARAM_MIP_Tolerances_MIPGap                   0
-Tried aggregator 1 time.
-LP Presolve eliminated 205 rows and 84 columns.
-Aggregator did 35 substitutions.
-Reduced LP has 75 rows, 113 columns, and 249 nonzeros.
-Presolve time = 0.00 sec. (0.24 ticks)
-Initializing dual steep norms . . .
-
-Iteration log . . .
-Iteration:     1   Dual objective     =        234352.000000
-
---- Fixed MIP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.50 ticks)
-
-
-Proven optimal solution
-MIP Solution:       161800.508571    (38 iterations, 0 nodes)
-Final Solve:        161800.508571    (28 iterations)
-
-Best possible:      161800.508571
-Absolute gap:            0.000000
-Relative gap:            0.000000
-
---- Reading solution for model TCMPA
---- Executing after solve: elapsed 0:00:00.647
---- TCMPA.gms(270) 4 Mb
---- Generating RMIP model TCMPA
---- TCMPA.gms(271) 4 Mb
----   316 rows  232 columns  746 non-zeroes
----   30 discrete-columns
---- Range statistics (absolute non-zero finite values)
---- RHS       [min, max] : [ 1.000E+00, 1.000E+05] - Zero values observed as well
---- Bound     [min, max] : [ 1.000E+00, 1.500E+02] - Zero values observed as well
---- Matrix    [min, max] : [ 1.000E+00, 1.000E+05]
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.650
-
-IBM ILOG CPLEX   46.4.1 485757e2 Apr 16, 2024          WEI x86 64bit/MS Window
-
-*** This solver runs with a community license.
---- GMO setup time: 0.00s
---- Space for names approximately 0.01 Mb
---- Use option 'names no' to turn use of names off
---- GMO memory 0.56 Mb (peak 0.56 Mb)
---- Dictionary memory 0.00 Mb
---- Cplex 22.1.1.0 link memory 0.01 Mb (peak 0.03 Mb)
---- Starting Cplex
-
-Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
-CPXPARAM_Advance                                 2
-CPXPARAM_MIP_Display                             4
-CPXPARAM_MIP_Pool_Capacity                       0
-CPXPARAM_MIP_Tolerances_AbsMIPGap                0
-CPXPARAM_MIP_Tolerances_MIPGap                   0
-Tried aggregator 1 time.
-LP Presolve eliminated 205 rows and 84 columns.
-Aggregator did 35 substitutions.
-Reduced LP has 75 rows, 113 columns, and 249 nonzeros.
-Presolve time = 0.00 sec. (0.24 ticks)
-Using devex.
-
-Iteration log . . .
-Iteration:     1    Objective     =        161800.508571
-
---- LP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.61 ticks)
-
-
-Optimal solution found
-Objective:       161800.508571
-
---- Reading solution for model TCMPA
---- Executing after solve: elapsed 0:00:00.683
---- TCMPA.gms(535) 7 Mb
---- Putfile MPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq_T.dat
---- Putfile MPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg_T.dat
---- Putfile MPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg_T.dat
---- Putfile MPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG_T.dat
---- Putfile MPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd_T.dat
---- Putfile MPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd_T.dat
---- Putfile MPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD_T.dat
---- Putfile MPA_PGT C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PGT.dat
---- Putfile TCMPA_bus C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_bus.dat
---- Putfile TCMPA_eq C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_eq.dat
---- Putfile TCMPA_lbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbg.dat
---- Putfile TCMPA_pbg C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbg.dat
---- Putfile TCMPA_PG C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PG.dat
---- Putfile TCMPA_lbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_lbd.dat
---- Putfile TCMPA_pbd C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_pbd.dat
---- Putfile TCMPA_PD C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\TCMPA_PD.dat
-*** Status: Normal completion
---- Job TCMPA.gms Stop 06/22/24 20:32:14 elapsed 0:00:00.688
+--- TCMPA.gms(195) 3 Mb 8 Errors
+*** Status: Compilation error(s)
+--- Job TCMPA.gms Stop 06/24/24 23:08:50 elapsed 0:00:00.010

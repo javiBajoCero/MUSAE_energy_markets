@@ -1,0 +1,58 @@
+GAMS 46.4.1  485757e2 Apr 16, 2024          WEX-WEI x86 64bit/MS Windows - 06/24/24 23:06:51 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1         b1  b2
+****          $140$36
+****  36  '=' or '..' or ':=' or '$=' operator expected
+****      rest of statement ignored
+**** 140  Unknown symbol
+   2  t1.G1  100 200
+   3  t1.G2  50  25
+   4  t1.G3  30  70
+   5  t1.G4  30  20
+   6  t1.G5  100 0
+   7  t1.G6  5   0
+   8  t2.G1  100 200
+   9  t2.G2  50  25
+  10  t2.G3  30  70
+  11  t2.G4  30  20
+  12  t2.G5  100 0
+  13  t2.G6  10  0
+  14  t3.G1  100 200
+  15  t3.G2  50  25
+  16  t3.G3  30  70
+  17  t3.G4  30  20
+  18  t3.G5  100 0
+  19  t3.G6  15  0
+  20  t4.G1  100 200
+  21  t4.G2  50  25
+  22  t4.G3  30  70
+  23  t4.G4  30  20
+  24  t4.G5  100 0
+  25  t4.G6  20  0
+  26  t5.G1  100 200
+  27  t5.G2  50  25
+  28  t5.G3  30  70
+  29  t5.G4  30  20
+  30  t5.G5  100 0
+  31  t5.G6  10  0 ;
+
+**** 2 ERROR(S)   0 WARNING(S)
+
+
+COMPILATION TIME     =        0.000 SECONDS      2 MB  46.4.1 485757e2 WEX-WEI
+
+
+USER: GAMS Community License for F.-Javier Heredia   S240416|0002AO-GEN
+      CITCEA - Universitat Politecnica de Catalunya, SPAIN       CL3111
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.gms
+Output     C:\Users\citcea\Documents\GitHub\MUSAE\MUSAE_energy_markets\T2\TCMPA_withWPP\t2_pbg_moreWPP.lst
+
+**** USER ERROR(S) ENCOUNTERED

@@ -102,9 +102,9 @@ I 2846 market_equilibrium_T
 I 2857 market_merchandizing
 I 2910 matched_generation_bus
 I 3068 matched_inflow_bus
-I 3146 matched_demand_bus
-I 3259 matched_outflow_bus
-I 3362 settlementG
-I 3378 settlementD
-I 3390 settlementGT
-I 3398 settlementDT
+I 3171 matched_demand_bus
+I 3284 matched_outflow_bus
+I 3387 settlementG
+I 3404 settlementD
+I 3416 settlementGT
+I 3424 settlementDT
